@@ -22,9 +22,9 @@ def kuwoAPI():
         'csrf': csrf,
         'Referer': 'https://kuwo.cn',
     }
-    music_list = html.get(url, headers=headers).json()["data"]["list"]  # ["artist"]\["pic"]\["rid"]\["name"]
+    music_list = html.get(url, headers=headers).json()["data"]["list"]
 
-    music_list = json.dumps(music_list).encode('utf8').decode('unicode_escape')  # unicode解码
+    music_list = json.dumps(music_list).encode('utf8').decode('unicode_escape')
     print(f'本次搜索内容=>\n{name}')
     return music_list
 
