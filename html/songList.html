@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="stylesheet" href="./css/list.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+
+<body>
+  <!--<button onclick="kk()">测试</button>-->
+  <div id="song_box" class="song_box">
+    <div id="songNum" class="songNum">序号</div>
+    <div id="songName" class="songName">名字</div>
+    <p style="color: rgb(83, 83, 83);"><br></p>
+    <div id="singerName" class="singerName">歌手</div>
+    <div><button onclick="add_del_onclick()" class="btn" id="del_btn"><i class="fa fa-trash-o"></i></button></div>
+    <div><button onclick="play_btn_onclick()" class="btn" id="play_btn"><i class="fa fa-play-circle"></i></button></div>
+  </div>
+  <script src="./js/list.js"></script>
+</body>
+</html>

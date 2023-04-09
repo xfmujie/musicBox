@@ -1,0 +1,59 @@
+p {
+  margin: 0;
+}
+
+.song_box,
+.new_song_box {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(170, 205, 178, 0.35);
+  min-width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
+  height: 60px;
+  max-height: 100px;
+  border-radius: 10px;
+  margin-top: 8px;
+  padding-right: 15px;
+}
+
+.songNum {
+  color: rgb(99, 100, 101);
+  padding-right: 10px;
+  background-color: rgba(255, 228, 196, 0);
+  margin-left: 10px;
+}
+
+.songName {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0);
+  max-height: 45px;
+  flex-grow: 1;
+}
+
+.singerName {
+  font-size: 12px;
+  color: rgb(108, 108, 108);
+  background-color: rgba(255, 255, 255, 0);
+  max-height: 45px;
+
+}
+
+
+.btn {
+  height: 30px;
+  width: 30px;
+  background-color: rgba(240, 248, 255, 0);
+  border: 0px;
+  border-width: 0px;
+  outline: 0px;
+  font-size: 25px;
+  color: rgba(101, 159, 184, 0.928);
+  border-radius: 10px;
+}
+
+.btn:active {
+  background-color: rgb(128, 194, 238);
+}

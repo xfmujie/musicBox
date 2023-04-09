@@ -1,0 +1,242 @@
+body {
+  background-image: url('https://qnobjsg.mu-jie.cc/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e.jpeg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+dialog {
+  background-color: rgb(211, 238, 251);
+  border-radius: 15px;
+  transition-duration: 200;
+  border-width: 2.5px;
+  border-color: #ffffff;
+  min-width: 100px;
+  text-align: center;
+}
+
+.lrc {
+  color: #199dfc;
+  padding-top: 15px;
+  transition-duration: 100ms;
+}
+
+.clear {
+  color: #686868;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  border-radius: 5px;
+}
+
+.img {
+  float: left;
+}
+
+.music_box {
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px;
+}
+
+.lrc_box {
+  width: calc(100%-88px);
+  padding-bottom: 10px;
+  background-color: rgba(188, 249, 179, 0);
+  text-align: center;
+  margin-left: 88px;
+  border-radius: 10px;
+  height: 58px;
+}
+
+.song {
+  font-size: 0.85rem;
+  color: #232323;
+  border-radius: 5px;
+  text-align: center;
+  width: calc(100%-88px);
+  margin-left: 88px;
+  height: 20px;
+  background-color: rgba(215, 246, 212, 0);
+}
+
+#singerName {
+  font-size: 0.8rem;
+  color: #747474;
+}
+
+.plyr__controls__item.plyr__volume,
+.plyr__controls__item.plyr__menu {
+  display: none;
+}
+
+
+/*搜索框与搜索按钮父级div*/
+.search {
+  padding-bottom: 10px;
+  padding-top: 5px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+/*搜索框div*/
+.search_box {
+  flex: 9;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+/*搜索框样式*/
+#search_box {
+  background-color: rgba(202, 229, 209, 0.867);
+  padding-right: 0px;
+  width: 92%;
+  height: 40px;
+  border-radius: 20px;
+  outline:auto;
+  outline-style:solid;
+  outline-color: #ffffff;
+  outline-width: 1px;
+  border-width: 0px;
+  padding-left: 25px;
+  border-color: #ffffff;
+}
+
+/*搜索框聚焦*/
+#search_box:focus {
+  outline:auto;
+  background-color: #e1ffe5;
+  outline-width: 2px;
+  outline-style:solid;
+}
+
+/*搜索按钮div*/
+.search_btn {
+  flex: 1;
+  margin-right: 1%;
+}
+
+/*搜索按钮样式*/
+#search_btn {
+  width: 70px;
+  height: 45px;
+  border-radius: 15px;
+  background-color: rgba(202, 229, 209, 0.867);
+  margin-left: 10px;
+  border-width: 1px;
+  border-color: #ffffff;
+}
+
+/*搜索按钮点击*/
+#search_btn:active {
+  background-color: #e1ffe5;
+  border-width: 2px;
+  border-color: #ffffff;
+}
+
+/*列表总div*/
+.searchORlist {
+  background-color: rgba(255, 255, 255, 0.776);
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+/*搜索与列表选择按钮*/
+#listBtn {
+  border: 0px;
+  margin-top: 5px;
+  margin-left: 5%;
+  border-radius: 20px;
+  width: 46%;
+  height: 30px;
+  background-color: #e5f1fa;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  transition-duration: 200ms;
+}
+
+#resultBtn {
+  border: 0px;
+  margin-top: 5px;
+  border-radius: 20px;
+  width: 46%;
+  height: 30px;
+  background-color: rgba(250, 250, 250, 0);
+  color: rgb(95, 95, 95);
+  font-size: 12px;
+  transition-duration: 200ms;
+}
+
+/*歌曲列表div*/
+.songList {
+  background-color: rgba(234, 255, 255, 0);
+  width: 100%;
+  height: 363px;
+  border-radius: 10px;
+  margin: 0px;
+  padding-top: 10px;
+}
+#songList {
+  background-color: #ffffff00;
+  width: 100%;
+  height: 20px;
+  margin-left: 3%;
+  margin-right: 3%;
+  padding-top: 10px;
+}
+
+.iframe{
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border-width: 0px;
+  padding: 0px;
+}
+
+.footnote{
+  background-color: rgba(232, 247, 237, 0.872);
+  font-size: 14px;
+  height: 100px;
+  text-align: center;
+  color: #636363;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+a{
+  color: #3980b2;
+  text-decoration: none;
+}
+
+/*响应式媒体查询*/
+@media screen and (min-width:960px) {
+  body{
+    background-image: url('https://qnobjsg.mu-jie.cc/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e169.jpeg');
+  }
+  .music_box {
+    width: 50%;
+    margin-left: 25%;
+  }
+
+  .search {
+    width: 50%;
+    height: 40px;
+    padding-left: 25%;
+    padding-bottom: 20px;
+  }
+
+  .searchORlist {
+    width: 50%;
+    margin-left: 25%;
+  }
+  .footnote{
+    width: 50%;
+    margin-left: 25%;
+  }
+}

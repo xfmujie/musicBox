@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>XF音乐盒</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="昔枫沐杰,音乐播放器,VIP音乐解析">
+  <meta name="description" content="在线音乐播放器，免费音乐解析">
+  <link rel="shortcut icon" href="https://mu-jie.cc/favicon.ico?v=1675779331375" type="image/x-icon">
+  <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+  <!-- 加载相关 CSS 文件 -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css">
+  <link rel="stylesheet" href="./css/musicPlyr.css">
+</head>
+
+<body>
+  <div class="search">
+    <div class="search_box"><input id="search_box" type="text" placeholder="请输入歌曲/歌手" value=""></div>
+    <div class="search_btn"><button id="search_btn" onclick="search_onclick()">搜索</button></div>
+  </div>
+  <div class="music_box">
+    <div class="img"><img id="cover" width="88px"
+        src="https://qnobjsg.mu-jie.cc/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6ef.jpeg" />
+    </div>
+    <div class="song">
+      <span id="songName">歌曲</span>
+      <span>-</span>
+      <span id="singerName">歌手</span>
+    </div>
+    <div class="lrc_box">
+      <p id="lrc1" class="lrc">VIP音乐解析</p>
+      <p id="lrc2" class="clear">QQ 酷狗 酷我</p>
+    </div>
+    <!-- 添加一个 <audio> 标签 -->
+    <audio controls id="music" autoplay>
+      <source src="">
+    </audio>
+    <dialog id="dialog"></dialog>
+  </div>
+  <div class="searchORlist">
+    <button id="listBtn" onclick="listBtn_onclick()">播放列表</button>
+    <button id="resultBtn" onclick="resultBtn_onclick()">搜索结果</button>
+    <div class="songList"><iframe class="iframe" id="iframe" src="./songList.html"></iframe></div>
+  </div>
+  <div class="footnote">
+    <div style="height: 32px;"></div>
+    <footnote>Copyright © 2023
+      <a href="https://mu-jie.cc" target="_blank" rel="noopener noreferrer">昔枫沐杰</a>
+      版权所有
+      <br>
+      <font size="1em">XF音乐盒V3.0</font>
+    </footnote>
+  </div>
+  <script src="./js/musicPlyr.js"></script>
+</body>
+
+</html>
