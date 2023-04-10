@@ -221,6 +221,8 @@ function displayChange(flag) {
   if (flag == 'play') {
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-trash-o"></i>';
     remove();
+    set.style.display = 'none';
+    box.style.display = 'none';
     playList = JSON.parse(localStorage.getItem('playList'));
     displayList = playList;
     cloned(displayList);
@@ -229,15 +231,27 @@ function displayChange(flag) {
     add_del_onclick();
     displayFlag = 0;
   }
-  else {
+  else if(flag == 'search'){
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-plus"></i>';
     remove();
+    set.style.display = 'none';
+    box.style.display = 'none';
     displayList = searchList;
     cloned(displayList);
     againFlag = true;
     play_btn_onclick();
     add_del_onclick();
     displayFlag = 1;
+  }
+  else if(flag == 'box'){
+    remove();
+    set.style.display = 'none';
+    box.style.display = 'block';
+  }
+  else if(flag == 'set'){
+    remove();
+    box.style.display = 'none';
+    set.style.display = 'block';
   }
 }
 
@@ -253,6 +267,8 @@ var againFlag = false;
 var displayFlag = 0;
 var playListFlag = 0;
 var lastRid = 0;
+var set = document.getElementById('set_box');
+var box = document.getElementById('box_box');
 
 
 //缓存初始化

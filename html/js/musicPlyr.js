@@ -123,14 +123,22 @@ controls.appendChild(previous);
 controls.appendChild(playbackMode);
 controls.appendChild(next);
 
-//选择列表
+//选择显示列表/内容
 function listBtn_onclick() {
+  //高亮当前按钮
   listBtn.style.backgroundColor = "#e5f1fa";
   listBtn.style.fontSize = "14px";
   listBtn.style.color = "rgb(0, 0, 0)";
+  //取消高亮其他3个按钮
   resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
   resultBtn.style.fontSize = "12px";
   resultBtn.style.color = "rgb(95, 95, 95)";
+  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  setBtn.style.fontSize = "12px";
+  setBtn.style.color = "rgb(95, 95, 95)";
+  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  boxBtn.style.fontSize = "12px";
+  boxBtn.style.color = "rgb(95, 95, 95)";
   document.getElementById('iframe').contentWindow.displayChange('play');
 }
 function resultBtn_onclick() {
@@ -140,23 +148,60 @@ function resultBtn_onclick() {
   listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
   listBtn.style.fontSize = "12px";
   listBtn.style.color = "rgb(95, 95, 95)";
+  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  setBtn.style.fontSize = "12px";
+  setBtn.style.color = "rgb(95, 95, 95)";
+  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  boxBtn.style.fontSize = "12px";
+  boxBtn.style.color = "rgb(95, 95, 95)";
   document.getElementById('iframe').contentWindow.displayChange('search');
 }
+function setBtn_onclick() {
+  setBtn.style.backgroundColor = "#e5f1fa";
+  setBtn.style.fontSize = "14px";
+  setBtn.style.color = "rgb(0, 0, 0)";
+  listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  listBtn.style.fontSize = "12px";
+  listBtn.style.color = "rgb(95, 95, 95)";
+  resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  resultBtn.style.fontSize = "12px";
+  resultBtn.style.color = "rgb(95, 95, 95)";
+  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  boxBtn.style.fontSize = "12px";
+  boxBtn.style.color = "rgb(95, 95, 95)";
+  document.getElementById('iframe').contentWindow.displayChange('set');
+}
+function boxBtn_onclick() {
+  boxBtn.style.backgroundColor = "#e5f1fa";
+  boxBtn.style.fontSize = "14px";
+  boxBtn.style.color = "rgb(0, 0, 0)";
+  listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  listBtn.style.fontSize = "12px";
+  listBtn.style.color = "rgb(95, 95, 95)";
+  resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  resultBtn.style.fontSize = "12px";
+  resultBtn.style.color = "rgb(95, 95, 95)";
+  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
+  setBtn.style.fontSize = "12px";
+  setBtn.style.color = "rgb(95, 95, 95)";
+  document.getElementById('iframe').contentWindow.displayChange('box');
+}
+
 
 //当前播放的列表
 function list_now(flag) {
   if (flag == 0) {
-    listBtn.innerHTML = "播放列表🎵";
-    resultBtn.innerHTML = "搜索结果";
+    listBtn.innerHTML = "列表🎵";
+    resultBtn.innerHTML = "搜索";
   }
   else {
-    resultBtn.innerHTML = "搜索结果🎵";
-    listBtn.innerHTML = "播放列表";
+    resultBtn.innerHTML = "搜索🎵";
+    listBtn.innerHTML = "列表";
   }
 }
 
 
-//弹窗  ❌
+//弹窗
 function dialogDisplay(content) {
   dialog.innerHTML = content + '<p><br><div><button id="closeBtn">关闭</button></div>';
   dialog.showModal();
@@ -165,7 +210,6 @@ function dialogDisplay(content) {
   closeBtn.style.width = "50%";
   closeBtn.style.outline = "0";
   closeBtn.style.borderRadius = "20px";
-  //closeBtn.style.marginLeft = "25%";
   closeBtn.style.backgroundColor = "rgba(255,180,180,0.5)";
   closeBtn.style.border = "0px";
   closeBtn.addEventListener('touchstart', function () {
@@ -217,6 +261,8 @@ var dialog = document.getElementById('dialog');
 var SearchContent = document.getElementById('search_box');
 var listBtn = document.getElementById('listBtn');
 var resultBtn = document.getElementById('resultBtn');
+var setBtn = document.getElementById('setBtn');
+var boxBtn = document.getElementById('boxBtn');
 
 
 //音频播放监听与更新歌词
@@ -312,8 +358,8 @@ function getMusic(rid) {
 //播放音乐
 function playerPlay(url) {
   var audioPlayer = document.getElementById('music');
-  audioPlayer.src = url;
   audioPlayer.pause();
+  audioPlayer.src = url;
   audioPlayer.play();
 }
 

@@ -1,6 +1,15 @@
 p {
   margin: 0;
 }
+.set_box{
+  display:none;
+  font-size: 14px;
+}
+.box_box{
+  display:none;
+  font-size: 14px;
+}
+
 
 .song_box,
 .new_song_box {
