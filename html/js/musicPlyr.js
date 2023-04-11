@@ -126,7 +126,7 @@ controls.appendChild(next);
 //选择显示列表/内容
 function listBtn_onclick() {
   //高亮当前按钮
-  listBtn.style.backgroundColor = "#e5f1fa";
+  listBtn.style.backgroundColor = "#a8dbff";
   listBtn.style.fontSize = "14px";
   listBtn.style.color = "rgb(0, 0, 0)";
   //取消高亮其他3个按钮
@@ -142,7 +142,7 @@ function listBtn_onclick() {
   document.getElementById('iframe').contentWindow.displayChange('play');
 }
 function resultBtn_onclick() {
-  resultBtn.style.backgroundColor = "#e5f1fa";
+  resultBtn.style.backgroundColor = "#a8dbff";
   resultBtn.style.fontSize = "14px";
   resultBtn.style.color = "rgb(0, 0, 0)";
   listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
@@ -157,7 +157,7 @@ function resultBtn_onclick() {
   document.getElementById('iframe').contentWindow.displayChange('search');
 }
 function setBtn_onclick() {
-  setBtn.style.backgroundColor = "#e5f1fa";
+  setBtn.style.backgroundColor = "#a8dbff";
   setBtn.style.fontSize = "14px";
   setBtn.style.color = "rgb(0, 0, 0)";
   listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
@@ -172,7 +172,7 @@ function setBtn_onclick() {
   document.getElementById('iframe').contentWindow.displayChange('set');
 }
 function boxBtn_onclick() {
-  boxBtn.style.backgroundColor = "#e5f1fa";
+  boxBtn.style.backgroundColor = "#a8dbff";
   boxBtn.style.fontSize = "14px";
   boxBtn.style.color = "rgb(0, 0, 0)";
   listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
