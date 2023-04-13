@@ -249,7 +249,7 @@ function isMobile() {
 
 
 //全局变量定义
-let lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
+var lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
 var lrc1 = document.getElementById('lrc1');
@@ -339,6 +339,9 @@ function getMusic(rid) {
       if (lrc == null) {
         lrc = [{ "lineLyric": "纯音乐 请欣赏", "time": "999" }]
       }
+    }
+    else if (xhrLrc.status == 433){
+      lrc = [{ "lineLyric": "", "time": "5" }, { "lineLyric": "歌词获取出错，请稍后重试", "time": "999" }]
     }
   }
 
