@@ -263,6 +263,7 @@ var listBtn = document.getElementById('listBtn');
 var resultBtn = document.getElementById('resultBtn');
 var setBtn = document.getElementById('setBtn');
 var boxBtn = document.getElementById('boxBtn');
+var audioPlayer = document.getElementById('music');
 
 
 //音频播放监听与更新歌词
@@ -330,12 +331,11 @@ document.addEventListener('keydown', function (event) { // 监听键盘按下事
 function getMusic(rid) {
   //获取歌词
   var xhrLrc = new XMLHttpRequest();
-  xhrLrc.open('get', 'https://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId=' + rid + '&httpsStatus=1&reqId=4af22230-c8bd-11ed-af8a-55d47a6ff667');
+  xhrLrc.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid);
   xhrLrc.send();
   xhrLrc.onreadystatechange = function () {
     if (xhrLrc.readyState == 4 && xhrLrc.status == 200) {
-      var lrcJson = JSON.parse(xhrLrc.responseText);
-      lrc = lrcJson["data"]["lrclist"];
+      lrc = JSON.parse(xhrLrc.responseText);
       if (lrc == null) {
         lrc = [{ "lineLyric": "纯音乐 请欣赏", "time": "999" }]
       }
@@ -344,7 +344,7 @@ function getMusic(rid) {
 
   //获取歌曲链接
   var xhrSong = new XMLHttpRequest();
-  xhrSong.open('get', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
+  xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
   xhrSong.send();
   xhrSong.onreadystatechange = function () {
     if (xhrSong.readyState == 4 && xhrSong.status == 200) {
@@ -357,8 +357,6 @@ function getMusic(rid) {
 
 //播放音乐
 function playerPlay(url) {
-  var audioPlayer = document.getElementById('music');
-  audioPlayer.pause();
   audioPlayer.src = url;
   audioPlayer.play();
 }
@@ -366,12 +364,14 @@ function playerPlay(url) {
 //切换歌曲
 function switchSongs(parameter) {
   lrc_count = 0;
+  audioPlayer.pause();
+  lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
   cover.src = parameter["pic"];
   var name = parameter['name'];
   var singer = parameter['artist'];
   songName.innerHTML = name.slice(0, 15 + (name.length - name.replace(/&[a-z]+;/g, " ").length));
   singerName.innerHTML = singer.slice(0, 15 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length));
-  lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
+  document.title = 'XF音乐盒(' + name.slice(0, 10 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + ')';
   getMusic(parameter["rid"]);
 }
 
@@ -414,6 +414,40 @@ function inputBlur() {
 }
 
 
+//听歌时长的初始化与获取
+if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime') === undefined) {
+  localStorage.setItem('playTime', 0);
+  console.log('听歌时长初始化')
+}
+//计时
+audioPlayer.addEventListener('play', function () {
+  timeCount = setInterval(function () {
+    let seconds = parseInt(localStorage.getItem("playTime"));
+    localStorage.setItem('playTime', seconds += 1);
+    document.getElementById('iframe').contentWindow.loadplayTime(getPlayTime());
+  }, 1000);
+});
+audioPlayer.addEventListener("pause", function () {
+  clearInterval(timeCount);
+});
+//获取
+function getPlayTime() {
+  let seconds = parseInt(localStorage.getItem("playTime"));
+  let hours = Math.floor(seconds / 3600);
+  let minutes = Math.floor((seconds - (hours * 3600)) / 60);
+  let sec = seconds % 60;
+  let result = "";
+  if (hours > 0) {
+    result += hours + "小时";
+  }
+  else result += '0小时';
+  if (minutes > 0) {
+    result += minutes + "分钟";
+  }
+  else result += '0分钟';
+  result += sec + "秒";
+  return result;
+}
 
 //调用子页面函数
 //document.getElementById('iframe').contentWindow.函数名()

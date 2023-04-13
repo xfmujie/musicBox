@@ -32,10 +32,19 @@ def kuwoAPI():
 @app.route('/rid/')
 def ridKuwoAPI():
     rid = request.args.get('rid')
-    url = 'http://www.kuwo.cn/api/v1/www/music/playUrl?mid=' + rid + '&type=convert_url3&br=320kmp3'
+    url = f'http://www.kuwo.cn/api/v1/www/music/playUrl?mid={rid}&type=convert_url3&br=320kmp3'
     download_url = requests.get(url=url).json()["data"]["url"]
     print(f'已获取到mp3文件链接=>\n{str(download_url)}')
     return str(download_url)
+
+
+@app.route('/lrc/')
+def lrcKuwoAPI():
+    rid = request.args.get('rid')
+    url = f'https://m.kuwo.cn/newh5/singles/songinfoandlrc?musicId={rid}&httpsStatus=1&reqId=4af22230-c8bd-11ed-af8a-55d47a6ff667'
+    lrc = requests.get(url=url).json()["data"]["lrclist"]
+    print('已获取到歌词\n\n')
+    return json.dumps(lrc)
 
 
 if __name__ =='__main__':

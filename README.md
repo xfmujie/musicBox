@@ -6,15 +6,21 @@
 ### html
 1. 在```list.js```中
 ```js
-xhrList.open('get', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=' + SearchContent);
+xhrList.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=' + SearchContent);
 ```
-请求了app.py中的```'/'```的路由,url参数为```?name=```,用来获取搜索结果
+请求了app.py中的```'/'```的路由,url参数为```name=```,用来获取搜索结果
 
 2. 在```musicPlyr.js```中
 ```js
-xhrSong.open('get', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
+xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
 ```
-请求了app.py中的```'/rid/'```的路由,url参数为```?rid=```,根据rid返回MP3文件链接
+请求了app.py中的```'/rid/'```的路由,url参数为```rid=```,根据rid返回MP3文件链接
+<br>
+
+```js
+xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid);
+```
+请求了app.py中的```'/lrc/'```的路由,url参数为```rid=```,根据rid返回歌词
 
 
 ### app.py依赖

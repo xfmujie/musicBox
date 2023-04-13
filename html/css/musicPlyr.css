@@ -158,42 +158,14 @@ img {
 }
 
 /*搜索与列表选择按钮*/
-#listBtn {
-  border: 0px;
-  border-radius: 20px;
-  width: 60px;
-  height: 30px;
-  outline: none;
-  transition-duration: 200ms;
-}
-
-#resultBtn {
-  border: 0px;
-  border-radius: 20px;
-  width: 60px;
-  height: 30px;
-  outline: none;
-  transition-duration: 200ms;
-}
-
-#boxBtn{
-  border: 0px;
-  border-radius: 20px;
-  width: 60px;
-  height: 30px;
-  outline: none;
-  transition-duration: 200ms;
+#listBtn,#resultBtn,#boxBtn,#setBtn{
   background-color: #00000000;
-}
-
-#setBtn {
   border: 0px;
   border-radius: 20px;
   width: 60px;
   height: 30px;
   outline: none;
   transition-duration: 200ms;
-  background-color: #00000000;
 }
 
 

@@ -2,7 +2,7 @@
 //获取搜索结果
 function getSearchResult(SearchContent) {
   var xhrList = new XMLHttpRequest();
-  xhrList.open('get', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=' + SearchContent);
+  xhrList.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=' + SearchContent);
   xhrList.send();
   waitTime();  //计时
   xhrList.onreadystatechange = function () {
@@ -252,6 +252,7 @@ function displayChange(flag) {
     remove();
     box.style.display = 'none';
     set.style.display = 'block';
+    loadplayTime(window.parent.getPlayTime());
   }
 }
 
@@ -269,6 +270,7 @@ var playListFlag = 0;
 var lastRid = 0;
 var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
+var playTime = document.getElementById('play_time');
 
 
 //缓存初始化
@@ -277,7 +279,9 @@ if (localStorage.getItem('playList') == null) {
   displayChange('play');
   console.log('缓存空空如也')
 }
-
+function loadplayTime(time){
+  playTime.innerHTML = `已经听歌：${time}`;
+}
 
 
 //调用父页面函数

@@ -4,10 +4,12 @@ p {
 .set_box{
   display:none;
   font-size: 14px;
+  text-align: center;
 }
 .box_box{
   display:none;
   font-size: 14px;
+  text-align: center;
 }
 
 
@@ -65,4 +67,8 @@ p {
 
 .btn:active {
   background-color: rgb(128, 194, 238);
+}
+
+#play_time{
+  text-align: center;
 }
