@@ -1,5 +1,5 @@
 body {
-  background-image: url('https://qnobjsg.mu-jie.cc/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e.jpeg');
+  background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e.jpeg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -240,7 +240,7 @@ a{
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   body{
-    background-image: url('https://qnobjsg.mu-jie.cc/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e169.jpeg');
+    background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e169.jpeg');
   }
   .music_box {
     width: 50%;
