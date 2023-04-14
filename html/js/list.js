@@ -280,7 +280,7 @@ if (localStorage.getItem('playList') == null) {
   console.log('缓存空空如也')
 }
 function loadplayTime(time){
-  playTime.innerHTML = `已经听歌：${time}`;
+  playTime.innerHTML = `本周音乐盒已为你播放:<br>${time}`;
 }
 
 

@@ -252,6 +252,7 @@ function isMobile() {
 var lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
+var music_box = document.getElementById('music_box');
 var lrc1 = document.getElementById('lrc1');
 var lrc2 = document.getElementById('lrc2');
 var cover = document.getElementById('cover');
@@ -264,7 +265,7 @@ var resultBtn = document.getElementById('resultBtn');
 var setBtn = document.getElementById('setBtn');
 var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
-
+var sug = document.getElementById('sug');
 
 //音频播放监听与更新歌词
 player.on('timeupdate', event => {
@@ -417,7 +418,7 @@ function inputBlur() {
 }
 
 
-//听歌时长的初始化与获取
+/*听歌时长的初始化与获取*/
 if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime') === undefined) {
   localStorage.setItem('playTime', 0);
   console.log('听歌时长初始化')
@@ -451,6 +452,19 @@ function getPlayTime() {
   result += sec + "秒";
   return result;
 }
+//每周一置零时长
+var currentDate = new Date();
+if (currentDate.getDay() == 1) {
+  if (localStorage.getItem('Zeroing') !== 'true') {
+    // 置零
+    localStorage.setItem('playTime', 0);
+    localStorage.setItem('Zeroing', 'true');
+  }
+} else {
+  localStorage.removeItem('Zeroing');
+}
+
+
 
 //调用子页面函数
 //document.getElementById('iframe').contentWindow.函数名()

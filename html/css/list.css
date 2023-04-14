@@ -5,11 +5,13 @@ p {
   display:none;
   font-size: 14px;
   text-align: center;
+  color: rgb(61, 60, 60);
 }
 .box_box{
   display:none;
   font-size: 14px;
   text-align: center;
+  color: rgb(61, 60, 60);
 }
 
 
@@ -18,7 +20,7 @@ p {
   display: none;
   justify-content: center;
   align-items: center;
-  background-color: rgba(170, 205, 178, 0.35);
+  background-color: rgba(190, 223, 198, 0.35);
   min-width: calc(100% - 20px);
   max-width: calc(100% - 20px);
   height: 60px;
@@ -70,5 +72,13 @@ p {
 }
 
 #play_time{
+  width: 80%;
+  position: relative;
   text-align: center;
+  border-radius: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgb(212, 234, 252);
+  top: 30px;
+  left: 10%;
 }

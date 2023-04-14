@@ -1,5 +1,5 @@
 body {
-  background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e.jpeg');
+  background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -77,8 +77,6 @@ img {
 
 /*搜索框与搜索按钮父级div*/
 .search {
-  justify-content: center;
-  align-items: center;
   padding-bottom: 10px;
   padding-top: 5px;
   display: flex;
@@ -95,20 +93,21 @@ img {
 
 /*搜索框样式*/
 #search_box {
-  background-color: rgba(202, 229, 209, 0.867);
+  background-color: rgba(246, 250, 255, 0.94);
   padding-right: 0px;
-  width: 92%;
+  width: 95%;
   height: 40px;
   border-radius: 20px;
   border-width: 0px;
   padding-left: 25px;
   border-color: #000000;
+  transition-duration: 50ms;
 }
 
 /*搜索框聚焦*/
 #search_box:focus {
-  width: calc(92% - 3px);
   padding-left: 23.5px;
+  border-radius: 10px;
   outline: 0;
   height: 37px;
   border-width: 1.5px;
@@ -123,9 +122,9 @@ img {
 /*搜索按钮样式*/
 #search_btn {
   width: 55px;
-  height: 40px;
+  height: 42px;
   border-radius: 10px;
-  background-color: rgba(202, 229, 209, 0.867);
+  background-color: rgb(255, 255, 255);
   margin-left: 10px;
   border-width: 1px;
   border-color: #ffffff;
@@ -137,7 +136,18 @@ img {
   border-width: 2px;
   border-color: #000000;
 }
-
+/*搜索sug*/
+#sug{
+  display: none;
+  position: relative;
+  background-color: rgba(202, 229, 209, 1);
+  margin-left: 2px;
+  width: 100%;
+  border-radius: 10px;
+  height: 0px;
+  transition-duration: 200ms;
+  z-index: 99;
+}
 /*列表总div*/
 .searchORlist {
   padding-top: 5px;
@@ -196,7 +206,7 @@ img {
 }
 
 .footnote{
-  background-color: rgba(232, 247, 237, 0.872);
+  background-color: rgba(255, 255, 255, 0.784);
   font-size: 14px;
   height: 100px;
   text-align: center;
@@ -212,13 +222,15 @@ a{
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   body{
-    background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6e169.jpeg');
+    background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg');
   }
   .music_box {
     width: 50%;
     margin-left: 25%;
   }
-
+  #search_box {
+    width: 98%;
+  }
   .search {
     width: 50%;
     height: 40px;
