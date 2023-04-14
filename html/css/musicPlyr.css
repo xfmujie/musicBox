@@ -74,6 +74,14 @@ img {
   display: none;
 }
 
+/*搜索建议sug*/
+td{
+  color: #676767;
+}
+td:hover{
+  background-color: #d4edff;
+  color: #f93030;
+}
 
 /*搜索框与搜索按钮父级div*/
 .search {
@@ -136,18 +144,7 @@ img {
   border-width: 2px;
   border-color: #000000;
 }
-/*搜索sug*/
-#sug{
-  display: none;
-  position: relative;
-  background-color: rgba(202, 229, 209, 1);
-  margin-left: 2px;
-  width: 100%;
-  border-radius: 10px;
-  height: 0px;
-  transition-duration: 200ms;
-  z-index: 99;
-}
+
 /*列表总div*/
 .searchORlist {
   padding-top: 5px;
