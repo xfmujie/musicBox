@@ -231,7 +231,7 @@ function displayChange(flag) {
     add_del_onclick();
     displayFlag = 0;
   }
-  else if(flag == 'search'){
+  else if (flag == 'search') {
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-plus"></i>';
     remove();
     set.style.display = 'none';
@@ -243,12 +243,12 @@ function displayChange(flag) {
     add_del_onclick();
     displayFlag = 1;
   }
-  else if(flag == 'box'){
+  else if (flag == 'box') {
     remove();
     set.style.display = 'none';
     box.style.display = 'block';
   }
-  else if(flag == 'set'){
+  else if (flag == 'set') {
     remove();
     box.style.display = 'none';
     set.style.display = 'block';
@@ -268,9 +268,11 @@ var againFlag = false;
 var displayFlag = 0;
 var playListFlag = 0;
 var lastRid = 0;
+var strayBirdsYiyan = "";
 var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
 var playTime = document.getElementById('play_time');
+var yiyan = document.getElementById('yiyan');
 
 
 //缓存初始化
@@ -279,10 +281,23 @@ if (localStorage.getItem('playList') == null) {
   displayChange('play');
   console.log('缓存空空如也')
 }
-function loadplayTime(time){
+function loadplayTime(time) {
   playTime.innerHTML = `本周音乐盒已为你播放:<br>${time}`;
 }
 
 
+/*飞鸟集一言*/
+function getStrayBirds() {
+  var xhrGetStrayBirds = new XMLHttpRequest();
+  xhrGetStrayBirds.open('get', 'https://api.mu-jie.cc/stray-birds/range?from=1&type=json');
+  xhrGetStrayBirds.send();
+  xhrGetStrayBirds.onreadystatechange = function () {
+    if (xhrGetStrayBirds.readyState == 4 && xhrGetStrayBirds.status == 200) {
+      strayBirdsYiyan = JSON.parse(xhrGetStrayBirds.responseText);
+      yiyan.innerHTML = `${strayBirdsYiyan["cn"]}<br>——泰戈尔《飞鸟集》【${strayBirdsYiyan["num"]}】`;
+    }
+  }
+}
+getStrayBirds();
 //调用父页面函数
 //window.parent.函数名();

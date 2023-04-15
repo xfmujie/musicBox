@@ -82,3 +82,16 @@ p {
   top: 30px;
   left: 10%;
 }
+
+#yiyan{
+  font-size: 12px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  border-radius: 2px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: rgba(172, 172, 172, 0);
+  color: rgb(87, 87, 87);
+  top: 210px;
+}
