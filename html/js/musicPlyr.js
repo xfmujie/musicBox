@@ -1,7 +1,102 @@
+/*主题 颜色*/
+var theme_btnColor = localStorage.getItem('themeBtnColor');
+var theme_lrcColor = localStorage.getItem('themeLrcColor');
+var theme_listColor = localStorage.getItem('themeListColor');
+var theme_bgImg = localStorage.getItem('themeBgImg');
+class Theme {
+  //判空
+  isNull(obj) {
+    return (obj === null || obj === '' || obj === undefined)
+  }
+  //颜色初始化
+  init() {
+    if (this.isNull(theme_btnColor)) {
+      localStorage.setItem('themeBtnColor', '#a8dbff');
+      console.log('按钮颜色初始化');
+    } else { console.log(`按钮颜色：${localStorage.getItem('themeBtnColor')}`); }
+
+    if (this.isNull(theme_lrcColor)) {
+      localStorage.setItem('themeLrcColor', '#199dfc');
+      console.log('歌词颜色初始化');
+      theme_lrcColor = localStorage.getItem('themeLrcColor');
+      lrc1.style.color = theme_lrcColor;
+    } else { console.log(`歌词颜色：${localStorage.getItem('themeLrcColor')}`); }
+
+    if (this.isNull(theme_listColor)) {
+      localStorage.setItem('themeListColor', 'rgba(190, 223, 198, 0.5)');
+      console.log('列表颜色初始化');
+      theme_listColor = localStorage.getItem('themeListColor');
+    } else { console.log(`列表颜色：${localStorage.getItem('themeListColor')}`); }
+
+    if (this.isNull(theme_bgImg)) {
+      let initBg = ["http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg",
+        "http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg"];
+      if (isMobile()) {
+        localStorage.setItem('themeBgImg', initBg[0]);
+      }
+      else { localStorage.setItem('themeBgImg', initBg[1]); }
+      console.log('背景图初始化');
+      theme_bgImg = localStorage.getItem('themeBgImg');
+      console.log(theme_bgImg);
+      document.body.style.backgroundImage = `url('${theme_bgImg}')`;
+    } else {
+      console.log(`背景图：${localStorage.getItem('themeBgImg')}`);
+      document.body.style.backgroundImage = `url('${theme_bgImg}')`;
+    }
+  }
+
+  //设置选项卡按钮颜色
+  setBtn(val) {
+    if (val == '0') { localStorage.setItem('themeBtnColor', '#a8dbff'); }
+    else { localStorage.setItem('themeBtnColor', val); }
+    setBtn_onclick();
+  }
+  //设置歌词颜色
+  setLrc(val) {
+    if (val == '0') { localStorage.setItem('themeLrcColor', '#199dfc'); }
+    else { localStorage.setItem('themeLrcColor', val); }
+    theme_lrcColor = localStorage.getItem('themeLrcColor');
+    lrc1.style.color = theme_lrcColor;
+  }
+  //设置列表颜色
+  setList(val) {
+    if (val == '0') { localStorage.setItem('themeListColor', 'rgba(190, 223, 198, 0.5)'); }
+    else { localStorage.setItem('themeListColor', val); }
+    theme_listColor = localStorage.getItem('themeListColor');
+  }
+  //设置背景图
+  setBgImg(url) {
+    if (url == '0') {
+      let initBg = ["http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg",
+        "http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg"];
+      if (isMobile()) {
+        localStorage.setItem('themeBgImg', initBg[0]);
+      }
+      else { localStorage.setItem('themeBgImg', initBg[1]); }
+    }
+    else { localStorage.setItem('themeBgImg', url); }
+    theme_bgImg = localStorage.getItem('themeBgImg');
+    document.body.style.backgroundImage = `url('${theme_bgImg}')`;
+  }
+}
+const theme = new Theme();
+function theme_set(method, val) {
+  if (method == 'list') theme.setList(val);
+  if (method == 'btn') theme.setBtn(val);
+  if (method == 'lrc') theme.setLrc(val);
+  if (method == 'bg') theme.setBgImg(val);
+}
+
 const player = new Plyr('audio');
 // 获取Plyr音频播放器控制按钮节点
 const controls = document.querySelector('.plyr__controls');
-
+if (!isMobile()) {
+  document.getElementsByClassName('plyr__controls__item plyr__volume')[0].style.display = 'flex';
+  let btns = document.querySelectorAll('.btn_box,#listBtn,#resultBtn,#boxBtn,#setBtn');
+  btns.forEach(function (btn) {
+    btn.style.cursor = 'pointer';
+  });
+}
 // 创建下载按钮
 const download = document.createElement("button");
 download.style.width = "30px";
@@ -112,8 +207,6 @@ next.addEventListener('mouseup', function () {
 });
 next.onclick = function () {
   //下一首点击
-  //alert('下一首');
-  //dialogDisplay('下一首');
   document.getElementById('iframe').contentWindow.nextPlay(1);
 }
 
@@ -124,66 +217,49 @@ controls.appendChild(playbackMode);
 controls.appendChild(next);
 
 //选择显示列表/内容
+//按钮高亮与取消高亮
+class Highlight {
+  yes(obj) {
+    theme_btnColor = localStorage.getItem('themeBtnColor');
+    obj.style.backgroundColor = theme_btnColor;
+    obj.style.fontSize = "14px";
+    obj.style.color = "rgb(0, 0, 0)";
+  }
+  no(obj) {
+    obj.style.backgroundColor = "rgba(250, 250, 250, 0)";
+    obj.style.fontSize = "12px";
+    obj.style.color = "rgb(95, 95, 95)";
+  }
+}
+const HL = new Highlight();
 function listBtn_onclick() {
   //高亮当前按钮
-  listBtn.style.backgroundColor = "#a8dbff";
-  listBtn.style.fontSize = "14px";
-  listBtn.style.color = "rgb(0, 0, 0)";
+  HL.yes(listBtn);
   //取消高亮其他3个按钮
-  resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  resultBtn.style.fontSize = "12px";
-  resultBtn.style.color = "rgb(95, 95, 95)";
-  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  setBtn.style.fontSize = "12px";
-  setBtn.style.color = "rgb(95, 95, 95)";
-  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  boxBtn.style.fontSize = "12px";
-  boxBtn.style.color = "rgb(95, 95, 95)";
+  HL.no(resultBtn);
+  HL.no(setBtn);
+  HL.no(boxBtn);
   document.getElementById('iframe').contentWindow.displayChange('play');
 }
 function resultBtn_onclick() {
-  resultBtn.style.backgroundColor = "#a8dbff";
-  resultBtn.style.fontSize = "14px";
-  resultBtn.style.color = "rgb(0, 0, 0)";
-  listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  listBtn.style.fontSize = "12px";
-  listBtn.style.color = "rgb(95, 95, 95)";
-  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  setBtn.style.fontSize = "12px";
-  setBtn.style.color = "rgb(95, 95, 95)";
-  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  boxBtn.style.fontSize = "12px";
-  boxBtn.style.color = "rgb(95, 95, 95)";
+  HL.yes(resultBtn);
+  HL.no(listBtn);
+  HL.no(setBtn);
+  HL.no(boxBtn);
   document.getElementById('iframe').contentWindow.displayChange('search');
 }
 function setBtn_onclick() {
-  setBtn.style.backgroundColor = "#a8dbff";
-  setBtn.style.fontSize = "14px";
-  setBtn.style.color = "rgb(0, 0, 0)";
-  listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  listBtn.style.fontSize = "12px";
-  listBtn.style.color = "rgb(95, 95, 95)";
-  resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  resultBtn.style.fontSize = "12px";
-  resultBtn.style.color = "rgb(95, 95, 95)";
-  boxBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  boxBtn.style.fontSize = "12px";
-  boxBtn.style.color = "rgb(95, 95, 95)";
+  HL.yes(setBtn);
+  HL.no(resultBtn);
+  HL.no(listBtn);
+  HL.no(boxBtn);
   document.getElementById('iframe').contentWindow.displayChange('set');
 }
 function boxBtn_onclick() {
-  boxBtn.style.backgroundColor = "#a8dbff";
-  boxBtn.style.fontSize = "14px";
-  boxBtn.style.color = "rgb(0, 0, 0)";
-  listBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  listBtn.style.fontSize = "12px";
-  listBtn.style.color = "rgb(95, 95, 95)";
-  resultBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  resultBtn.style.fontSize = "12px";
-  resultBtn.style.color = "rgb(95, 95, 95)";
-  setBtn.style.backgroundColor = "rgba(250, 250, 250, 0)";
-  setBtn.style.fontSize = "12px";
-  setBtn.style.color = "rgb(95, 95, 95)";
+  HL.yes(boxBtn);
+  HL.no(setBtn);
+  HL.no(resultBtn);
+  HL.no(listBtn);
   document.getElementById('iframe').contentWindow.displayChange('box');
 }
 
@@ -267,7 +343,9 @@ var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
 var sug = document.getElementById('sug');
 
+
 //音频播放监听与更新歌词
+lrc1.style.color = theme_lrcColor;
 player.on('timeupdate', event => {
   if (lrc_count - 10 > 0) {
     var time_front_10 = Math.floor(parseFloat(lrc[lrc_count - 10]["time"])); // 向下取整，得到整数格式
@@ -410,6 +488,7 @@ var myIframe = document.getElementById('iframe');
 onIFrameLoaded(myIframe, function () {
   console.log('iframe已加载完成');
   // 执行其他逻辑
+  theme.init();
   listBtn_onclick();
 });
 
@@ -452,38 +531,13 @@ function getPlayTime() {
   result += sec + "秒";
   return result;
 }
-//每周一置零时长
+//每月置零一次时长
 var currentDate = new Date();
-if (currentDate.getDay() == 1) {
-  if (localStorage.getItem('Zeroing') !== 'true') {
-    // 置零
-    localStorage.setItem('playTime', 0);
-    localStorage.setItem('Zeroing', 'true');
-  }
-} else {
-  localStorage.removeItem('Zeroing');
+if (`${currentDate.getMonth()}` !== localStorage.getItem('Zeroing')) {
+  // 置零
+  localStorage.setItem('playTime', 0);
+  localStorage.setItem('Zeroing', currentDate.getMonth());
 }
-
-/*搜索建议*/
-if (typeof openSug === "function" && document.getElementById("search_box") != null) openSug("search_box", {
-  //注释的项已在css中定义
-  bgcolor: "#eff6fe",
-  //bgcolorHI : "#e0efda",
-  borderColor: "",
-  fontColor: "",
-  //fontColorHI : "#458bdc",
-  fontFamily: "Montserrat,sans-serif",
-  fontSize: "14px",
-  padding: "6px 25px",
-  radius: "10px",
-  shadow: "rgb(0 0 0 / 50%) 0px 6px 10px",
-  source: "kugou",
-  sugSubmit: true,
-  width: "",
-  XOffset: "",
-  YOffset: "-4"
-}, function () {
-});
 
 
 

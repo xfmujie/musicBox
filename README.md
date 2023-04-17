@@ -26,3 +26,9 @@ xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/l
 ### app.py依赖
 - pip install flask
 - pip install requests
+
+## 近期更新
+V3.0.3
+1. 新增主题自定义
+2. 更换依赖包源，访问更快
+3. 修复一些问题

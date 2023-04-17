@@ -1,10 +1,14 @@
 p {
   margin: 0;
 }
+h1,h2,h3,h4,h5{
+  color: rgb(66, 158, 224);
+  margin: 0;
+  margin-bottom: 2px;
+}
 .set_box{
   display:none;
   font-size: 14px;
-  text-align: center;
   color: rgb(61, 60, 60);
 }
 .box_box{
@@ -28,6 +32,7 @@ p {
   border-radius: 10px;
   margin-top: 8px;
   padding-right: 15px;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 .songNum {
@@ -72,26 +77,59 @@ p {
 }
 
 #play_time{
-  width: 80%;
-  position: relative;
+  color: rgb(72, 169, 238);
+  width: 100%;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: rgb(212, 234, 252);
-  top: 30px;
-  left: 10%;
+  background-color: rgba(255, 253, 253, 0.8);
+  margin-top: 10px;
 }
 
 #yiyan{
   font-size: 12px;
-  width: 100%;
-  position: relative;
+  width: 90%;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 5px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: rgba(172, 172, 172, 0);
+  background-color: rgba(255, 253, 253, 0);
   color: rgb(87, 87, 87);
-  top: 210px;
+  margin-top: 10px;
+  margin-left: 5%;
+}
+
+#theme_box{
+  /* margin-left: calc(50% - 130px); */
+  background-color: rgba(255, 253, 253, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.set_op{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  padding-left: 0;
+  background-color: rgba(246, 235, 235, 0);
+  border-radius: 5px;
+}
+
+.set_val{
+  background-color: rgba(236, 236, 236, 0);
+  height: 30px;
+  border-radius: 5px;
+  border: solid 0.5px;
+  outline: 0;
+}
+
+a{
+  font-size: 16px;
+  color: #3980b2;
+  text-decoration: none;
+}
+
+set_title{
+  font-size: 16px;
 }

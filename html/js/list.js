@@ -55,6 +55,7 @@ function waitTime() {
 function cloned(displayList) {
   for (let i = 0; i < displayList.length; i++) {
     var originalDiv = document.getElementById('song_box');    // 获取原始div元素
+    originalDiv.style.backgroundColor = window.parent.localStorage.getItem('themeListColor');
     var clonedDiv = originalDiv.cloneNode(true);    // 复制原始div元素及其所有子元素和属性
     clonedDiv.classList.remove('song_box');               // 移除克隆节点上的旧类名
     clonedDiv.classList.add('new_song_box');                  // 添加克隆节点上的新类名
@@ -219,6 +220,7 @@ function nextPlay(flag) {
 //更换显示列表
 function displayChange(flag) {
   if (flag == 'play') {
+
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-trash-o"></i>';
     remove();
     set.style.display = 'none';
@@ -282,11 +284,12 @@ if (localStorage.getItem('playList') == null) {
   console.log('缓存空空如也')
 }
 function loadplayTime(time) {
-  playTime.innerHTML = `本周音乐盒已为你播放:<br>${time}`;
+  playTime.innerHTML = `本月已为你播放:<br>${time}`;
 }
 
 
 /*飞鸟集一言*/
+getStrayBirds();
 function getStrayBirds() {
   var xhrGetStrayBirds = new XMLHttpRequest();
   xhrGetStrayBirds.open('get', 'https://api.mu-jie.cc/stray-birds/range?from=1&type=json');
@@ -298,6 +301,63 @@ function getStrayBirds() {
     }
   }
 }
-getStrayBirds();
+
+/*确定颜色 主题*/
+var a = document.getElementsByTagName('a');
+var setVal = document.getElementsByClassName('set_val');
+a[0].addEventListener('click', function (event) {
+  event.preventDefault();
+  if (setVal[0].value !== '') {
+    window.parent.theme_set('list', setVal[0].value);
+    if (setVal[0].value == '0') {
+      window.parent.dialogDisplay(`列表颜色已重置`);
+    }
+    else {
+      window.parent.dialogDisplay(`列表颜色已设置为${setVal[0].value}`);
+    }
+    setVal[0].value = '';
+  }
+});
+a[1].addEventListener('click', function (event) {
+  event.preventDefault();
+  if (setVal[1].value !== '') {
+    window.parent.theme_set('btn', setVal[1].value);
+    if (setVal[1].value == '0') {
+      window.parent.dialogDisplay(`选项卡颜色已重置`);
+    }
+    else {
+      window.parent.dialogDisplay(`选项卡颜色已设置为${setVal[1].value}`);
+    }
+    setVal[1].value = '';
+  }
+});
+a[2].addEventListener('click', function (event) {
+  event.preventDefault();
+  if (setVal[2].value !== '') {
+    window.parent.theme_set('lrc', setVal[2].value);
+    if (setVal[2].value == '0') {
+      window.parent.dialogDisplay(`歌词高亮颜色已重置`);
+    }
+    else {
+      window.parent.dialogDisplay(`歌词高亮颜色已设置为${setVal[2].value}`);
+    }
+    setVal[2].value = '';
+  }
+});
+a[3].addEventListener('click', function (event) {
+  event.preventDefault();
+  if (setVal[3].value !== '') {
+    window.parent.theme_set('bg', setVal[3].value);
+    if (setVal[3].value == '0') {
+      window.parent.dialogDisplay(`背景图片已重置`);
+    }
+    else {
+      window.parent.dialogDisplay(`背景图片已设置为<br><img  height="220px" src="${setVal[3].value}"/>`);
+    }
+    setVal[3].value = '';
+  }
+});
+
+
 //调用父页面函数
 //window.parent.函数名();

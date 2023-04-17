@@ -1,5 +1,4 @@
 body {
-  background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -16,7 +15,7 @@ dialog {
 }
 
 .lrc {
-  color: #199dfc;
+  color: #696969;
   padding-top: 15px;
   transition-duration: 100ms;
 }
@@ -41,6 +40,7 @@ img {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
 }
 
 .lrc_box {
@@ -109,6 +109,7 @@ td:hover{
   border-width: 0px;
   padding-left: 25px;
   border-color: #000000;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   transition-duration: 50ms;
 }
 
@@ -119,6 +120,7 @@ td:hover{
   outline: 0;
   height: 37px;
   border-width: 1.5px;
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
 }
 
 /*搜索按钮div*/
@@ -136,19 +138,21 @@ td:hover{
   margin-left: 10px;
   border-width: 1px;
   border-color: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 /*搜索按钮点击*/
 #search_btn:active {
-  background-color: #e1ffe5;
+  background-color: #e1f5ff;
   border-width: 2px;
   border-color: #000000;
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
 }
 
 /*列表总div*/
 .searchORlist {
   padding-top: 5px;
-  background-color: rgba(255, 255, 255, 0.776);
+  background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
   height: 420px;
   border-radius: 10px;
@@ -157,11 +161,12 @@ td:hover{
 
 /*按钮盒子*/
 .btn_box{
-  background-color: #e5f1fa;
+  background-color: #ffffff97;
   margin-left: calc(50% - 120px);
   width: max-content;
   height: 30px;
   border-radius: 20px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 /*搜索与列表选择按钮*/
@@ -218,9 +223,6 @@ a{
 
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
-  body{
-    background-image: url('http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg');
-  }
   .music_box {
     width: 50%;
     margin-left: 25%;
@@ -234,6 +236,7 @@ a{
     padding-left: 25%;
     padding-bottom: 20px;
   }
+
 
   .searchORlist {
     width: 50%;
