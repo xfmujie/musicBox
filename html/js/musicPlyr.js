@@ -81,12 +81,27 @@ class Theme {
 }
 const theme = new Theme();
 function theme_set(method, val) {
-  if (method == 'list') theme.setList(val);
-  if (method == 'btn') theme.setBtn(val);
-  if (method == 'lrc') theme.setLrc(val);
-  if (method == 'bg') theme.setBgImg(val);
+  switch (method) {
+    case 'list': theme.setList(val); break;
+    case 'btn': theme.setBtn(val); break;
+    case 'lrc': theme.setLrc(val); break;
+    case 'bg': theme.setBgImg(val); break;
+    case 'import':
+      theme.setList(JSON.parse(val)["list"]);
+      theme.setBtn(JSON.parse(val)["btn"]);
+      theme.setLrc(JSON.parse(val)["lrc"]);
+      theme.setBgImg(JSON.parse(val)["bg"]);
+      break;
+    case 'export':
+      var configure = {
+        list: theme_listColor,
+        btn: theme_btnColor,
+        lrc: theme_lrcColor,
+        bg: theme_bgImg
+      }
+      return JSON.stringify(configure);
+  }
 }
-
 const player = new Plyr('audio');
 // 获取Plyr音频播放器控制按钮节点
 const controls = document.querySelector('.plyr__controls');

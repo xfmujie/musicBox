@@ -357,7 +357,17 @@ a[3].addEventListener('click', function (event) {
     setVal[3].value = '';
   }
 });
-
+a[4].addEventListener('click', function (event) {
+  event.preventDefault();
+  var val = prompt("将主题参数粘贴到此处", "");
+  if(val !== null && val !==''){
+  window.parent.theme_set('import', val);
+  }
+});
+a[5].addEventListener('click', function (event) {
+  event.preventDefault();
+  window.parent.dialogDisplay(`全选复制以下主题参数：<br><br><input type='text' style='width: 100%; height: 30px;' value='${window.parent.theme_set('export')}'>`);
+});
 
 //调用父页面函数
 //window.parent.函数名();
