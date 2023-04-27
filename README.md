@@ -1,6 +1,7 @@
 # XF音乐盒
 
 一个在线音乐播放器
+在线使用：[https://mu-jie.cc/musicBox/](https://mu-jie.cc/musicBox/)
 
 ![pagePC](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/%E5%8E%8B%E7%BC%A9_Snipaste_2023-04-27_12-42-34.png)
 ![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
