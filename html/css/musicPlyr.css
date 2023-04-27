@@ -133,8 +133,8 @@ td:hover{
 #search_btn {
   width: 55px;
   height: 42px;
-  border-radius: 10px;
-  background-color: rgb(255, 255, 255);
+  border-radius: 15px;
+  background-color: rgba(246, 250, 255, 0.94);
   margin-left: 10px;
   border-width: 1px;
   border-color: #ffffff;
@@ -154,7 +154,9 @@ td:hover{
   padding-top: 5px;
   background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
-  height: 420px;
+  height: calc(100vh - 250px);
+  max-height: 520px;
+  min-height: 400px;
   border-radius: 10px;
   margin-top: 20px;
 }
@@ -185,7 +187,7 @@ td:hover{
 .songList {
   background-color: rgba(234, 255, 255, 0);
   width: 100%;
-  height: 380px;
+  height: 100%;
   border-radius: 10px;
   margin: 0px;
   padding-top: 5px;
@@ -201,7 +203,8 @@ td:hover{
 
 .iframe{
   width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
+  max-height: 500px;
   border-radius: 10px;
   border-width: 0px;
   padding: 0px;
@@ -210,7 +213,7 @@ td:hover{
 .footnote{
   background-color: rgba(255, 255, 255, 0.784);
   font-size: 14px;
-  height: 100px;
+  height: 60px;
   text-align: center;
   color: #636363;
   margin-top: 10px;
@@ -224,26 +227,26 @@ a{
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   .music_box {
-    width: 50%;
-    margin-left: 25%;
+    width: calc(40% - 10px);
+    margin-left: 30%;
   }
   #search_box {
-    width: 98%;
+    width: calc(100% - 25px);
   }
   .search {
-    width: 50%;
+    width: 40%;
     height: 40px;
-    padding-left: 25%;
+    padding-left: calc(30% - 5px);
     padding-bottom: 20px;
   }
 
 
   .searchORlist {
-    width: 50%;
-    margin-left: 25%;
+    width: 40%;
+    margin-left: 30%;
   }
   .footnote{
-    width: 50%;
-    margin-left: 25%;
+    width: 40%;
+    margin-left: 30%;
   }
 }

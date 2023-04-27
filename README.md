@@ -1,7 +1,10 @@
 # XF音乐盒
 
-通过flask部署一个接口，来获取酷我音乐的搜索结果和MP3文件链接
-（酷我api不能跨源，需要自行部署接口）
+一个在线音乐播放器
+
+![pagePC](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/%E5%8E%8B%E7%BC%A9_Snipaste_2023-04-27_12-42-34.png)
+![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
+由于酷我api不能跨源，需要自行部署接口获取酷我音乐的搜索结果、MP3文件链接和歌词，我这里用的是flask来进行部署。
 
 ### html
 1. 在```list.js```中

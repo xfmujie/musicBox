@@ -1,18 +1,25 @@
 p {
   margin: 0;
 }
-h1,h2,h3,h4,h5{
+
+h1,
+h2,
+h3,
+h4,
+h5 {
   color: rgb(66, 158, 224);
   margin: 0;
   margin-bottom: 2px;
 }
-.set_box{
-  display:none;
+
+.set_box {
+  display: none;
   font-size: 14px;
   color: rgb(61, 60, 60);
 }
-.box_box{
-  display:none;
+
+.box_box {
+  display: none;
   font-size: 14px;
   text-align: center;
   color: rgb(61, 60, 60);
@@ -76,7 +83,7 @@ h1,h2,h3,h4,h5{
   background-color: rgb(128, 194, 238);
 }
 
-#play_time{
+#play_time {
   color: rgb(72, 169, 238);
   width: 100%;
   text-align: center;
@@ -87,7 +94,7 @@ h1,h2,h3,h4,h5{
   margin-top: 10px;
 }
 
-#yiyan{
+#yiyan {
   font-size: 12px;
   width: 90%;
   text-align: center;
@@ -100,14 +107,14 @@ h1,h2,h3,h4,h5{
   margin-left: 5%;
 }
 
-#theme_box{
+#theme_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
   padding: 20px;
   border-radius: 10px;
 }
 
-.set_op{
+.set_op {
   display: flex;
   align-items: center;
   padding: 5px;
@@ -116,7 +123,7 @@ h1,h2,h3,h4,h5{
   border-radius: 5px;
 }
 
-.set_val{
+.set_val {
   background-color: rgba(236, 236, 236, 0);
   height: 30px;
   border-radius: 5px;
@@ -124,12 +131,21 @@ h1,h2,h3,h4,h5{
   outline: 0;
 }
 
-a{
+a {
   font-size: 16px;
   color: #3980b2;
   text-decoration: none;
 }
 
-set_title{
+set_title {
   font-size: 16px;
+}
+
+.content_box {
+  background-color: rgba(181, 179, 179, 0.3);
+  height: max-content;
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
 }
