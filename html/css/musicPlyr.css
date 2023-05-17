@@ -40,7 +40,7 @@ img {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px rgba(82, 82, 82, 0.5);
 }
 
 .lrc_box {
@@ -151,12 +151,12 @@ td:hover{
 
 /*列表总div*/
 .searchORlist {
+  box-shadow: 0 0 5px rgba(59, 59, 59, 0.5);
   padding-top: 5px;
   background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
-  height: calc(100vh - 250px);
-  max-height: 520px;
-  min-height: 400px;
+  height: calc(100vh - 320px);
+  min-height: 380px;
   border-radius: 10px;
   margin-top: 20px;
 }
@@ -164,7 +164,7 @@ td:hover{
 /*按钮盒子*/
 .btn_box{
   background-color: #ffffff97;
-  margin-left: calc(50% - 120px);
+  margin-left: calc(50% - 128px);
   width: max-content;
   height: 30px;
   border-radius: 20px;
@@ -203,8 +203,7 @@ td:hover{
 
 .iframe{
   width: 100%;
-  height: calc(100% - 40px);
-  max-height: 500px;
+  height: calc(100% - 50px);;
   border-radius: 10px;
   border-width: 0px;
   padding: 0px;

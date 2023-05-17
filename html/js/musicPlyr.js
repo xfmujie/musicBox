@@ -23,7 +23,7 @@ class Theme {
     } else { console.log(`歌词颜色：${localStorage.getItem('themeLrcColor')}`); }
 
     if (this.isNull(theme_listColor)) {
-      localStorage.setItem('themeListColor', 'rgba(190, 223, 198, 0.5)');
+      localStorage.setItem('themeListColor', 'rgba(255, 255, 255, 0.5)');
       console.log('列表颜色初始化');
       theme_listColor = localStorage.getItem('themeListColor');
     } else { console.log(`列表颜色：${localStorage.getItem('themeListColor')}`); }
@@ -60,7 +60,7 @@ class Theme {
   }
   //设置列表颜色
   setList(val) {
-    if (val == '0') { localStorage.setItem('themeListColor', 'rgba(190, 223, 198, 0.5)'); }
+    if (val == '0') { localStorage.setItem('themeListColor', 'rgba(255, 255, 255, 0.5)'); }
     else { localStorage.setItem('themeListColor', val); }
     theme_listColor = localStorage.getItem('themeListColor');
   }
@@ -474,11 +474,17 @@ function switchSongs(parameter) {
 
 function search_onclick() {
   if (SearchContent.value == "") {
-    dialogDisplay('请输入歌曲/歌手~');
+    dialogDisplay('请输入歌曲/歌手/#歌单ID号~');
   }
   else {
-    document.getElementById('iframe').contentWindow.getSearchResult(SearchContent.value);
-    dialog_none_btn(action = 'open', content = '正在搜索……');
+    let reg = /#\d{5}/;
+    if (reg.test(SearchContent.value)) {
+      //alert('这是一个id号');
+      document.getElementById('iframe').contentWindow.getSongList(SearchContent.value);
+    } else {
+      document.getElementById('iframe').contentWindow.getSearchResult(SearchContent.value);
+      dialog_none_btn(action = 'open', content = '正在搜索……');
+    }
   }
 }
 
@@ -554,6 +560,11 @@ if (`${currentDate.getMonth()}` !== localStorage.getItem('Zeroing')) {
   localStorage.setItem('Zeroing', currentDate.getMonth());
 }
 
+//音乐盒缓存
+//初始化
+if (localStorage.getItem('musicBoxList') == null) {
+  localStorage.setItem('musicBoxList', "[]");
+}
 
 
 //调用子页面函数

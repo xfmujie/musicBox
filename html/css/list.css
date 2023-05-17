@@ -38,6 +38,7 @@ h5 {
   max-height: 100px;
   border-radius: 10px;
   margin-top: 8px;
+  margin-left: 2px;
   padding-right: 15px;
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
 }
@@ -148,4 +149,31 @@ set_title {
   padding: 5px;
   border-radius: 10px;
   text-align: center;
+}
+
+/*歌单保存按钮样式*/
+#saveList,
+#clear {
+  box-shadow: 0 0 5px rgba(83, 83, 83, 0.5);
+  border-width: 0px;
+  margin-left: 3%;
+  width: 96%;
+  height: 30px;
+  border-radius: 10px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.598);
+  transition-duration: 100ms;
+  display: none;
+}
+
+#saveList:active,
+#clear:active {
+  font-size: 10px;
+  background-color: #a8dbff;
+}
+
+.saveList {
+  display: flex;
+  text-align: center;
+  width: 98%;
 }

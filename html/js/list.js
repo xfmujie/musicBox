@@ -42,7 +42,7 @@ function waitTime() {
   else {
     if (count > 25) {
       window.parent.dialog_none_btn(action = 'close');
-      window.parent.dialog_none_btn(action = 'open', content = '出错了，请重新搜索~');
+      window.parent.dialog_none_btn(action = 'open', content = '出错了，请重试~');
       clearTimeout(timer);
       count = 0;
       autoCLose = true;
@@ -52,8 +52,9 @@ function waitTime() {
 }
 
 //显示列表
-function cloned(displayList) {
-  for (let i = 0; i < displayList.length; i++) {
+function cloned(clonedList) {
+  console.log(clonedList);
+  for (let i = 0; i < clonedList.length; i++) {
     var originalDiv = document.getElementById('song_box');    // 获取原始div元素
     originalDiv.style.backgroundColor = window.parent.localStorage.getItem('themeListColor');
     var clonedDiv = originalDiv.cloneNode(true);    // 复制原始div元素及其所有子元素和属性
@@ -71,8 +72,8 @@ function cloned(displayList) {
     play_btnid.setAttribute('id', `play_btn${iStr}`)
     //更改元素内容
     clonedDiv.querySelector('#songNum').textContent = (i + 1).toString().padStart(2, '0'); // 将数字转换成字符串并在左侧填充0以达到2位整数的效果;
-    var name = displayList[i]['name'];
-    var singer = displayList[i]['artist'];
+    var name = clonedList[i]['name'];
+    var singer = clonedList[i]['artist'];
     clonedDiv.querySelector(`#songName${iStr}`).innerHTML = name.slice(0, 20 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + '<br><p class="singerName">' + singer.slice(0, 25 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length)) + '</p>';
     document.body.appendChild(clonedDiv);// 将克隆的div元素添加到页面上
   }
@@ -80,7 +81,7 @@ function cloned(displayList) {
 
 //清空显示
 function remove() {
-  if (againFlag) {
+  if (isAgain) {
     // 获取所有类名为'my-class'的元素
     var elements = document.querySelectorAll('.new_song_box');
     // 遍历元素并删除它们
@@ -95,9 +96,10 @@ function add_del_onclick() {
   for (let i = 0; i < displayList.length; i++) {
     document.getElementById(`del_btn${i}`).onclick = function () {
       console.log(`add_del_${i}按下了`)
-      var pic = displayList[i]["pic"];
-      pic = pic.replace(/\/\d+\//, "/300/");
-      if (displayFlag == 1) {
+
+      if (displayFlag === 'search') {
+        var pic = displayList[i]["pic"];
+        pic = pic.replace(/\/\d+\//, "/300/");
         var addSong = {
           "rid": displayList[i]["rid"],
           "pic": pic,
@@ -109,41 +111,67 @@ function add_del_onclick() {
         window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`)
         //console.log(playList);
       }
-      else {
+      if (displayFlag === 'play') {
         playList.splice(i, 1);
         localStorage.setItem('playList', JSON.stringify(playList));
         console.log(playList);
         displayChange('play');
       }
+      if (displayFlag === 'box') {
+
+        let isEnter = confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`);
+        if (isEnter) {
+          musicBoxList.splice(i, 1);
+          window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+          console.log(musicBoxList);
+          displayChange('box');
+        }
+      }
     }
   }
 }
-
 
 //播放按钮按下
 function play_btn_onclick() {
   for (let i = 0; i < displayList.length; i++) {
     document.getElementById(`play_btn${i}`).onclick = function () {
-      console.log(`play_${i}按下了`)
-      var pic = displayList[i]["pic"];
-      pic = pic.replace(/\/\d+\//, "/300/");
-      var parameter = {
-        "rid": displayList[i]["rid"],
-        "pic": pic,
-        "name": displayList[i]["name"],
-        "artist": displayList[i]["artist"]
-      }
-      console.log(displayList);
-      console.log(parameter);
-      window.parent.switchSongs(parameter);
-      lastRid = i;
-      if (displayFlag == 0) {
-        playListFlag = 0;
-        window.parent.list_now(0);
-      }
-      else {
-        playListFlag = 1;
-        window.parent.list_now(1);
+      if (displayFlag !== 'box') {
+        console.log(`play_${i}按下了`)
+        var pic = displayList[i]["pic"];
+        pic = pic.replace(/\/\d+\//, "/300/");
+        var parameter = {
+          "rid": displayList[i]["rid"],
+          "pic": pic,
+          "name": displayList[i]["name"],
+          "artist": displayList[i]["artist"]
+        }
+        console.log(displayList);
+        console.log(parameter);
+        window.parent.switchSongs(parameter);
+        lastRid = i;
+        if (displayFlag == 'play') {
+          playListFlag = 0;
+          window.parent.list_now(0);
+        }
+        else {
+          playListFlag = 1;
+          window.parent.list_now(1);
+        }
+      } else {
+        console.log(`选中歌单${(i + 1).toString()}`);
+        let isEnter = confirm("是否覆盖当前播放列表？");
+        if (isEnter) {
+          localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
+        }
+        else {
+          let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
+          for (let i = 0; i < list.length; i++) {
+            playList.push(list[i]);
+          }
+          localStorage.setItem('playList', JSON.stringify(playList));
+          window.parent.dialogDisplay('已添加该歌单到播放列表');
+        }
+        window.parent.listBtn_onclick();
       }
     }
   }
@@ -220,40 +248,64 @@ function nextPlay(flag) {
 //更换显示列表
 function displayChange(flag) {
   if (flag == 'play') {
-
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-trash-o"></i>';
+    document.getElementById('play_btn').innerHTML = '<i class="fa fa-play-circle">';
     remove();
-    set.style.display = 'none';
-    box.style.display = 'none';
     playList = JSON.parse(localStorage.getItem('playList'));
     displayList = playList;
+    set.style.display = 'none';
+    box.style.display = 'none';
+    if (playList.length > 0) {
+      saveBtn.style.display = 'block';
+      clearBtn.style.display = 'block';
+    } else {
+      saveBtn.style.display = 'none';
+      clearBtn.style.display = 'none';
+    }
     cloned(displayList);
-    againFlag = true;
+    isAgain = true;
     play_btn_onclick();
     add_del_onclick();
-    displayFlag = 0;
+    displayFlag = 'play';
   }
   else if (flag == 'search') {
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-plus"></i>';
+    document.getElementById('play_btn').innerHTML = '<i class="fa fa-play-circle">';
     remove();
     set.style.display = 'none';
     box.style.display = 'none';
+    saveBtn.style.display = 'none';
+    clearBtn.style.display = 'none';
     displayList = searchList;
     cloned(displayList);
-    againFlag = true;
+    isAgain = true;
     play_btn_onclick();
     add_del_onclick();
-    displayFlag = 1;
+    displayFlag = 'search';
   }
   else if (flag == 'box') {
+    document.getElementById('del_btn').innerHTML = '<i class="fa fa-trash-o"></i>';
+    document.getElementById('play_btn').innerHTML = '<i class="fa fa-plus"></i>';
     remove();
     set.style.display = 'none';
     box.style.display = 'block';
+    saveBtn.style.display = 'none';
+    clearBtn.style.display = 'none';
+    musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+    displayList = musicBoxList;
+    cloned(displayList);
+    //console.log(displayList);
+    isAgain = true;
+    play_btn_onclick();
+    add_del_onclick();
+    displayFlag = 'box';
   }
   else if (flag == 'set') {
     remove();
     box.style.display = 'none';
     set.style.display = 'block';
+    saveBtn.style.display = 'none';
+    clearBtn.style.display = 'none';
     loadplayTime(window.parent.getPlayTime());
   }
 }
@@ -266,8 +318,8 @@ var searchList = [];
 var count = 0;
 var timer = 0;
 var autoCLose = false;
-var againFlag = false;
-var displayFlag = 0;
+var isAgain = false;
+var displayFlag = 'play';
 var playListFlag = 0;
 var lastRid = 0;
 var strayBirdsYiyan = "";
@@ -275,13 +327,17 @@ var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
 var playTime = document.getElementById('play_time');
 var yiyan = document.getElementById('yiyan');
+var saveBtn = document.getElementById('saveList');
+var clearBtn = document.getElementById('clear');
+var musicBoxList = [];
 
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
   localStorage.setItem('playList', "[]");
   displayChange('play');
-  console.log('缓存空空如也')
+
+  console.log('缓存空空如也');
 }
 function loadplayTime(time) {
   playTime.innerHTML = `本月已为你播放:<br>${time}`;
@@ -360,14 +416,90 @@ a[3].addEventListener('click', function (event) {
 a[4].addEventListener('click', function (event) {
   event.preventDefault();
   var val = prompt("将主题参数粘贴到此处", "");
-  if(val !== null && val !==''){
-  window.parent.theme_set('import', val);
+  if (val !== null && val !== '') {
+    window.parent.theme_set('import', val);
   }
 });
 a[5].addEventListener('click', function (event) {
   event.preventDefault();
   window.parent.dialogDisplay(`全选复制以下主题参数：<br><br><input type='text' style='width: 100%; height: 30px;' value='${window.parent.theme_set('export')}'>`);
 });
+
+function clear_onclick() {
+  let isEnter = confirm("是否清空当前播放列表？");
+  if (isEnter) {
+    localStorage.setItem('playList', '[]');
+    displayChange('play');
+  }
+}
+
+/*音乐盒（歌单）*/
+function save_onclick() {
+  let name = prompt("设置歌单名称", "");
+  if (name) {
+    importFromPlay(name);
+  }
+}
+
+//从播放列表保存歌单到云端和本地音乐盒
+function importFromPlay(name) {
+  let list = {
+    'name': name,
+    'list': displayList
+  }
+  var musicBoxData = new XMLHttpRequest();
+  musicBoxData.open('post', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
+  musicBoxData.setRequestHeader('Content-Type', 'application/json');
+  musicBoxData.send(JSON.stringify(list));
+  window.parent.dialog_none_btn(action = 'open', content = '正在添加……');
+  musicBoxData.onreadystatechange = function () {
+    if (musicBoxData.readyState == 4 && musicBoxData.status == 200) {
+      window.parent.dialog_none_btn(action = 'close');
+      list = {
+        'name': name,
+        //此处artist为歌单的ID号
+        'artist': `ID${musicBoxData.responseText}`,
+        'list': displayList
+      };
+      window.parent.dialogDisplay(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${name}》</font><br><font size="2px color="#696969">已保存到音乐盒</font>`);
+      musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+      musicBoxList.push(list);
+      window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+      window.parent.boxBtn_onclick();
+    }
+  }
+}
+
+//从云端获取歌单
+function getSongList(ID) {
+  let id = ID.replace(/#/, '');
+  var getMusicBoxList = new XMLHttpRequest();
+  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${id}`);
+  getMusicBoxList.send();
+  window.parent.dialog_none_btn(action = 'open', content = '正在加载歌单……');
+  getMusicBoxList.onreadystatechange = function () {
+    if (getMusicBoxList.readyState == 4 && getMusicBoxList.status == 200) {
+      window.parent.dialog_none_btn('close');
+      let responseText = JSON.parse(getMusicBoxList.responseText);
+      if (responseText["results"][0] !== undefined) {
+        console.log(responseText["results"][0]);
+        window.parent.dialogDisplay(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>`);
+        list = {
+          'name': responseText["results"][0]["Name"],
+          //此处artist为歌单的ID号
+          'artist': `ID${responseText["results"][0]["ID"]}`,
+          'list': responseText["results"][0]["List"]
+        };
+        musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+        musicBoxList.push(list);
+        window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+        window.parent.boxBtn_onclick();
+      } else {
+        window.parent.dialogDisplay('歌单不存在~');
+      }
+    }
+  }
+}
 
 //调用父页面函数
 //window.parent.函数名();

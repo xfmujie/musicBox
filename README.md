@@ -18,19 +18,31 @@ xhrList.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?
 xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
 ```
 请求了app.py中的```'/rid/'```的路由,url参数为```rid=```,根据rid返回MP3文件链接
-<br>
 
+3. 在```musicPlyr.js```中
 ```js
 xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid);
 ```
 请求了app.py中的```'/lrc/'```的路由,url参数为```rid=```,根据rid返回歌词
 
+4.在```list.js```中
+```js
+musicBoxData.open('post', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
+```
+与
+```js
+getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${id}`);
+```
+请求了app.py中的```'/music-box-list/'```的路由，用以存储用户的歌单与获取云端的歌单
 
 ### app.py依赖
 - pip install flask
 - pip install requests
 
 ## 近期更新
+V3.0.5
+1. 新增音乐盒(歌单)功能，用户可从播放列表保存歌单并上传云端，其他设备可通过歌单ID号一键导入到本地音乐盒
+
 V3.0.4
 1. 新增一键导入/导出主题
 2. 新增主题市场（Beta）
@@ -38,4 +50,3 @@ V3.0.4
 V3.0.3
 1. 新增主题自定义
 2. 更换依赖包源，访问更快
-3. 修复一些问题
