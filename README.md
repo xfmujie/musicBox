@@ -52,6 +52,7 @@ getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencent
 - pip install flask
 - pip install requests
 
+
 ### Leancloud
 app.py中使用了Leancloud的数据存储服务以存储用户的歌单数据
 ![](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/musicBox%E6%AD%8C%E5%8D%95%E5%90%8E%E7%AB%AF%E7%BB%93%E6%9E%84%E5%9B%BE%20(2).png)
