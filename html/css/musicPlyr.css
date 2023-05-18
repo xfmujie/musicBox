@@ -164,7 +164,7 @@ td:hover{
 /*按钮盒子*/
 .btn_box{
   background-color: #ffffff97;
-  margin-left: calc(50% - 128px);
+  margin-left: calc(50% - 130px);
   width: max-content;
   height: 30px;
   border-radius: 20px;

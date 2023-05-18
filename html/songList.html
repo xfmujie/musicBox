@@ -67,13 +67,18 @@
     </div>
     <div id="play_time"></div>
     <div class="content_box">
-      <img style="float: left;" src="https://gpt.mu-jie.cc/android-chrome-192x192.png" height="20px"/>
-      <a target="_blank" href="https://gpt.mu-jie.cc/"><font color="#478edf">国内免费访问的ChatGPT，点击使用</font></a>
+      <img style="float: left;" src="https://gpt.mu-jie.cc/android-chrome-192x192.png" height="20px" />
+      <a target="_blank" href="https://gpt.mu-jie.cc/">
+        <font color="#478edf">国内免费访问的ChatGPT，点击使用</font>
+      </a>
     </div>
     <div id="yiyan"></div>
   </div>
   <div id="box_box" class="box_box">
-    
+    <div class="id_search">
+      <input id="idValue" type="text" placeholder="请输入歌单ID号" value="" />
+      <a href="javascript:;" onclick="getSongList()">添加</a>
+    </div>
   </div>
   <script src="./js/list.js"></script>
 </body>

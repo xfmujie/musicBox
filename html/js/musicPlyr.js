@@ -474,13 +474,12 @@ function switchSongs(parameter) {
 
 function search_onclick() {
   if (SearchContent.value == "") {
-    dialogDisplay('请输入歌曲/歌手/#歌单ID号~');
+    dialogDisplay('请输入歌曲/歌手');
   }
   else {
     let reg = /#\d{5}/;
     if (reg.test(SearchContent.value)) {
-      //alert('这是一个id号');
-      document.getElementById('iframe').contentWindow.getSongList(SearchContent.value);
+      dialogDisplay('搜索歌单请前往『音乐盒』')
     } else {
       document.getElementById('iframe').contentWindow.getSearchResult(SearchContent.value);
       dialog_none_btn(action = 'open', content = '正在搜索……');

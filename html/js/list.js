@@ -330,7 +330,7 @@ var yiyan = document.getElementById('yiyan');
 var saveBtn = document.getElementById('saveList');
 var clearBtn = document.getElementById('clear');
 var musicBoxList = [];
-
+var idSearch = document.getElementById('idValue');
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -470,11 +470,17 @@ function importFromPlay(name) {
   }
 }
 
+
 //从云端获取歌单
-function getSongList(ID) {
-  let id = ID.replace(/#/, '');
+function getSongList() {
+  let ID = idSearch.value;
+  let reg = /^\d{5}/;
+  if (!reg.test(ID)) {
+    alert('请输入正确的歌单ID (如: 10000)');
+    return;
+  }
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${id}`);
+  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${ID}`);
   getMusicBoxList.send();
   window.parent.dialog_none_btn(action = 'open', content = '正在加载歌单……');
   getMusicBoxList.onreadystatechange = function () {
@@ -500,6 +506,8 @@ function getSongList(ID) {
     }
   }
 }
+
+
 
 //调用父页面函数
 //window.parent.函数名();

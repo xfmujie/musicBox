@@ -21,7 +21,7 @@ h5 {
 .box_box {
   display: none;
   font-size: 14px;
-  text-align: center;
+  /* text-align: center; */
   color: rgb(61, 60, 60);
 }
 
@@ -176,4 +176,22 @@ set_title {
   display: flex;
   text-align: center;
   width: 98%;
+}
+.id_search{
+  width: 98%;
+  height: 30px;
+  margin-left: 1%;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.598);
+  box-shadow: 0 0 5px rgba(83, 83, 83, 0.5);
+  transition-duration: 100ms;
+}
+
+#idValue{
+  width: calc(98% - 50px);
+  height: 28px;
+  padding-left: 10px;
+  outline: none;
+  border-width: 0px;
+  background-color: rgba(255, 255, 255, 0);
 }
