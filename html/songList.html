@@ -23,6 +23,17 @@
     <div style="flex: 1;"><button id="saveList" onclick="save_onclick()">保存到音乐盒</button></div>
   </div>
 
+
+  <div id="page_num">
+    <a href="javascript:;" onclick="flippingPages(0)">
+      <font size="3rem"><i class="fa fa-chevron-left"></i>&ensp;</font>
+    </a>
+    <span id="pageNum">1</span>
+    <a href="javascript:;" onclick="flippingPages(1)">
+      <font size="3rem">&ensp;<i class="fa fa-chevron-right"></i></font>
+    </a>
+  </div>
+
   <div id="set_box" class="set_box">
     <div id="theme_box">
       <h2>自定义主题</h2>
@@ -31,21 +42,21 @@
           <set_title>列表颜色</set_title>
         </div>
         <div style="padding-right: 8px;"><input class="set_val" placeholder="色值（填0恢复默认）" type="text" value="" /></div>
-        <div><a href="#">确定</a></div>
+        <div><a href="javascript:;" onclick="set_a_enter(0)">确定</a></div>
       </div>
       <div class="set_op">
         <div style="padding-right: 8px;">
           <set_title>选项颜色</set_title>
         </div>
         <div style="padding-right: 8px;"><input class="set_val" placeholder="色值（填0恢复默认）" type="text" value="" /></div>
-        <div><a href="#">确定</a></div>
+        <div><a href="javascript:;" onclick="set_a_enter(1)">确定</a></div>
       </div>
       <div class="set_op">
         <div style="padding-right: 8px;">
           <set_title>歌词颜色</set_title>
         </div>
         <div style="padding-right: 8px;"><input class="set_val" placeholder="色值（填0恢复默认）" type="text" value="" /></div>
-        <div><a href="#">确定</a></div>
+        <div><a href="javascript:;" onclick="set_a_enter(2)">确定</a></div>
       </div>
       <div class="set_op">
         <div style="padding-right: 8px;">
@@ -53,10 +64,10 @@
         </div>
         <div style="padding-right: 8px;"><input class="set_val" placeholder="图片链接（填0恢复默认）" type="text" value="" />
         </div>
-        <div><a href="#">确定</a></div>
+        <div><a href="javascript:;" onclick="set_a_enter(3)">确定</a></div>
       </div>
       一键
-      <a href="#">导入</a>&<a href="#">导出</a>主题<br>
+      <a href="javascript:;" onclick="set_a_enter(4)">导入</a>&<a href="javascript:;" onclick="set_a_enter(5)">导出</a>主题<br>
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/post/theme/">主题市场</a>
       &
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/color.html">颜色选择器</a>
@@ -76,7 +87,7 @@
   </div>
   <div id="box_box" class="box_box">
     <div class="id_search">
-      <input id="idValue" type="text" placeholder="请输入歌单ID号" value="" />
+      <input id="idValue" type="text" placeholder="请输入歌单ID号" onkeydown="onkey(event)" value="" />
       <a href="javascript:;" onclick="getSongList()">添加</a>
     </div>
   </div>

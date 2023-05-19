@@ -2,19 +2,31 @@
 //获取搜索结果
 function getSearchResult(SearchContent) {
   var xhrList = new XMLHttpRequest();
-  xhrList.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=' + SearchContent);
+  let name = SearchContent;
+  if (SearchContent !== oldContent) {
+    pageNum = 1;
+  }
+  xhrList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=${name}&pn=${pageNum}`);
   xhrList.send();
   waitTime();  //计时
   xhrList.onreadystatechange = function () {
     if (xhrList.readyState == 4 && xhrList.status == 200) {
-      remove();
       window.parent.dialog_none_btn(action = 'close');
       clearTimeout(timer);
       count = 0;
       window.parent.inputBlur();
+      if (JSON.parse(xhrList.responseText)[0] === undefined) {
+        window.parent.dialogDisplay('没有更多歌曲~');
+        pageNum--;
+        return;
+      }
       searchList = JSON.parse(xhrList.responseText);
+      remove();
       displayChange('search');  //更换显示内容
       window.parent.resultBtn_onclick();  //自动点击搜索结果
+      scrollToTop();
+      oldContent = SearchContent;
+
     }
     else if (xhrList.status == 433) {
       clearTimeout(timer);
@@ -155,6 +167,7 @@ function play_btn_onclick() {
         }
         else {
           playListFlag = 1;
+          playPage = pageNum;
           window.parent.list_now(1);
         }
       } else {
@@ -255,6 +268,7 @@ function displayChange(flag) {
     displayList = playList;
     set.style.display = 'none';
     box.style.display = 'none';
+    page_num.style.display = 'none';
     if (playList.length > 0) {
       saveBtn.style.display = 'block';
       clearBtn.style.display = 'block';
@@ -282,6 +296,11 @@ function displayChange(flag) {
     play_btn_onclick();
     add_del_onclick();
     displayFlag = 'search';
+    if (displayList.length > 0) {
+      page_num.style.display = 'inline';
+      document.documentElement.style.setProperty('--list-lenght', `${displayList.length}`);
+      document.getElementById('pageNum').innerHTML = `${pageNum}`
+    }
   }
   else if (flag == 'box') {
     document.getElementById('del_btn').innerHTML = '<i class="fa fa-trash-o"></i>';
@@ -291,6 +310,7 @@ function displayChange(flag) {
     box.style.display = 'block';
     saveBtn.style.display = 'none';
     clearBtn.style.display = 'none';
+    page_num.style.display = 'none';
     musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
     displayList = musicBoxList;
     cloned(displayList);
@@ -306,6 +326,7 @@ function displayChange(flag) {
     set.style.display = 'block';
     saveBtn.style.display = 'none';
     clearBtn.style.display = 'none';
+    page_num.style.display = 'none';
     loadplayTime(window.parent.getPlayTime());
   }
 }
@@ -331,6 +352,10 @@ var saveBtn = document.getElementById('saveList');
 var clearBtn = document.getElementById('clear');
 var musicBoxList = [];
 var idSearch = document.getElementById('idValue');
+var page_num = document.getElementById('page_num');
+var pageNum = 1;
+var oldContent = '';
+var playPage = 0;
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -361,70 +386,66 @@ function getStrayBirds() {
 /*确定颜色 主题*/
 var a = document.getElementsByTagName('a');
 var setVal = document.getElementsByClassName('set_val');
-a[0].addEventListener('click', function (event) {
-  event.preventDefault();
-  if (setVal[0].value !== '') {
-    window.parent.theme_set('list', setVal[0].value);
-    if (setVal[0].value == '0') {
-      window.parent.dialogDisplay(`列表颜色已重置`);
+function set_a_enter(i) {
+  switch (i) {
+    //set_a_0
+    case 0: if (setVal[i].value !== '') {
+      window.parent.theme_set('list', setVal[i].value);
+      if (setVal[i].value == '0') {
+        window.parent.dialogDisplay(`列表颜色已重置`);
+      }
+      else {
+        window.parent.dialogDisplay(`列表颜色已设置为${setVal[i].value}`);
+      }
+      setVal[i].value = '';
     }
-    else {
-      window.parent.dialogDisplay(`列表颜色已设置为${setVal[0].value}`);
+      break;
+    //set_a_1
+    case 1: if (setVal[i].value !== '') {
+      window.parent.theme_set('btn', setVal[i].value);
+      if (setVal[i].value == '0') {
+        window.parent.dialogDisplay(`选项卡颜色已重置`);
+      }
+      else {
+        window.parent.dialogDisplay(`选项卡颜色已设置为${setVal[i].value}`);
+      }
+      setVal[i].value = '';
     }
-    setVal[0].value = '';
+      break;
+    //set_a_2
+    case 2: if (setVal[i].value !== '') {
+      window.parent.theme_set('lrc', setVal[i].value);
+      if (setVal[i].value == '0') {
+        window.parent.dialogDisplay(`歌词高亮颜色已重置`);
+      }
+      else {
+        window.parent.dialogDisplay(`歌词高亮颜色已设置为${setVal[i].value}`);
+      }
+      setVal[i].value = '';
+    }
+      break;
+    //set_a_3
+    case 3: if (setVal[i].value !== '') {
+      window.parent.theme_set('bg', setVal[i].value);
+      if (setVal[i].value == '0') {
+        window.parent.dialogDisplay(`背景图片已重置`);
+      }
+      else {
+        window.parent.dialogDisplay(`背景图片已设置为<br><img  height="220px" src="${setVal[i].value}"/>`);
+      }
+      setVal[i].value = '';
+    }
+      break;
+    //set_a_4
+    case 4: var val = prompt("将主题参数粘贴到此处", "");
+      if (val !== null && val !== '') {
+        window.parent.theme_set('import', val);
+      }
+      break;
+    //set_a_5
+    case 5: window.parent.dialogDisplay(`全选复制以下主题参数：<br><br><input type='text' style='width: 100%; height: 30px;' value='${window.parent.theme_set('export')}'>`);
   }
-});
-a[1].addEventListener('click', function (event) {
-  event.preventDefault();
-  if (setVal[1].value !== '') {
-    window.parent.theme_set('btn', setVal[1].value);
-    if (setVal[1].value == '0') {
-      window.parent.dialogDisplay(`选项卡颜色已重置`);
-    }
-    else {
-      window.parent.dialogDisplay(`选项卡颜色已设置为${setVal[1].value}`);
-    }
-    setVal[1].value = '';
-  }
-});
-a[2].addEventListener('click', function (event) {
-  event.preventDefault();
-  if (setVal[2].value !== '') {
-    window.parent.theme_set('lrc', setVal[2].value);
-    if (setVal[2].value == '0') {
-      window.parent.dialogDisplay(`歌词高亮颜色已重置`);
-    }
-    else {
-      window.parent.dialogDisplay(`歌词高亮颜色已设置为${setVal[2].value}`);
-    }
-    setVal[2].value = '';
-  }
-});
-a[3].addEventListener('click', function (event) {
-  event.preventDefault();
-  if (setVal[3].value !== '') {
-    window.parent.theme_set('bg', setVal[3].value);
-    if (setVal[3].value == '0') {
-      window.parent.dialogDisplay(`背景图片已重置`);
-    }
-    else {
-      window.parent.dialogDisplay(`背景图片已设置为<br><img  height="220px" src="${setVal[3].value}"/>`);
-    }
-    setVal[3].value = '';
-  }
-});
-a[4].addEventListener('click', function (event) {
-  event.preventDefault();
-  var val = prompt("将主题参数粘贴到此处", "");
-  if (val !== null && val !== '') {
-    window.parent.theme_set('import', val);
-  }
-});
-a[5].addEventListener('click', function (event) {
-  event.preventDefault();
-  window.parent.dialogDisplay(`全选复制以下主题参数：<br><br><input type='text' style='width: 100%; height: 30px;' value='${window.parent.theme_set('export')}'>`);
-});
-
+}
 function clear_onclick() {
   let isEnter = confirm("是否清空当前播放列表？");
   if (isEnter) {
@@ -470,13 +491,19 @@ function importFromPlay(name) {
   }
 }
 
+function onkey(event) {
+  // 判断按下的键是否是 Enter 键，键码为 13
+  if (event.keyCode === 13) {
+    getSongList();
+  }
+}
 
 //从云端获取歌单
 function getSongList() {
   let ID = idSearch.value;
   let reg = /^\d{5}/;
   if (!reg.test(ID)) {
-    alert('请输入正确的歌单ID (如: 10000)');
+    window.parent.dialogDisplay('请输入正确的歌单ID (如: 10000)');
     return;
   }
   var getMusicBoxList = new XMLHttpRequest();
@@ -507,7 +534,33 @@ function getSongList() {
   }
 }
 
+function flippingPages(flag) {
+  if (playListFlag && pageNum == playPage) {
+    let isEnter = confirm('正在播放搜索列表，翻页会影响轮播体验，是否继续？');
+    if(isEnter == false){
+      return;
+    }
+  }
+  if (flag) {
+    pageNum++;
+    getSearchResult(oldContent);
+    window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+  }
+  else if (pageNum > 1) {
+    pageNum--;
+    getSearchResult(oldContent);
+    window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+  }
+}
 
+// 滚动到顶部
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth' // 平滑滚动
+  });
+}
 
 //调用父页面函数
 //window.parent.函数名();

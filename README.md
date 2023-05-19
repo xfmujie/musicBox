@@ -6,6 +6,10 @@
 ![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
 
 ## 近期更新
+V3.0.6
+1. 搜索歌曲支持翻页
+2. 优化歌单搜索功能
+
 V3.0.5
 1. 新增音乐盒(歌单)功能，用户可从播放列表保存歌单并上传云端，其他设备可通过歌单ID号一键导入到本地音乐盒
 

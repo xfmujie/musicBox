@@ -34,6 +34,7 @@ app = Flask(__name__)
 @app.route('/')
 def kuwoAPI():
     name = request.args.get('name')
+    pn = request.args.get('pn')
     url = 'https://kuwo.cn/'
     # 保存这次访问的cookies
     html = requests.session()
@@ -41,7 +42,7 @@ def kuwoAPI():
     csrf = html.cookies.get_dict()['kw_token']
     print('token:', csrf)
 
-    url = f'https://kuwo.cn/api/www/search/searchMusicBykeyWord?key={name}&pn=1&rn=50&httpsStatus=1'
+    url = f'https://kuwo.cn/api/www/search/searchMusicBykeyWord?key={name}&pn={pn}&rn=30&httpsStatus=1'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0',
         'Accept': 'application/json, text/plain, */*',
