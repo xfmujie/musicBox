@@ -6,6 +6,9 @@
 ![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
 
 ## 近期更新
+V3.0.7
+1. 可导入酷我歌单
+
 V3.0.6
 1. 搜索歌曲支持翻页
 2. 优化歌单搜索功能
@@ -51,6 +54,7 @@ musicBoxData.open('post', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs
 getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${id}`);
 ```
 请求了app.py中的```'/music-box-list/'```的路由，用以存储用户的歌单与获取云端的歌单
+……
 
 ### app.py依赖
 - pip install flask
@@ -60,4 +64,4 @@ getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencent
 ### Leancloud
 app.py中使用了Leancloud的数据存储服务以存储用户的歌单数据
 ![](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/musicBox%E6%AD%8C%E5%8D%95%E5%90%8E%E7%AB%AF%E7%BB%93%E6%9E%84%E5%9B%BE%20(2).png)
-（此部分只作存储原理说明，您无需任何操作）
+（此部分只作存储原理说明，如您没有私有化的需求，无需任何操作）

@@ -501,13 +501,19 @@ function onkey(event) {
 //从云端获取歌单
 function getSongList() {
   let ID = idSearch.value;
-  let reg = /^\d{5}/;
-  if (!reg.test(ID)) {
-    window.parent.dialogDisplay('请输入正确的歌单ID (如: 10000)');
+  let reg1 = /^\d{5}/;
+  let reg2 = /\d{10,}/g;
+  let par = '';
+  if (!reg1.test(ID) && !reg2.test(ID)) {
+    window.parent.dialogDisplay('请输入正确的歌单ID (如: 10000)<br>或酷我歌单链接');
     return;
   }
+  if(reg1.test(ID))
+    par = `/music-box-list/?method=get&id=${ID}`;
+  else
+    par = `/kuwolist/?id=${ID.match(reg2)[0]}`;
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${ID}`);
+  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
   getMusicBoxList.send();
   window.parent.dialog_none_btn(action = 'open', content = '正在加载歌单……');
   getMusicBoxList.onreadystatechange = function () {

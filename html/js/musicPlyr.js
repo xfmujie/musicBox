@@ -357,7 +357,7 @@ var setBtn = document.getElementById('setBtn');
 var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
 var sug = document.getElementById('sug');
-
+var Version = '3.0.7';
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -394,7 +394,7 @@ player.on('timeupdate', event => {
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
   if (lrc_count + 1 < lrc.length) {
     lrc2.innerHTML = lrc[lrc_count + 1]["lineLyric"].slice(0, 50);
-    if ((lrc1.innerHTML.length > 15 || lrc2.innerHTML.length > 15) && isMobile()) {
+    if ((lrc1.innerHTML.length > 20 || lrc2.innerHTML.length > 20) && isMobile()) {
       lrc1.style.fontSize = "12px";
       lrc2.style.fontSize = "12px";
     }
@@ -522,6 +522,11 @@ function inputBlur() {
 if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime') === undefined) {
   localStorage.setItem('playTime', 0);
   console.log('听歌时长初始化')
+}
+//消息
+if(localStorage.getItem('Version') !== Version){
+  dialogDisplay(`<font color="#323232">v${Version}更新 可导入酷我歌单<br><br><img width="100%" src="http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/%60G2%25)JG5O(Q6Y6HGZ%24GBM20.jpg" /><br>复制酷我歌单链接粘贴添加即可<br><br>(关于如何获取酷我歌单链接与导入其他音乐APP的歌单，后面会出一篇教程)</font>`);
+  localStorage.setItem('Version', Version)
 }
 //计时
 audioPlayer.addEventListener('play', function () {

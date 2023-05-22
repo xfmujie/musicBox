@@ -87,6 +87,32 @@ def musicBoxList():
         list = request.data.decode()
         return leancloud(method='post', list=list)
 
+@app.route('/kuwolist/')
+def listLoad():
+    pid = request.args.get('id')
+    pn = 1
+    rn = 500
+    url = f'https://m.kuwo.cn/newh5app/wapi/api/www/playlist/playListInfo?pid={pid}&pn={pn}&rn={rn}'
+    headers = {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50'
+    }
+    getText = requests.get(url=url, headers=headers).text
+    kuwoList = json.loads(getText)["data"]["musicList"]
+    name = json.loads(getText)["data"]["name"]
+    saveList = []
+    for arr in kuwoList:
+        saveList.append({
+        'name': arr["name"],
+        'rid': arr['rid'],
+        'artist': arr['artist'],
+        'pic': arr["pic"]
+    })
+    list = json.dumps({
+        'name': name,
+        'list': saveList
+    })
+    id = leancloud(method='post', list=list)
+    return leancloud(method='get', id=id)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
