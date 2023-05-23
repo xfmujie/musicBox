@@ -35,6 +35,14 @@
   </div>
 
   <div id="set_box" class="set_box">
+    <div id="timer_box">
+      <h2>定时关闭</h2>
+      <p id="timerTips" style="font-size: 1rem; padding: 5px 0;">当前定时未开启</p>
+      <div class="set_op">
+        <input class="set_val" id="setTimer" style="margin-right: 8px;" type="text" placeholder="分钟（0关闭定时）" value=""/>
+        <a href="javascript:;" onclick="window.parent.setTimedStop()">开启</a>
+      </div>
+    </div>
     <div id="theme_box">
       <h2>自定义主题</h2>
       <div class="set_op">
@@ -67,7 +75,8 @@
         <div><a href="javascript:;" onclick="set_a_enter(3)">确定</a></div>
       </div>
       一键
-      <a href="javascript:;" onclick="set_a_enter(4)">导入</a>&<a href="javascript:;" onclick="set_a_enter(5)">导出</a>主题<br>
+      <a href="javascript:;" onclick="set_a_enter(4)">导入</a>&<a href="javascript:;"
+        onclick="set_a_enter(5)">导出</a>主题<br>
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/post/theme/">主题市场</a>
       &
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/color.html">颜色选择器</a>

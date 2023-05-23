@@ -6,6 +6,9 @@
 ![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
 
 ## 近期更新
+V3.0.8
+1. 新增定时关闭
+
 V3.0.7
 1. 可导入酷我歌单
 
@@ -33,13 +36,13 @@ xhrList.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?
 ```
 请求了app.py中的```'/'```的路由,url参数为```name=```,用来获取搜索结果
 
-2. 在```musicPlyr.js```中
+2. 在```main.js```中
 ```js
 xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
 ```
 请求了app.py中的```'/rid/'```的路由,url参数为```rid=```,根据rid返回MP3文件链接
 
-3. 在```musicPlyr.js```中
+3. 在```main.js```中
 ```js
 xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid);
 ```
@@ -54,6 +57,7 @@ musicBoxData.open('post', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs
 getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=get&id=${id}`);
 ```
 请求了app.py中的```'/music-box-list/'```的路由，用以存储用户的歌单与获取云端的歌单
+
 ……
 
 ### app.py依赖
