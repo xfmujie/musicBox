@@ -108,13 +108,15 @@ h5 {
   margin-left: 5%;
 }
 
-#theme_box {
+#theme_box, #timer_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
   padding: 20px;
   border-radius: 10px;
 }
-
+#timer_box{
+  margin-bottom: 10px;
+}
 .set_op {
   display: flex;
   align-items: center;
@@ -126,9 +128,11 @@ h5 {
 
 .set_val {
   background-color: rgba(236, 236, 236, 0);
+  box-shadow: 0 0 5px rgba(57, 57, 57, 0.5);
+  padding-left: 10px;
   height: 30px;
   border-radius: 5px;
-  border: solid 0.5px;
+  border: solid 0px;
   outline: 0;
 }
 

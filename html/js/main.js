@@ -198,7 +198,7 @@ previous.onclick = function () {
   //上一首点击
   //alert('上一首');
   //dialogDisplay('上一首');
-  document.getElementById('iframe').contentWindow.nextPlay(0);
+  iframe.nextPlay(0);
 }
 
 
@@ -222,7 +222,7 @@ next.addEventListener('mouseup', function () {
 });
 next.onclick = function () {
   //下一首点击
-  document.getElementById('iframe').contentWindow.nextPlay(1);
+  iframe.nextPlay(1);
 }
 
 //将新增按钮放置到html
@@ -254,28 +254,28 @@ function listBtn_onclick() {
   HL.no(resultBtn);
   HL.no(setBtn);
   HL.no(boxBtn);
-  document.getElementById('iframe').contentWindow.displayChange('play');
+  iframe.displayChange('play');
 }
 function resultBtn_onclick() {
   HL.yes(resultBtn);
   HL.no(listBtn);
   HL.no(setBtn);
   HL.no(boxBtn);
-  document.getElementById('iframe').contentWindow.displayChange('search');
+  iframe.displayChange('search');
 }
 function setBtn_onclick() {
   HL.yes(setBtn);
   HL.no(resultBtn);
   HL.no(listBtn);
   HL.no(boxBtn);
-  document.getElementById('iframe').contentWindow.displayChange('set');
+  iframe.displayChange('set');
 }
 function boxBtn_onclick() {
   HL.yes(boxBtn);
   HL.no(setBtn);
   HL.no(resultBtn);
   HL.no(listBtn);
-  document.getElementById('iframe').contentWindow.displayChange('box');
+  iframe.displayChange('box');
 }
 
 
@@ -357,7 +357,11 @@ var setBtn = document.getElementById('setBtn');
 var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
 var sug = document.getElementById('sug');
-var Version = '3.0.7';
+var iframe = document.getElementById('iframe').contentWindow
+var setTimer = 2000000000;
+var setTimedFlag = false;
+var version_span = document.getElementById('version_span');
+var Version = '3.0.8';
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -388,7 +392,7 @@ player.on('timeupdate', event => {
     }
     else {
       console.log('已自动下一首');
-      document.getElementById('iframe').contentWindow.nextPlay(1);
+      iframe.nextPlay(1);
     }
   }
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
@@ -468,7 +472,7 @@ function switchSongs(parameter) {
   var singer = parameter['artist'];
   songName.innerHTML = name.slice(0, 15 + (name.length - name.replace(/&[a-z]+;/g, " ").length));
   singerName.innerHTML = singer.slice(0, 15 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length));
-  document.title = 'XF音乐盒(' + name.slice(0, 10 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + ')';
+  document.title = `XF音乐盒(${name.replace(/&[a-z]+;/g, " ")})`;
   getMusic(parameter["rid"]);
 }
 
@@ -481,8 +485,8 @@ function search_onclick() {
     if (reg.test(SearchContent.value)) {
       dialogDisplay('搜索歌单请前往『音乐盒』')
     } else {
-      document.getElementById('iframe').contentWindow.pageNum = 1;
-      document.getElementById('iframe').contentWindow.getSearchResult(SearchContent.value);
+      iframe.pageNum = 1;
+      iframe.getSearchResult(SearchContent.value);
       dialog_none_btn(action = 'open', content = '正在搜索……');
     }
   }
@@ -517,23 +521,51 @@ function inputBlur() {
   SearchContent.blur();
 }
 
-
 /*听歌时长的初始化与获取*/
 if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime') === undefined) {
   localStorage.setItem('playTime', 0);
   console.log('听歌时长初始化')
 }
-//消息
-if(localStorage.getItem('Version') !== Version){
-  dialogDisplay(`<font color="#323232">v${Version}更新 可导入酷我歌单<br><br><img width="100%" src="http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/%60G2%25)JG5O(Q6Y6HGZ%24GBM20.jpg" /><br>复制酷我歌单链接粘贴添加即可<br><br>(关于如何获取酷我歌单链接与导入其他音乐APP的歌单，后面会出一篇教程)</font>`);
-  localStorage.setItem('Version', Version)
+//定时关闭
+function setTimedStop() {
+  if (!(/^\d+$/.test(iframe.document.getElementById('setTimer').value))) {
+    dialogDisplay('请输入正确的数字');
+    return;
+  }
+  setTimer = (iframe.document.getElementById('setTimer').value) * 60 + getTimestamp();
+  if (iframe.document.getElementById('setTimer').value == '0') {
+    setTimedFlag = false;
+    iframe.document.getElementById('timerTips').innerHTML = '定时已关闭';
+  }
+  else {
+    setTimedFlag = true;
+    dialogDisplay(`将于${iframe.document.getElementById('setTimer').value}分钟后停止播放`);
+    iframe.document.getElementById('timerTips').innerHTML = '定时已开启';
+  }
+}
+//获取时间戳
+function getTimestamp() {
+  let now = new Date();
+  let timestamp = Math.round(now.getTime() / 1000);
+  return timestamp;
 }
 //计时
 audioPlayer.addEventListener('play', function () {
   timeCount = setInterval(function () {
     let seconds = parseInt(localStorage.getItem("playTime"));
     localStorage.setItem('playTime', seconds += 1);
-    document.getElementById('iframe').contentWindow.loadplayTime(getPlayTime());
+    iframe.loadplayTime(getPlayTime());
+    if (getTimestamp() > setTimer && setTimedFlag) {
+      audioPlayer.pause();
+      iframe.document.getElementById('timerTips').innerHTML = '定时结束 已停止播放';
+      setTimedFlag = false;
+    } else if (setTimedFlag) {
+      let timeDifference = setTimer - getTimestamp();
+      let hours = Math.floor(timeDifference / 3600);
+      let minutes = Math.floor((timeDifference - (hours * 3600)) / 60);
+      let sec = Math.floor(timeDifference % 60);
+      iframe.document.getElementById('timerTips').innerHTML = `将于${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}后停止播放`
+    }
   }, 1000);
 });
 audioPlayer.addEventListener("pause", function () {
@@ -571,6 +603,15 @@ if (localStorage.getItem('musicBoxList') == null) {
   localStorage.setItem('musicBoxList', "[]");
 }
 
+//版本升级消息
+if (localStorage.getItem('Version') !== Version) {
+  dialogDisplay(`<font color="#323232">v${Version}更新 新增定时关闭<br></font>`);
+  localStorage.setItem('Version', Version)
+}
+version_span.innerHTML = Version;
+
 
 //调用子页面函数
-//document.getElementById('iframe').contentWindow.函数名()
+//iframe.函数名()
+
+
