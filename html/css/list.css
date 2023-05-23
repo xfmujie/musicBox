@@ -126,7 +126,7 @@ h5 {
   border-radius: 5px;
 }
 
-.set_val {
+.set_val, #setTimer {
   background-color: rgba(236, 236, 236, 0);
   box-shadow: 0 0 5px rgba(57, 57, 57, 0.5);
   padding-left: 10px;
