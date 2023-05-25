@@ -1,17 +1,28 @@
 body {
-  background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 }
 
 dialog {
   background-color: rgb(211, 238, 251);
+  box-shadow: 0 0 10px rgba(85, 85, 85, 0.7);
   border-radius: 15px;
-  transition-duration: 200;
-  border-width: 2.5px;
+  transition-duration: 200ms;
+  border-width: 0px;
   border-color: #ffffff;
   min-width: 200px;
   text-align: center;
+  animation: fade 200ms;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .lrc {
@@ -75,12 +86,13 @@ img {
 }
 
 /*搜索建议sug*/
-td{
+td {
   color: #676767;
 }
-td:hover{
-  background-color: #d4edff;
-  color: #f93030;
+
+td:hover {
+  background-color: rgb(80, 182, 255);
+  color: #ffffff;
 }
 
 /*搜索框与搜索按钮父级div*/
@@ -95,75 +107,74 @@ td:hover{
 /*搜索框div*/
 .search_box {
   flex: 9;
-  margin-left: 2%;
-  margin-right: 2%;
+  margin-left: 1%;
+  padding-right: 20px;
 }
 
 /*搜索框样式*/
 #search_box {
-  background-color: rgba(246, 250, 255, 0.94);
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #282828;
+  font-size: 13px;
   padding-right: 0px;
+  outline: 0;
   width: 95%;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 10px;
   border-width: 0px;
   padding-left: 25px;
   border-color: #000000;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  transition-duration: 50ms;
+  transition-duration: 200ms;
 }
 
 /*搜索框聚焦*/
 #search_box:focus {
-  padding-left: 23.5px;
-  border-radius: 10px;
-  outline: 0;
-  height: 37px;
-  border-width: 1.5px;
-  box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 /*搜索按钮div*/
 .search_btn {
   flex: 1;
-  margin-right: 1%;
 }
 
 /*搜索按钮样式*/
 #search_btn {
-  width: 55px;
+  width: 60px;
   height: 42px;
-  border-radius: 15px;
-  background-color: rgba(246, 250, 255, 0.94);
-  margin-left: 10px;
-  border-width: 1px;
-  border-color: #ffffff;
+  border-width: 0;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: #3880c3;
+  font-size: 15px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transition-duration: 200ms;
 }
 
 /*搜索按钮点击*/
 #search_btn:active {
-  background-color: #e1f5ff;
-  border-width: 2px;
+  background-color: rgba(0, 179, 255, 0.8);
   border-color: #000000;
+  color: #d4edff;
   box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+  transition-duration: 200ms;
 }
 
 /*列表总div*/
 .searchORlist {
-  box-shadow: 0 0 5px rgba(59, 59, 59, 0.5);
+  box-shadow: 0 0 6px rgba(59, 59, 59, 0.5);
   padding-top: 5px;
   background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
   height: calc(100vh - 305px);
   min-height: 380px;
-  max-height: 650px;
+  max-height: 700px;
   border-radius: 10px;
   margin-top: 20px;
 }
 
 /*按钮盒子*/
-.btn_box{
+.btn_box {
   background-color: #ffffff97;
   margin-left: calc(50% - 130px);
   width: max-content;
@@ -173,7 +184,10 @@ td:hover{
 }
 
 /*搜索与列表选择按钮*/
-#listBtn,#resultBtn,#boxBtn,#setBtn{
+#listBtn,
+#resultBtn,
+#boxBtn,
+#setBtn {
   background-color: #00000000;
   border: 0px;
   border-radius: 20px;
@@ -193,6 +207,7 @@ td:hover{
   margin: 0px;
   padding-top: 5px;
 }
+
 #songList {
   background-color: #ffffff00;
   width: 100%;
@@ -202,15 +217,16 @@ td:hover{
   padding-top: 10px;
 }
 
-.iframe{
+.iframe {
   width: 100%;
-  height: calc(100% - 45px);;
+  height: calc(100% - 45px);
+  ;
   border-radius: 10px;
   border-width: 0px;
   padding: 0px;
 }
 
-.footnote{
+.footnote {
   background-color: rgba(255, 255, 255, 0.784);
   font-size: 14px;
   height: 60px;
@@ -219,7 +235,8 @@ td:hover{
   margin-top: 10px;
   border-radius: 5px;
 }
-a{
+
+a {
   color: #3980b2;
   text-decoration: none;
 }
@@ -230,9 +247,11 @@ a{
     width: calc(40% - 10px);
     margin-left: 30%;
   }
+
   #search_box {
-    width: calc(100% - 25px);
+    width: calc(100% - 10px);
   }
+
   .search {
     width: 40%;
     height: 40px;
@@ -240,12 +259,28 @@ a{
     padding-bottom: 20px;
   }
 
+  #search_btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  #search_btn:active {
+    background-color: rgba(0, 179, 255, 0.9);
+  }
+
+  #search_box:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  #search_box:focus {
+    background-color: rgba(255, 255, 255, 0.9);
+  }
 
   .searchORlist {
     width: 40%;
     margin-left: 30%;
   }
-  .footnote{
+
+  .footnote {
     width: 40%;
     margin-left: 30%;
   }

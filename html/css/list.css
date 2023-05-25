@@ -40,7 +40,7 @@ h5 {
   margin-bottom: 8px;
   margin-left: 2px;
   padding-right: 15px;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .songNum {
@@ -93,6 +93,7 @@ h5 {
   padding-bottom: 10px;
   background-color: rgba(255, 253, 253, 0.8);
   margin-top: 10px;
+  box-shadow: 0 0 3px rgba(85, 85, 85, 0.7);
 }
 
 #yiyan {
@@ -111,6 +112,7 @@ h5 {
 #theme_box, #timer_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
+  box-shadow: 0 0 3px rgba(85, 85, 85, 0.7);
   padding: 20px;
   border-radius: 10px;
 }
@@ -128,11 +130,11 @@ h5 {
 
 .set_val, #setTimer {
   background-color: rgba(236, 236, 236, 0);
-  box-shadow: 0 0 5px rgba(57, 57, 57, 0.5);
   padding-left: 10px;
   height: 30px;
   border-radius: 5px;
-  border: solid 0px;
+  border: solid 1px;
+  border-color: rgba(70, 143, 212, 0.616);
   outline: 0;
 }
 
