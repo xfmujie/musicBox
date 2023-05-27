@@ -28,18 +28,7 @@ class Theme {
       theme_listColor = localStorage.getItem('themeListColor');
     } else { console.log(`列表颜色：${localStorage.getItem('themeListColor')}`); }
 
-    if (this.isNull(theme_bgImg)) {
-      let initBg = ["http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg",
-        "http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg"];
-      if (isMobile()) {
-        localStorage.setItem('themeBgImg', initBg[0]);
-      }
-      else { localStorage.setItem('themeBgImg', initBg[1]); }
-      console.log('背景图初始化');
-      theme_bgImg = localStorage.getItem('themeBgImg');
-      console.log(theme_bgImg);
-      document.body.style.backgroundImage = `url('${theme_bgImg}')`;
-    } else {
+    if (!this.isNull(theme_bgImg)) {
       console.log(`背景图：${localStorage.getItem('themeBgImg')}`);
       document.body.style.backgroundImage = `url('${theme_bgImg}')`;
     }
@@ -67,16 +56,13 @@ class Theme {
   //设置背景图
   setBgImg(url) {
     if (url == '0') {
-      let initBg = ["http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945b.jpeg",
-        "http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144600_2945bh.jpeg"];
-      if (isMobile()) {
-        localStorage.setItem('themeBgImg', initBg[0]);
-      }
-      else { localStorage.setItem('themeBgImg', initBg[1]); }
+      localStorage.setItem('themeBgImg', '');
+      document.body.style.backgroundImage = root.getPropertyValue('--bg-image');
+    } else {
+      localStorage.setItem('themeBgImg', url);
+      theme_bgImg = localStorage.getItem('themeBgImg');
+      document.body.style.backgroundImage = `url('${theme_bgImg}')`;
     }
-    else { localStorage.setItem('themeBgImg', url); }
-    theme_bgImg = localStorage.getItem('themeBgImg');
-    document.body.style.backgroundImage = `url('${theme_bgImg}')`;
   }
 }
 const theme = new Theme();
@@ -357,8 +343,9 @@ var setBtn = document.getElementById('setBtn');
 var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
 var sug = document.getElementById('sug');
-var iframe = document.getElementById('iframe').contentWindow
-var setTimer = 2000000000;
+var iframe = document.getElementById('iframe').contentWindow;
+var root = getComputedStyle(document.documentElement);
+var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
 var Version = '3.0.8';

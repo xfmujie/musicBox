@@ -1,6 +1,10 @@
+:root {
+  --bg-image: linear-gradient(to bottom right, #3a7bd561, #3f5efb56, #af52bf55, #c873e06e);
+  }
 body {
   background-attachment: fixed;
   background-size: cover;
+  background-image: var(--bg-image);
 }
 
 dialog {
