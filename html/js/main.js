@@ -234,6 +234,7 @@ class Highlight {
 }
 const HL = new Highlight();
 function listBtn_onclick() {
+   displayFlag = 0;
   //高亮当前按钮
   HL.yes(listBtn);
   //取消高亮其他3个按钮
@@ -243,6 +244,7 @@ function listBtn_onclick() {
   iframe.displayChange('play');
 }
 function resultBtn_onclick() {
+  displayFlag = 1;
   HL.yes(resultBtn);
   HL.no(listBtn);
   HL.no(setBtn);
@@ -250,6 +252,7 @@ function resultBtn_onclick() {
   iframe.displayChange('search');
 }
 function setBtn_onclick() {
+  displayFlag = 999;
   HL.yes(setBtn);
   HL.no(resultBtn);
   HL.no(listBtn);
@@ -257,6 +260,7 @@ function setBtn_onclick() {
   iframe.displayChange('set');
 }
 function boxBtn_onclick() {
+  displayFlag = 999;
   HL.yes(boxBtn);
   HL.no(setBtn);
   HL.no(resultBtn);
@@ -329,6 +333,7 @@ function isMobile() {
 var lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
+var displayFlag = 0;
 var music_box = document.getElementById('music_box');
 var lrc1 = document.getElementById('lrc1');
 var lrc2 = document.getElementById('lrc2');

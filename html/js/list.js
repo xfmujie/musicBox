@@ -83,7 +83,14 @@ function cloned(clonedList) {
     del_btnid.setAttribute('id', `del_btn${iStr}`);
     play_btnid.setAttribute('id', `play_btn${iStr}`)
     //更改元素内容
-    clonedDiv.querySelector('#songNum').textContent = (i + 1).toString().padStart(2, '0'); // 将数字转换成字符串并在左侧填充0以达到2位整数的效果;
+    let songNum = clonedDiv.querySelector('#songNum');
+    songNum.textContent = (i + 1).toString().padStart(2, '0'); // 将数字转换成字符串并在左侧填充0以达到2位整数的效果;
+    if (i == lastRid && (playListFlag == window.parent.displayFlag)) {
+      songNum.innerHTML = '<i class="fa fa-music"></i>';
+      songNum.style.color = 'rgb(0, 179, 255)';
+      songNum.style.fontSize = '20px';
+    }  
+  
     var name = clonedList[i]['name'];
     var singer = clonedList[i]['artist'];
     clonedDiv.querySelector(`#songName${iStr}`).innerHTML = name.slice(0, 20 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + '<br><p class="singerName">' + singer.slice(0, 25 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length)) + '</p>';
@@ -164,11 +171,13 @@ function play_btn_onclick() {
         if (displayFlag == 'play') {
           playListFlag = 0;
           window.parent.list_now(0);
+          window.parent.listBtn_onclick();
         }
         else {
           playListFlag = 1;
           playPage = pageNum;
           window.parent.list_now(1);
+          window.parent.resultBtn_onclick();
         }
       } else {
         console.log(`选中歌单${(i + 1).toString()}`);
@@ -240,10 +249,16 @@ function nextPlay(flag) {
     var List = searchList;
     var pic = List[nextRid]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
+    if (displayFlag == 'search') {
+      window.parent.resultBtn_onclick();
+    }
   }
   else {
     List = playList;
     pic = List[nextRid]["pic"];
+    if (displayFlag == 'play') {
+      window.parent.listBtn_onclick();
+    }
   }
 
   var parameter = {
@@ -342,7 +357,7 @@ var autoCLose = false;
 var isAgain = false;
 var displayFlag = 'play';
 var playListFlag = 0;
-var lastRid = 0;
+var lastRid = 999;
 var strayBirdsYiyan = "";
 var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
@@ -508,7 +523,7 @@ function getSongList() {
     window.parent.dialogDisplay('请输入正确的歌单ID (如: 10000)<br>或酷我歌单链接');
     return;
   }
-  if(reg1.test(ID))
+  if (reg1.test(ID))
     par = `/music-box-list/?method=get&id=${ID}`;
   else
     par = `/kuwolist/?id=${ID.match(reg2)[0]}`;
@@ -543,7 +558,7 @@ function getSongList() {
 function flippingPages(flag) {
   if (playListFlag && pageNum == playPage) {
     let isEnter = confirm('正在播放搜索列表，翻页会影响轮播体验，是否继续？');
-    if(isEnter == false){
+    if (isEnter == false) {
       return;
     }
   }

@@ -31,7 +31,6 @@ h5 {
   display: none;
   justify-content: center;
   align-items: center;
-  background-color: rgba(190, 223, 198, 0.35);
   min-width: calc(100% - 20px);
   max-width: calc(100% - 20px);
   height: 60px;
