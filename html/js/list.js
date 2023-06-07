@@ -1,3 +1,4 @@
+console.log = function() {};
 
 //获取搜索结果
 function getSearchResult(SearchContent) {

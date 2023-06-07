@@ -1,3 +1,5 @@
+console.log = function() {};
+
 /*主题 颜色*/
 var theme_btnColor = localStorage.getItem('themeBtnColor');
 var theme_lrcColor = localStorage.getItem('themeLrcColor');
@@ -601,6 +603,16 @@ if (localStorage.getItem('Version') !== Version) {
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
+
+//访问量统计
+fetch('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+    document.getElementById('visits_span').innerHTML = data;
+  })
+  .catch(error => console.error(error));
+
 
 
 //调用子页面函数
