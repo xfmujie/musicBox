@@ -1,4 +1,4 @@
-console.log = function() {};
+console.log = function () { };
 
 /*主题 颜色*/
 var theme_btnColor = localStorage.getItem('themeBtnColor');
@@ -236,7 +236,7 @@ class Highlight {
 }
 const HL = new Highlight();
 function listBtn_onclick() {
-   displayFlag = 0;
+  displayFlag = 0;
   //高亮当前按钮
   HL.yes(listBtn);
   //取消高亮其他3个按钮
@@ -604,16 +604,16 @@ if (localStorage.getItem('Version') !== Version) {
 }
 version_span.innerHTML = Version;
 
-//访问量统计
-fetch('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
-  .then(response => response.text())
-  .then(data => {
-    console.log(data);
-    document.getElementById('visits_span').innerHTML = data;
-  })
-  .catch(error => console.error(error));
-
-
+//访问量统计(个人搭建，不支持其他url)
+if (window.location.href == 'https://mu-jie.cc/musicBox/') {
+  fetch('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      document.getElementById('visits_span').innerHTML = data;
+    })
+    .catch(error => console.error(error));
+}
 
 //调用子页面函数
 //iframe.函数名()
