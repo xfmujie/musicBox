@@ -610,7 +610,7 @@ if (window.location.href == 'https://mu-jie.cc/musicBox/') {
     .then(response => response.text())
     .then(data => {
       console.log(data);
-      document.getElementById('visits_span').innerHTML = data;
+      document.getElementById('visits_span').innerHTML = JSON.parse(data)["count"];
     })
     .catch(error => console.error(error));
 }
