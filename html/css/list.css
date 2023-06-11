@@ -1,5 +1,6 @@
 p {
   margin: 0;
+  margin-bottom: 3px;
 }
 
 h1,
@@ -9,7 +10,7 @@ h4,
 h5 {
   color: rgb(66, 158, 224);
   margin: 0;
-  margin-bottom: 2px;
+  margin-bottom: 5px;
 }
 
 .set_box {
@@ -108,14 +109,15 @@ h5 {
   margin-left: 5%;
 }
 
-#theme_box, #timer_box {
+#theme_box, #timer_box, #about_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
   box-shadow: 0 0 3px rgba(85, 85, 85, 0.7);
   padding: 20px;
+  padding-top: 10px;
   border-radius: 10px;
 }
-#timer_box{
+#timer_box, #theme_box{
   margin-bottom: 10px;
 }
 .set_op {
