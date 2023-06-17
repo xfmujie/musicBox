@@ -615,6 +615,10 @@ if (window.location.href == 'https://mu-jie.cc/musicBox/') {
     .catch(error => console.error(error));
 }
 
+if(window.location.href == 'https://music-box-lilac.vercel.app'){
+  dialogDisplay('该链接为测试页面，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
+}
+
 //调用子页面函数
 //iframe.函数名()
 
