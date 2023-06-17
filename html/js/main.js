@@ -616,6 +616,7 @@ if (window.location.href == 'https://mu-jie.cc/musicBox/') {
 }
 
 if(window.location.href == 'https://music-box-lilac.vercel.app/'){
+  dialog.close();
   dialogDisplay('该页面为测试版，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
 }
 
