@@ -174,9 +174,8 @@ td:hover {
   padding-top: 5px;
   background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
-  height: calc(100vh - 305px);
+  height: calc(95vh - 305px);
   min-height: 380px;
-  max-height: 700px;
   border-radius: 10px;
   margin-top: 20px;
 }
@@ -263,6 +262,7 @@ a {
 }
 .playBtn:active{
   background-color: rgba(0, 179, 255, 0.6);
+  color: #ffffff;
 }
 .likeBtn{
   display: inline;

@@ -279,7 +279,7 @@ var root = getComputedStyle(document.documentElement);
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.0.8';
+var Version = '3.0.9';
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -523,10 +523,11 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  dialogDisplay(`<font color="#323232">v${Version}更新 新增定时关闭<br></font>`);
+  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.修复一些问题 提高兼容性<br>2.APP上线 听歌更方便<a target="_blank" href="http://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"><br>点击下载</a>(仅安卓)<br>或前往『设置→关于』下载</font>`);
+  //dialogDisplay(`<font color="#323232">音乐盒APP 听歌更方便<a target="_blank" href="http://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"><br>点击下载</a>(仅安卓)<br>或前往『设置→关于』下载</font>`);
   localStorage.setItem('Version', Version)
 }
-version_span.innerHTML = Version;
+version_span.innerHTML = '3.0.9';
 
 //访问量统计(个人搭建，不支持其他url)
 if (window.location.href == 'https://mu-jie.cc/musicBox/') {
