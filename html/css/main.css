@@ -174,7 +174,7 @@ td:hover {
   padding-top: 5px;
   background-color: rgba(255, 255, 255, 0.585);
   width: 100%;
-  height: calc(95vh - 305px);
+  height: calc(100vh - 305px);
   min-height: 380px;
   border-radius: 10px;
   margin-top: 20px;
