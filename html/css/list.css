@@ -109,7 +109,9 @@ h5 {
   margin-left: 5%;
 }
 
-#theme_box, #timer_box, #about_box {
+#theme_box,
+#timer_box,
+#about_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
   box-shadow: 0 0 3px rgba(85, 85, 85, 0.7);
@@ -117,9 +119,12 @@ h5 {
   padding-top: 10px;
   border-radius: 10px;
 }
-#timer_box, #theme_box{
+
+#timer_box,
+#theme_box {
   margin-bottom: 10px;
 }
+
 .set_op {
   display: flex;
   align-items: center;
@@ -129,7 +134,8 @@ h5 {
   border-radius: 5px;
 }
 
-.set_val, #setTimer {
+.set_val,
+#setTimer {
   background-color: rgba(236, 236, 236, 0);
   padding-left: 10px;
   height: 30px;
@@ -160,7 +166,8 @@ set_title {
 
 /*歌单保存按钮样式*/
 #saveList,
-#clear {
+#clear,
+#like {
   box-shadow: 0 0 5px rgba(57, 57, 57, 0.5);
   border-width: 0px;
   margin-left: 3%;
@@ -175,7 +182,8 @@ set_title {
 }
 
 #saveList:active,
-#clear:active {
+#clear:active,
+#like:active {
   font-size: 10px;
   background-color: #a8dbff;
 }
@@ -185,7 +193,8 @@ set_title {
   text-align: center;
   width: 98%;
 }
-.id_search{
+
+.id_search {
   width: 98%;
   height: 35px;
   margin-left: 1%;
@@ -196,7 +205,7 @@ set_title {
   transition-duration: 100ms;
 }
 
-#idValue{
+#idValue {
   margin-bottom: 8px;
   width: calc(98% - 50px);
   height: 35px;
@@ -211,10 +220,10 @@ set_title {
   --list-lenght: 50;
 }
 
-#page_num{
+#page_num {
   background-color: rgba(255, 255, 255, 0.3);
   /* box-shadow: 0 0 2px rgba(83, 83, 83, 0.5); */
-  border:solid 2px;
+  border: solid 2px;
   border-color: rgb(30, 112, 189);
   height: max-content;
   width: max-content;

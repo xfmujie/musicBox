@@ -56,6 +56,10 @@ img {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
   box-shadow: 0 0 5px rgba(82, 82, 82, 0.5);
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }
 
 .lrc_box {
@@ -179,8 +183,10 @@ td:hover {
 
 /*按钮盒子*/
 .btn_box {
+  position: relative;
+  padding: 2px;
   background-color: #ffffff97;
-  margin-left: calc(50% - 130px);
+  left: calc(50% - 147.11px);
   width: max-content;
   height: 30px;
   border-radius: 20px;
@@ -195,10 +201,10 @@ td:hover {
   background-color: #00000000;
   border: 0px;
   border-radius: 20px;
-  width: 60px;
+  width: 70px;
   height: 30px;
   outline: none;
-  transition-duration: 200ms;
+  transition-duration: 50ms;
 }
 
 
@@ -245,6 +251,22 @@ a {
   text-decoration: none;
 }
 
+.playBtn{
+  width: 30px;
+  height: 28px;
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  background: rgba(0,0,0,0);
+  border-radius: 3px;
+  color: rgba(74, 84, 100, 0.9);
+}
+.playBtn:active{
+  background-color: rgba(0, 179, 255, 0.6);
+}
+.likeBtn{
+  display: inline;
+}
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   .music_box {
@@ -287,5 +309,20 @@ a {
   .footnote {
     width: 40%;
     margin-left: 30%;
+  }
+  .playBtn:hover{
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 179, 255, 0.8);
+    transition-duration: 0.3s;
+  }
+  .playBtn:active{
+    background-color: rgba(0, 179, 255, 0.8);
+    color: #ffffff;
+  }
+  .likeBtn{
+    display:inline;
+  }
+  #loopBtn:hover{
+    color: #ffffff;
   }
 }

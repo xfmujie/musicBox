@@ -20,9 +20,10 @@
 <body>
   <div class="search">
     <div class="search_box"><input id="search_box" type="text" placeholder="请输入歌曲/歌手" value=""></div>
-    <div class="search_btn"><button id="search_btn" onclick="search_onclick()"><i class="fa fa-search"></i></button></div>
+    <div class="search_btn"><button id="search_btn" onclick="search_onclick()"><i class="fa fa-search"></i></button>
+    </div>
   </div>
-  <div class="music_box" id="music_box">
+  <div class="music_box" id="music_box" aria-hidden="true">
     <div class="img"><img id="cover" width="88px"
         src="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/20220525144559_dfe6ef.jpeg" />
     </div>
@@ -36,11 +37,18 @@
       <p id="lrc2" class="clear">QQ 酷狗 酷我</p>
     </div>
     <!-- 添加一个 <audio> 标签 -->
-    <audio controls id="music" autoplay>
-      <source src="">
-    </audio>
-    <dialog id="dialog"></dialog>
+    <div style="display: flex; width: 100%;">
+      <audio controls id="music" autoplay>
+        <source src="">
+      </audio>
+      <button class="playBtn" onclick="downloadOnclick();"><i class="fa fa-arrow-down"></i></button>
+      <button class="playBtn likeBtn" onclick="likeOnclick();"><i class="fa fa-heart"></i></button>
+      <button class="playBtn" onclick="iframe.nextPlay(0);"><i class="fa fa-fast-backward"></i></button>
+      <button class="playBtn" onclick="playbackModeOnclick();" id="loopBtn"></button>
+      <button class="playBtn" onclick="iframe.nextPlay(1);"><i class="fa far fa-fast-forward"></i></button>
+    </div>
   </div>
+  <dialog id="dialog"></dialog>
   <div class="searchORlist">
     <div class="btn_box">
       <button id="listBtn" onclick="listBtn_onclick()">列表</button>

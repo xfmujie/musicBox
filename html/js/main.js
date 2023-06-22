@@ -100,58 +100,32 @@ if (!isMobile()) {
     btn.style.cursor = 'pointer';
   });
 }
-// 创建下载按钮
-const download = document.createElement("button");
-download.style.width = "30px";
-download.style.height = "28px";
-download.style.border = "0px";
-download.innerHTML = '<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 480 560"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M2 334.5c-3.8 8.8-2 19 4.6 26l136 144c4.5 4.8 10.8 7.5 17.4 7.5s12.9-2.7 17.4-7.5l136-144c6.6-7 8.4-17.2 4.6-26s-12.5-14.5-22-14.5l-72 0 0-288c0-17.7-14.3-32-32-32L128 0C110.3 0 96 14.3 96 32l0 288-72 0c-9.6 0-18.2 5.7-22 14.5z"/></svg>';
-download.style.backgroundColor = "rgba(0,0,0,0)";  // 设置背景颜色
-download.style.borderRadius = "3px";
-download.style.fill = "rgba(74, 84, 100, 0.9)";
-download.addEventListener('touchstart', function () {
-  download.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-download.addEventListener('mousedown', function () {
-  download.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-download.addEventListener('mouseup', function () {
-  download.style.backgroundColor = 'rgba(0,0,0,0)';
-});
-download.onclick = function () {
-  // 下载点击
+controls.style.margin = '0';
+controls.style.padding = '0';
+controls.style.width = '100px';
+const plyrEm = document.querySelector('.plyr');
+plyrEm.style.width = '100%';
+
+// 下载按钮
+function downloadOnclick() {
   dialogDisplay('点击右边三个点下载<br><p><br><audio controls="controls"><source id="tempAudio" src="' + mp3Url + '"></audio>');
 }
 
-// 创建播放模式按钮
+// 播放模式按钮
 const playbackMode = document.createElement("button");
 var modeFlag = localStorage.getItem('modeFlag');
 if (modeFlag == null) { modeFlag = 0; }
-var orderSvg = '<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H96c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>';
-var loopSvg = '<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M109.7 160H160c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V64C0 46.3 14.3 32 32 32s32 14.3 32 32v51.2L81.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L109.7 160z"/></svg>';
-playbackMode.style.width = "30px";
-playbackMode.style.weight = "28px";
-playbackMode.style.border = "0px";
-playbackMode.style.backgroundColor = "rgba(0,0,0,0)";  // 设置背景颜色
-playbackMode.style.borderRadius = "3px";
-playbackMode.style.fill = "rgba(74, 84, 100, 0.9)";
-playbackMode.addEventListener('touchstart', function () {
-  playbackMode.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-playbackMode.addEventListener('mousedown', function () {
-  playbackMode.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-playbackMode.addEventListener('mouseup', function () {
-  playbackMode.style.backgroundColor = 'rgba(0,0,0,0)';
-});
-if (modeFlag == 0) {
-  playbackMode.innerHTML = orderSvg;
+var orderSvg = '<i class="fa fa-bars"></i>';
+var loopSvg = '<i class="fa fa-undo"></i>';
+function modeDisplay() {
+  if (modeFlag == 0) {
+    document.querySelector("#loopBtn").innerHTML = orderSvg;
+  } else {
+    document.querySelector("#loopBtn").innerHTML = loopSvg;
+  }
 }
-else {
-  playbackMode.innerHTML = loopSvg;
-}
-playbackMode.onclick = function () {
-  //播放模式点击
+modeDisplay();
+function playbackModeOnclick() {
   if (modeFlag == 0) {
     playbackMode.innerHTML = loopSvg;
     localStorage.setItem('modeFlag', 1);
@@ -162,62 +136,13 @@ playbackMode.onclick = function () {
     localStorage.setItem('modeFlag', 0);
     modeFlag = localStorage.getItem('modeFlag');
   }
+  modeDisplay();
 }
 
-// 创建上一首按钮
-const previous = document.createElement("button");
-previous.style.width = "30px";
-previous.style.weight = "28px";
-previous.style.border = "0px";
-previous.innerHTML = '<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M493.6 445c-11.2 5.3-24.5 3.6-34.1-4.4L288 297.7V416c0 12.4-7.2 23.7-18.4 29s-24.5 3.6-34.1-4.4L64 297.7V416c0 17.7-14.3 32-32 32s-32-14.3-32-32V96C0 78.3 14.3 64 32 64s32 14.3 32 32V214.3L235.5 71.4c9.5-7.9 22.8-9.7 34.1-4.4S288 83.6 288 96V214.3L459.5 71.4c9.5-7.9 22.8-9.7 34.1-4.4S512 83.6 512 96V416c0 12.4-7.2 23.7-18.4 29z"/></svg>';
-previous.style.backgroundColor = "rgba(0,0,0,0)";  // 设置背景颜色
-previous.style.borderRadius = "3px";
-previous.style.fill = "rgba(74, 84, 100, 0.9)";
-previous.addEventListener('touchstart', function () {
-  previous.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-previous.addEventListener('mousedown', function () {
-  previous.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-previous.addEventListener('mouseup', function () {
-  previous.style.backgroundColor = 'rgba(0,0,0,0)';
-});
-previous.onclick = function () {
-  //上一首点击
-  //alert('上一首');
-  //dialogDisplay('上一首');
-  iframe.nextPlay(0);
+//我的喜欢按钮
+function likeOnclick() {
+  dialogDisplay('『我的喜欢』即将开发……');
 }
-
-
-// 创建下一首按钮
-const next = document.createElement("button");
-next.style.width = "30px";
-next.style.weight = "28px";
-next.style.border = "0px";
-next.innerHTML = '<svg xmlns="https://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M18.4 445c11.2 5.3 24.5 3.6 34.1-4.4L224 297.7V416c0 12.4 7.2 23.7 18.4 29s24.5 3.6 34.1-4.4L448 297.7V416c0 17.7 14.3 32 32 32s32-14.3 32-32V96c0-17.7-14.3-32-32-32s-32 14.3-32 32V214.3L276.5 71.4c-9.5-7.9-22.8-9.7-34.1-4.4S224 83.6 224 96V214.3L52.5 71.4c-9.5-7.9-22.8-9.7-34.1-4.4S0 83.6 0 96V416c0 12.4 7.2 23.7 18.4 29z"/></svg>';
-next.style.backgroundColor = "rgba(0,0,0,0)";  // 设置背景颜色
-next.style.borderRadius = "3px";
-next.style.fill = "rgba(74, 84, 100, 0.9)";
-next.addEventListener('touchstart', function () {
-  next.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-next.addEventListener('mousedown', function () {
-  next.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-})
-next.addEventListener('mouseup', function () {
-  next.style.backgroundColor = 'rgba(0,0,0,0)';
-});
-next.onclick = function () {
-  //下一首点击
-  iframe.nextPlay(1);
-}
-
-//将新增按钮放置到html
-controls.appendChild(download);
-controls.appendChild(previous);
-controls.appendChild(playbackMode);
-controls.appendChild(next);
 
 //选择显示列表/内容
 //按钮高亮与取消高亮
@@ -270,19 +195,18 @@ function boxBtn_onclick() {
   iframe.displayChange('box');
 }
 
-
 //当前播放的列表
 function list_now(flag) {
   if (flag == 0) {
-    listBtn.innerHTML = "列表🎵";
+    listBtn.innerHTML = '列表<i class="fa fa-music"></i>';
+    listBtn.style.color
     resultBtn.innerHTML = "搜索";
   }
   else {
-    resultBtn.innerHTML = "搜索🎵";
+    resultBtn.innerHTML = '搜索<i class="fa fa-music"></i>';
     listBtn.innerHTML = "列表";
   }
 }
-
 
 //弹窗
 function dialogDisplay(content) {
@@ -615,10 +539,13 @@ if (window.location.href == 'https://mu-jie.cc/musicBox/') {
     .catch(error => console.error(error));
 }
 
-if(window.location.href == 'https://music-box-lilac.vercel.app/'){
+if (window.location.href == 'https://music-box-lilac.vercel.app/') {
   dialog.close();
   dialogDisplay('该页面为测试版，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
 }
+
+const like = document.querySelector("#cover");
+like.addEventListener('dblclick', likeOnclick);
 
 //调用子页面函数
 //iframe.函数名()

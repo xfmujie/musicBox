@@ -273,6 +273,11 @@ function nextPlay(flag) {
   window.parent.switchSongs(parameter);
 }
 
+function playListPageEmDisplay(display){
+    saveBtn.style.display = display;
+    clearBtn.style.display = display;
+    /* likeBtn.style.display = display; */
+}
 
 //更换显示列表
 function displayChange(flag) {
@@ -286,11 +291,9 @@ function displayChange(flag) {
     box.style.display = 'none';
     page_num.style.display = 'none';
     if (playList.length > 0) {
-      saveBtn.style.display = 'block';
-      clearBtn.style.display = 'block';
+      playListPageEmDisplay('inline');
     } else {
-      saveBtn.style.display = 'none';
-      clearBtn.style.display = 'none';
+      playListPageEmDisplay('none');
     }
     cloned(displayList);
     isAgain = true;
@@ -304,8 +307,7 @@ function displayChange(flag) {
     remove();
     set.style.display = 'none';
     box.style.display = 'none';
-    saveBtn.style.display = 'none';
-    clearBtn.style.display = 'none';
+    playListPageEmDisplay('none');
     displayList = searchList;
     cloned(displayList);
     isAgain = true;
@@ -323,9 +325,8 @@ function displayChange(flag) {
     document.getElementById('play_btn').innerHTML = '<i class="fa fa-plus"></i>';
     remove();
     set.style.display = 'none';
-    box.style.display = 'block';
-    saveBtn.style.display = 'none';
-    clearBtn.style.display = 'none';
+    box.style.display = 'inline';
+    playListPageEmDisplay('none');
     page_num.style.display = 'none';
     musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
     displayList = musicBoxList;
@@ -339,9 +340,8 @@ function displayChange(flag) {
   else if (flag == 'set') {
     remove();
     box.style.display = 'none';
-    set.style.display = 'block';
-    saveBtn.style.display = 'none';
-    clearBtn.style.display = 'none';
+    set.style.display = 'inline';
+    playListPageEmDisplay('none');
     page_num.style.display = 'none';
     loadplayTime(window.parent.getPlayTime());
   }
@@ -366,6 +366,7 @@ var playTime = document.getElementById('play_time');
 var yiyan = document.getElementById('yiyan');
 var saveBtn = document.getElementById('saveList');
 var clearBtn = document.getElementById('clear');
+var likeBtn = document.getElementById('like');
 var musicBoxList = [];
 var idSearch = document.getElementById('idValue');
 var page_num = document.getElementById('page_num');
