@@ -254,7 +254,7 @@ function nextPlay(flag) {
     var pic = List[nextRid]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
     if (displayFlag == 'search') {
-      pagePX = window.scrollY;
+      pagePX = (lastRid-2)*68-90;
       displayChange('search');
     }
   }
@@ -262,7 +262,7 @@ function nextPlay(flag) {
     List = playList;
     pic = List[nextRid]["pic"];
     if (displayFlag == 'play') {
-      pagePX = window.scrollY;
+      pagePX = pagePX = (lastRid+2)*68-90;
       displayChange('play');
     }
   }
@@ -349,6 +349,7 @@ function displayChange(flag) {
     playListPageEmDisplay('none');
     page_num.style.display = 'none';
     loadplayTime(window.parent.getPlayTime());
+    window.scrollTo(0, 0);
   }
 }
 
