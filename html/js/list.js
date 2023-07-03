@@ -341,6 +341,7 @@ function displayChange(flag) {
     play_btn_onclick();
     add_del_onclick();
     displayFlag = 'box';
+    window.scrollTo(0, 0);
   }
   else if (flag == 'set') {
     remove();
