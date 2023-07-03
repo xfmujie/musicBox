@@ -548,21 +548,6 @@ if (window.location.href == 'https://music-box-lilac.vercel.app/') {
 const like = document.querySelector("#cover");
 like.addEventListener('dblclick', likeOnclick);
 
-function a() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://lv-sycdn.kuwo.cn/99ebd64f21291fdc6f17572e9bb03ab8/649bf6f4/resource/30106/trackmedia/M500002OQEVG39jprG.mp3', true);
-  xhr.responseType = 'arraybuffer';
-
-  xhr.onload = function (e) {
-    if (this.status == 200) {
-      var binaryData = xhr.response;
-      // 在这里处理二进制数据
-    }
-  };
-
-  xhr.send();
-
-}
 //调用子页面函数
 //iframe.函数名()
 
