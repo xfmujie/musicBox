@@ -1,4 +1,4 @@
-console.log = function() {};
+console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -90,13 +90,14 @@ function cloned(clonedList) {
       songNum.innerHTML = '<i class="fa fa-music"></i>';
       songNum.style.color = 'rgb(0, 179, 255)';
       songNum.style.fontSize = '20px';
-    }  
-  
+    }
+
     var name = clonedList[i]['name'];
     var singer = clonedList[i]['artist'];
     clonedDiv.querySelector(`#songName${iStr}`).innerHTML = name.slice(0, 20 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + '<br><p class="singerName">' + singer.slice(0, 25 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length)) + '</p>';
     document.body.appendChild(clonedDiv);// 将克隆的div元素添加到页面上
   }
+  window.scrollTo(0, pagePX);
 }
 
 //清空显示
@@ -172,13 +173,15 @@ function play_btn_onclick() {
         if (displayFlag == 'play') {
           playListFlag = 0;
           window.parent.list_now(0);
-          window.parent.listBtn_onclick();
+          pagePX = window.scrollY;
+          displayChange('play');
         }
         else {
           playListFlag = 1;
           playPage = pageNum;
           window.parent.list_now(1);
-          window.parent.resultBtn_onclick();
+          pagePX = window.scrollY;
+          displayChange('search');
         }
       } else {
         console.log(`选中歌单${(i + 1).toString()}`);
@@ -251,14 +254,16 @@ function nextPlay(flag) {
     var pic = List[nextRid]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
     if (displayFlag == 'search') {
-      window.parent.resultBtn_onclick();
+      pagePX = window.scrollY;
+      displayChange('search');
     }
   }
   else {
     List = playList;
     pic = List[nextRid]["pic"];
     if (displayFlag == 'play') {
-      window.parent.listBtn_onclick();
+      pagePX = window.scrollY;
+      displayChange('play');
     }
   }
 
@@ -273,10 +278,10 @@ function nextPlay(flag) {
   window.parent.switchSongs(parameter);
 }
 
-function playListPageEmDisplay(display){
-    saveBtn.style.display = display;
-    clearBtn.style.display = display;
-    /* likeBtn.style.display = display; */
+function playListPageEmDisplay(display) {
+  saveBtn.style.display = display;
+  clearBtn.style.display = display;
+  /* likeBtn.style.display = display; */
 }
 
 //更换显示列表
@@ -373,6 +378,7 @@ var page_num = document.getElementById('page_num');
 var pageNum = 1;
 var oldContent = '';
 var playPage = 0;
+var pagePX = 0;
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {

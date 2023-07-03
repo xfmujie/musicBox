@@ -105,7 +105,7 @@ def listLoad():
         'name': arr["name"],
         'rid': arr['rid'],
         'artist': arr['artist'],
-        'pic': arr["pic"]
+        'pic': arr.get('pic')
     })
     list = json.dumps({
         'name': name,
