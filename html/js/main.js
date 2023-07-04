@@ -403,6 +403,8 @@ function search_onclick() {
     if (reg.test(SearchContent.value)) {
       dialogDisplay('搜索歌单请前往『音乐盒』')
     } else {
+      dialogDisplay('歌曲搜索功能维护中……');
+      return;
       iframe.pageNum = 1;
       iframe.getSearchResult(SearchContent.value);
       dialog_none_btn(action = 'open', content = '正在搜索……');
