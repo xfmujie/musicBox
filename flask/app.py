@@ -35,24 +35,19 @@ app = Flask(__name__)
 def kuwoAPI():
     name = request.args.get('name')
     pn = request.args.get('pn')
-    url = 'https://kuwo.cn/'
-    # 保存这次访问的cookies
-    html = requests.session()
-    html.get(url)
-    csrf = html.cookies.get_dict()['kw_token']
-    print('token:', csrf)
-
-    url = f'https://kuwo.cn/api/www/search/searchMusicBykeyWord?key={name}&pn={pn}&rn=30&httpsStatus=1'
+    url = f"http://kuwo.cn/api/www/search/searchMusicBykeyWord?key={name}&pn={pn}&rn=20&httpsStatus=1&plat=web_www"
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0',
-        'Accept': 'application/json, text/plain, */*',
-        'csrf': csrf,
-        'Referer': 'https://kuwo.cn',
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67",
+        "Accept": "application/json, text/plain, */*",
+        "Referer": f"http://www.kuwo.cn/search/list?",
+        "cookie": 'Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_token=eirTyF3BhpSyya63nJHFTzrFXARYQzs3',
+        "Cross": '969c3dfee123a1bdfffe061492fa80ed',
     }
-    music_list = html.get(url, headers=headers).json()["data"]["list"]
-
+    returnText = requests.get(url, headers=headers).text
+    print(returnText)
+    music_list = json.loads(returnText)["data"]["list"]
     music_list = json.dumps(music_list).encode('utf8').decode('unicode_escape')
-    print(f'本次搜索内容=>\n{name}')
+    print(f'本次搜索内容=>{name}')
     return music_list
 
 

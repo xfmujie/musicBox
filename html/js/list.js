@@ -9,7 +9,6 @@ function getSearchResult(SearchContent) {
   }
   xhrList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=${name}&pn=${pageNum}`);
   xhrList.send();
-  waitTime();  //计时
   xhrList.onreadystatechange = function () {
     if (xhrList.readyState == 4 && xhrList.status == 200) {
       window.parent.dialog_none_btn(action = 'close');
@@ -29,7 +28,7 @@ function getSearchResult(SearchContent) {
       oldContent = SearchContent;
 
     }
-    else if (xhrList.status == 433) {
+    else if (xhrList.status >= 400) {
       clearTimeout(timer);
       count = 0;
       window.parent.dialog_none_btn(action = 'close');
