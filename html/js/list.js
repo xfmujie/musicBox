@@ -153,8 +153,6 @@ function add_del_onclick() {
 
 //播放按钮按下
 function play_btn_onclick() {
-  window.parent.dialogDisplay('目前音乐盒所依赖的酷我接口已崩，导致不能正常使用！<br>恢复时间未知，抱歉~');
-  return;
   for (let i = 0; i < displayList.length; i++) {
     document.getElementById(`play_btn${i}`).onclick = function () {
       if (displayFlag !== 'box') {
