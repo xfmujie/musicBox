@@ -253,7 +253,7 @@ function nextPlay(flag) {
     var pic = List[nextRid]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
     if (displayFlag == 'search') {
-      pagePX = (lastRid-2)*68-90;
+      pagePX = (lastRid - 2) * 68 - 90;
       displayChange('search');
     }
   }
@@ -261,7 +261,7 @@ function nextPlay(flag) {
     List = playList;
     pic = List[nextRid]["pic"];
     if (displayFlag == 'play') {
-      pagePX = pagePX = (lastRid+2)*68-90;
+      pagePX = pagePX = (lastRid + 2) * 68 - 90;
       displayChange('play');
     }
   }
@@ -467,7 +467,9 @@ function set_a_enter(i) {
       }
       break;
     //set_a_5
-    case 5: window.parent.dialogDisplay(`全选复制以下主题参数：<br><br><input type='text' style='width: 100%; height: 30px;' value='${window.parent.theme_set('export')}'>`);
+    case 5:
+      document.getElementById('export_btn').setAttribute("data-clipboard-text", window.parent.theme_set('export'));
+    break;
   }
 }
 function clear_onclick() {
@@ -592,5 +594,17 @@ function scrollToTop() {
   });
 }
 
+// 复制标题到剪贴板
+let clipboard = new ClipboardJS('#export_btn');
+clipboard.on('success', function (e) {
+  console.log('已复制文本：' + e.text);
+  //window.parent.dialogDisplay(`已复制文本：${e.text}`);
+  window.parent.dialogDisplay('主题参数复制成功！');
+  e.clearSelection();
+});
+clipboard.on('error', function (e) {
+  console.error('出错了：' + e.action);
+  window.parent.dialogDisplay('出错了！');
+});
 //调用父页面函数
 //window.parent.函数名();
