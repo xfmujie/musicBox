@@ -3,6 +3,8 @@ from flask import request
 import requests
 import json
 
+app = Flask(__name__)
+
 # 利用leancloud的数据存储云服务存储用户的歌单
 def leancloud(method, id='0', list='0'):
     headers = {
@@ -28,9 +30,6 @@ def leancloud(method, id='0', list='0'):
         return str(lastID + 1)
 
 
-app = Flask(__name__)
-
-
 @app.route('/')
 def kuwoAPI():
     name = request.args.get('name')
@@ -43,7 +42,11 @@ def kuwoAPI():
         "cookie": 'Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_token=eirTyF3BhpSyya63nJHFTzrFXARYQzs3',
         "Cross": '969c3dfee123a1bdfffe061492fa80ed',
     }
-    returnText = requests.get(url, headers=headers).text
+    try:
+        returnText = requests.get(url, headers=headers, timeout=3).text
+    except requests.Timeout:
+        print('获取搜索结果超时，正在重试……')
+        returnText = requests.get(url, headers=headers).text
     print(returnText)
     music_list = json.loads(returnText)["data"]["list"]
     music_list = json.dumps(music_list).encode('utf8').decode('unicode_escape')
@@ -55,7 +58,11 @@ def kuwoAPI():
 def ridKuwoAPI():
     rid = request.args.get('rid')
     url = f'http://www.kuwo.cn/api/v1/www/music/playUrl?mid={rid}&type=convert_url3&br=320kmp3'
-    download_url = requests.get(url=url).json()["data"]["url"]
+    try:
+        download_url = requests.get(url=url, timeout=3).json()["data"]["url"]
+    except requests.Timeout:
+        print('获取mp3链接超时，正在重试……')
+        download_url = requests.get(url=url).json()["data"]["url"]
     print(f'已获取到mp3文件链接=>\n{str(download_url)}')
     return str(download_url)
 
@@ -67,7 +74,11 @@ def lrcKuwoAPI():
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.42'
     }
-    lrc = requests.get(url=url, headers=headers).json()["data"]["lrclist"]
+    try:
+        lrc = requests.get(url=url, headers=headers, timeout=3).json()["data"]["lrclist"]
+    except requests.Timeout:
+        print('获取歌词超时，正在重试……')
+        lrc = requests.get(url=url, headers=headers).json()["data"]["lrclist"]
     print('已获取到歌词\n\n')
     return json.dumps(lrc)
 
@@ -86,12 +97,16 @@ def musicBoxList():
 def listLoad():
     pid = request.args.get('id')
     pn = 1
-    rn = 500
+    rn = 100
     url = f'https://m.kuwo.cn/newh5app/wapi/api/www/playlist/playListInfo?pid={pid}&pn={pn}&rn={rn}'
     headers = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50'
     }
-    getText = requests.get(url=url, headers=headers).text
+    try:
+        getText = requests.get(url=url, headers=headers, timeout=3).text
+    except requests.Timeout:
+        print('获取酷我歌单超时，正在重试……')
+        getText = requests.get(url=url, headers=headers).text
     kuwoList = json.loads(getText)["data"]["musicList"]
     name = json.loads(getText)["data"]["name"]
     saveList = []
