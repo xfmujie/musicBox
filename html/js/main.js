@@ -399,14 +399,9 @@ function search_onclick() {
     dialogDisplay('请输入歌曲/歌手');
   }
   else {
-    let reg = /#\d{5}/;
-    if (reg.test(SearchContent.value)) {
-      dialogDisplay('搜索歌单请前往『音乐盒』')
-    } else {
-      iframe.pageNum = 1;
-      iframe.getSearchResult(SearchContent.value);
-      dialog_none_btn(action = 'open', content = '正在搜索……<br>(酷我接口已被重构，搜索功能正在进行上线测试……)');
-    }
+    iframe.pageNum = 1;
+    iframe.getSearchResult(SearchContent.value);
+    dialog_none_btn(action = 'open', content = '正在搜索……');
   }
 }
 
@@ -524,7 +519,6 @@ if (localStorage.getItem('musicBoxList') == null) {
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
   dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.修复一些问题 提高兼容性<br>2.APP上线 听歌更方便<a target="_blank" href="http://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"><br>点击下载</a>(仅安卓)<br>或前往『设置→关于』下载</font>`);
-  //dialogDisplay(`<font color="#323232">音乐盒APP 听歌更方便<a target="_blank" href="http://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"><br>点击下载</a>(仅安卓)<br>或前往『设置→关于』下载</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = '3.0.9';
