@@ -6,6 +6,10 @@
 ![pageMbile](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/8039D291E1BE2DE8B7F1857D838200AE.jpg)
 
 ## 近期更新
+V3.0.9
+1. 修复n个小bug
+2. 优化轮播体验
+
 V3.0.8
 1. 新增定时关闭
 
