@@ -4,7 +4,8 @@ import requests
 import json
 
 app = Flask(__name__)
-
+# 注释的部分是用来存储用户歌单的云存储服务，如你没有私有化部署的需求可无视
+'''
 # 利用leancloud的数据存储云服务存储用户的歌单
 def leancloud(method, id='0', list='0'):
     headers = {
@@ -28,7 +29,7 @@ def leancloud(method, id='0', list='0'):
         print(json.dumps(data))
         requests.post(url=postUrl, headers=headers, data=json.dumps(data)).text
         return str(lastID + 1)
-
+'''
 
 @app.route('/')
 def kuwoAPI():
@@ -82,7 +83,7 @@ def lrcKuwoAPI():
     print('已获取到歌词\n\n')
     return json.dumps(lrc)
 
-
+'''
 @app.route('/music-box-list/', methods=['GET', 'POST'])
 def musicBoxList():
     method = request.args.get('method')
@@ -123,6 +124,7 @@ def listLoad():
     })
     id = leancloud(method='post', list=list)
     return leancloud(method='get', id=id)
+'''
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
