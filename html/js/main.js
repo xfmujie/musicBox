@@ -1,5 +1,35 @@
 console.log = function () { };
 
+//自动重试的请求函数
+function retryRequest(url, maxRetries = 5) {
+  let retryCount = 0;
+  return new Promise((resolve, reject) => {
+    function sendRequest() {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
+        })
+        .then(data => {
+          resolve(data); // 请求成功，将结果返回
+        })
+        .catch(error => {
+          console.log("Error:", error);
+          retryCount++;
+          if (retryCount < maxRetries) {
+            // 继续发送请求
+            sendRequest();
+          } else {
+            reject(new Error("Maximum retries exceeded"));  // 达到最大重试次数，抛出错误
+          }
+        });
+    }
+    sendRequest();
+  });
+}
+
 /*主题 颜色*/
 var theme_btnColor = localStorage.getItem('themeBtnColor');
 var theme_lrcColor = localStorage.getItem('themeLrcColor');
@@ -346,31 +376,29 @@ document.addEventListener('keydown', function (event) { // 监听键盘按下事
 
 function getMusic(rid) {
   //获取歌词
-  var xhrLrc = new XMLHttpRequest();
-  xhrLrc.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid);
-  xhrLrc.send();
-  xhrLrc.onreadystatechange = function () {
-    if (xhrLrc.readyState == 4 && xhrLrc.status == 200) {
-      lrc = JSON.parse(xhrLrc.responseText);
+  retryRequest('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid)
+    .then(data => {
+      // console.log("Data:", data);
+      lrc = JSON.parse(data);
       if (lrc == null) {
         lrc = [{ "lineLyric": "纯音乐 请欣赏", "time": "999" }]
       }
-    }
-    else if (xhrLrc.status == 433) {
+    })
+    .catch(error => {
+      console.log("Error:", error);
       lrc = [{ "lineLyric": "", "time": "5" }, { "lineLyric": "歌词获取出错，请稍后重试", "time": "999" }]
-    }
-  }
+    });
 
   //获取歌曲链接
-  var xhrSong = new XMLHttpRequest();
-  xhrSong.open('get', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid);
-  xhrSong.send();
-  xhrSong.onreadystatechange = function () {
-    if (xhrSong.readyState == 4 && xhrSong.status == 200) {
-      mp3Url = xhrSong.responseText;
+  retryRequest('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
+    .then(data => {
+      // console.log("Data:", data);
+      mp3Url = data;
       playerPlay(mp3Url);
-    }
-  }
+    })
+    .catch(error => {
+      console.log("Error:", error);
+    });
 }
 
 

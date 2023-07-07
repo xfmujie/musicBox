@@ -396,15 +396,11 @@ function loadplayTime(time) {
 /*飞鸟集一言*/
 getStrayBirds();
 function getStrayBirds() {
-  var xhrGetStrayBirds = new XMLHttpRequest();
-  xhrGetStrayBirds.open('get', 'https://api.mu-jie.cc/stray-birds/range?from=1&type=json');
-  xhrGetStrayBirds.send();
-  xhrGetStrayBirds.onreadystatechange = function () {
-    if (xhrGetStrayBirds.readyState == 4 && xhrGetStrayBirds.status == 200) {
-      strayBirdsYiyan = JSON.parse(xhrGetStrayBirds.responseText);
-      yiyan.innerHTML = `${strayBirdsYiyan["cn"]}<br>——泰戈尔《飞鸟集》【${strayBirdsYiyan["num"]}】`;
-    }
-  }
+  fetch('https://api.mu-jie.cc/stray-birds/range?from=1&type=json')
+  .then(response => response.json())
+  .then(data => {
+    yiyan.innerHTML = `${data["cn"]}<br>——泰戈尔《飞鸟集》【${data["num"]}】`;
+  })
 }
 
 /*确定颜色 主题*/
@@ -538,6 +534,7 @@ function getSongList() {
     par = `/music-box-list/?method=get&id=${ID}`;
   else
     par = `/kuwolist/?id=${ID.match(reg2)[0]}`;
+
   var getMusicBoxList = new XMLHttpRequest();
   getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
   getMusicBoxList.send();
@@ -590,11 +587,10 @@ function scrollToTop() {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth' // 平滑滚动
   });
 }
 
-// 复制标题到剪贴板
+// 复制主题参数到剪贴板
 let clipboard = new ClipboardJS('#export_btn');
 clipboard.on('success', function (e) {
   console.log('已复制文本：' + e.text);
@@ -606,5 +602,6 @@ clipboard.on('error', function (e) {
   console.error('出错了：' + e.action);
   window.parent.dialogDisplay('出错了！');
 });
+
 //调用父页面函数
 //window.parent.函数名();
