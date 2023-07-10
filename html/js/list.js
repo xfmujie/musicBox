@@ -85,7 +85,7 @@ function cloned(clonedList) {
     //更改元素内容
     let songNum = clonedDiv.querySelector('#songNum');
     songNum.textContent = (i + 1).toString().padStart(2, '0'); // 将数字转换成字符串并在左侧填充0以达到2位整数的效果;
-    if (i == lastRid && (playListFlag == window.parent.displayFlag)) {
+    if (i == lastNum && (playListFlag == window.parent.displayFlag)) {
       songNum.innerHTML = '<i class="fa fa-music"></i>';
       songNum.style.color = 'rgb(0, 179, 255)';
       songNum.style.fontSize = '20px';
@@ -118,33 +118,67 @@ function add_del_onclick() {
       console.log(`add_del_${i}按下了`)
 
       if (displayFlag === 'search') {
-        var pic = displayList[i]["pic"];
-        pic = pic.replace(/\/\d+\//, "/300/");
-        var addSong = {
-          "rid": displayList[i]["rid"],
-          "pic": pic,
-          "name": displayList[i]["name"],
-          "artist": displayList[i]["artist"]
+        if (playFlag == 'like') {
+          window.parent.dialogDisplay('『喜欢』模式下无法进行此操作~');
         }
-        playList.push(addSong);
-        localStorage.setItem('playList', JSON.stringify(playList));
-        window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`)
-        //console.log(playList);
+        else {
+          var pic = displayList[i]["pic"];
+          pic = pic.replace(/\/\d+\//, "/300/");
+          var addSong = {
+            "rid": displayList[i]["rid"],
+            "pic": pic,
+            "name": displayList[i]["name"],
+            "artist": displayList[i]["artist"]
+          }
+          playList.push(addSong);
+          localStorage.setItem('playList', JSON.stringify(playList));
+          window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`);
+          //console.log(playList);
+        }
       }
       if (displayFlag === 'play') {
-        playList.splice(i, 1);
-        localStorage.setItem('playList', JSON.stringify(playList));
-        console.log(playList);
-        displayChange('play');
+        if (playFlag !== 'like') {
+          playList.splice(i, 1);
+          localStorage.setItem('playList', JSON.stringify(playList));
+          console.log(playList);
+          displayChange('play');
+        } else {
+          let isEnter = confirm(`是否从『喜欢』中移除《${playList[i]['name']}》？`);
+          if (isEnter) {
+            let list = {
+              'name': '我的喜欢',
+              'artist': ``,
+              'list': playList
+            }
+            playList.splice(i, 1);
+            localStorage.setItem('playList', JSON.stringify(playList));
+            console.log(playList);
+            displayChange('play');
+            musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+            musicBoxList.splice(0, 1, list);
+            window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+          }
+        }
       }
       if (displayFlag === 'box') {
-
-        let isEnter = confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`);
-        if (isEnter) {
-          musicBoxList.splice(i, 1);
-          window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
-          console.log(musicBoxList);
-          displayChange('box');
+        if (i !== 0) {
+          let isEnter = confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`);
+          if (isEnter) {
+            musicBoxList.splice(i, 1);
+            window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+            console.log(musicBoxList);
+            displayChange('box');
+          }
+        }
+        else {
+          let isEnter = confirm(`是否清空『我的喜欢』？`);
+          if (isEnter) {
+            likeList('clear', []);
+            if (playFlag == 'like') {
+              localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+              window.parent.listBtn_onclick();
+            }
+          }
         }
       }
     }
@@ -168,7 +202,7 @@ function play_btn_onclick() {
         console.log(displayList);
         console.log(parameter);
         window.parent.switchSongs(parameter);
-        lastRid = i;
+        lastNum = i;
         if (displayFlag == 'play') {
           playListFlag = 0;
           window.parent.list_now(0);
@@ -182,21 +216,37 @@ function play_btn_onclick() {
           pagePX = window.scrollY;
           displayChange('search');
         }
-      } else {
-        console.log(`选中歌单${(i + 1).toString()}`);
-        let isEnter = confirm("是否覆盖当前播放列表？");
-        if (isEnter) {
-          localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
+      }
+      else {
+        if (i !== 0) {
+          playFlag = 'normal';
+          document.getElementById('clear').innerHTML = '清空播放列表';
+          window.parent.list_now('列表');
+          console.log(`选中歌单${(i + 1).toString()}`);
+          let isEnter = confirm("是否覆盖当前播放列表？");
+          if (isEnter) {
+            localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
+          }
+          else {
+            let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
+            for (let i = 0; i < list.length; i++) {
+              playList.push(list[i]);
+            }
+            localStorage.setItem('playList', JSON.stringify(playList));
+            window.parent.dialogDisplay('已添加该歌单到播放列表');
+          }
+          window.parent.listBtn_onclick();
         }
         else {
-          let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
-          for (let i = 0; i < list.length; i++) {
-            playList.push(list[i]);
+          playFlag = 'like';
+          window.parent.list_now('喜欢');
+          document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
+          let isEnter = confirm("将覆盖当前播放列表，是否继续？");
+          if (isEnter) {
+            localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+            window.parent.listBtn_onclick();
           }
-          localStorage.setItem('playList', JSON.stringify(playList));
-          window.parent.dialogDisplay('已添加该歌单到播放列表');
         }
-        window.parent.listBtn_onclick();
       }
     }
   }
@@ -205,72 +255,72 @@ function play_btn_onclick() {
 //上一首/下一首触发
 function switchSongs(flag) {
   if (flag) {
-    if (playListFlag == 0 && lastRid + 1 < playList.length) {
-      var nextRid = lastRid + 1;
-      lastRid = lastRid + 1;
+    if (playListFlag == 0 && lastNum + 1 < playList.length) {
+      var nextNum = lastNum + 1;
+      lastNum = lastNum + 1;
     }
-    else if (playListFlag == 0 && lastRid + 1 >= playList.length) {
-      nextRid = 0;
-      lastRid = 0;
+    else if (playListFlag == 0 && lastNum + 1 >= playList.length) {
+      nextNum = 0;
+      lastNum = 0;
     }
-    else if (playListFlag == 1 && lastRid + 1 < searchList.length) {
+    else if (playListFlag == 1 && lastNum + 1 < searchList.length) {
 
-      nextRid = lastRid + 1;
-      lastRid = lastRid + 1;
+      nextNum = lastNum + 1;
+      lastNum = lastNum + 1;
     }
-    else if (playListFlag == 1 && lastRid + 1 >= searchList.length) {
-      nextRid = 0;
-      lastRid = 0;
+    else if (playListFlag == 1 && lastNum + 1 >= searchList.length) {
+      nextNum = 0;
+      lastNum = 0;
     }
   }
   else {
-    if (playListFlag == 0 && lastRid == 0) {
-      var nextRid = playList.length - 1;
-      lastRid = playList.length - 1;
+    if (playListFlag == 0 && lastNum == 0) {
+      var nextNum = playList.length - 1;
+      lastNum = playList.length - 1;
     }
-    else if (playListFlag == 0 && lastRid != 0) {
-      nextRid = lastRid - 1;
-      lastRid = lastRid - 1;
+    else if (playListFlag == 0 && lastNum != 0) {
+      nextNum = lastNum - 1;
+      lastNum = lastNum - 1;
     }
-    else if (playListFlag == 1 && lastRid == 0) {
-      nextRid = searchList.length - 1;
-      lastRid = searchList.length - 1;
+    else if (playListFlag == 1 && lastNum == 0) {
+      nextNum = searchList.length - 1;
+      lastNum = searchList.length - 1;
     }
-    else if (playListFlag == 1 && lastRid != 0) {
-      nextRid = lastRid - 1;
-      lastRid = lastRid - 1;
+    else if (playListFlag == 1 && lastNum != 0) {
+      nextNum = lastNum - 1;
+      lastNum = lastNum - 1;
     }
   }
-  return nextRid;
+  return nextNum;
 }
 
 
 //上一首/下一首开始播放
 function nextPlay(flag) {
-  var nextRid = switchSongs(flag);
+  var nextNum = switchSongs(flag);
   if (playListFlag) {
     var List = searchList;
-    var pic = List[nextRid]["pic"];
+    var pic = List[nextNum]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
     if (displayFlag == 'search') {
-      pagePX = (lastRid - 2) * 68 - 90;
+      pagePX = (lastNum - 2) * 68 - 90;
       displayChange('search');
     }
   }
   else {
     List = playList;
-    pic = List[nextRid]["pic"];
+    pic = List[nextNum]["pic"];
     if (displayFlag == 'play') {
-      pagePX = pagePX = (lastRid + 2) * 68 - 90;
+      pagePX = pagePX = (lastNum + 2) * 68 - 90;
       displayChange('play');
     }
   }
 
   var parameter = {
-    "rid": List[nextRid]["rid"],
+    "rid": List[nextNum]["rid"],
     "pic": pic,
-    "name": List[nextRid]["name"],
-    "artist": List[nextRid]["artist"]
+    "name": List[nextNum]["name"],
+    "artist": List[nextNum]["artist"]
   }
   console.log(List);
   console.log(parameter);
@@ -294,7 +344,7 @@ function displayChange(flag) {
     set.style.display = 'none';
     box.style.display = 'none';
     page_num.style.display = 'none';
-    if (playList.length > 0) {
+    if (playList.length > 0 || playFlag == 'like') {
       playListPageEmDisplay('inline');
     } else {
       playListPageEmDisplay('none');
@@ -364,7 +414,7 @@ var autoCLose = false;
 var isAgain = false;
 var displayFlag = 'play';
 var playListFlag = 0;
-var lastRid = 999;
+var lastNum = 999;
 var strayBirdsYiyan = "";
 var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
@@ -380,6 +430,7 @@ var pageNum = 1;
 var oldContent = '';
 var playPage = 0;
 var pagePX = 0;
+var playFlag = 'normal';
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -397,10 +448,10 @@ function loadplayTime(time) {
 getStrayBirds();
 function getStrayBirds() {
   fetch('https://api.mu-jie.cc/stray-birds/range?from=1&type=json')
-  .then(response => response.json())
-  .then(data => {
-    yiyan.innerHTML = `${data["cn"]}<br>——泰戈尔《飞鸟集》【${data["num"]}】`;
-  })
+    .then(response => response.json())
+    .then(data => {
+      yiyan.innerHTML = `${data["cn"]}<br>——泰戈尔《飞鸟集》【${data["num"]}】`;
+    })
 }
 
 /*确定颜色 主题*/
@@ -465,14 +516,22 @@ function set_a_enter(i) {
     //set_a_5
     case 5:
       document.getElementById('export_btn').setAttribute("data-clipboard-text", window.parent.theme_set('export'));
-    break;
+      break;
   }
 }
 function clear_onclick() {
-  let isEnter = confirm("是否清空当前播放列表？");
-  if (isEnter) {
-    localStorage.setItem('playList', '[]');
-    displayChange('play');
+  if (playFlag !== 'like') {
+    let isEnter = confirm("是否清空当前播放列表？");
+    if (isEnter) {
+      localStorage.setItem('playList', '[]');
+      displayChange('play');
+    }
+  }
+  else {
+    playFlag = 'normal';
+    window.parent.dialogDisplay('已恢复普通列表模式~');
+    document.getElementById('clear').innerHTML = '清空播放列表';
+    window.parent.list_now('列表');
   }
 }
 
@@ -602,6 +661,56 @@ clipboard.on('error', function (e) {
   console.error('出错了：' + e.action);
   window.parent.dialogDisplay('出错了！');
 });
+
+function likeList(initFlag = 'init', list) {
+  let likeInit = {
+    'name': '我的喜欢',
+    'artist': ``,
+    'list': []
+  }
+  musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+  if (musicBoxList.length == 0) {
+    musicBoxList.push(likeInit);
+  }
+  else if (musicBoxList[0].name !== '我的喜欢') {
+    musicBoxList.unshift(likeInit);
+  } else if (initFlag !== 'init') {
+    let newLikeList = {
+      'name': '我的喜欢',
+      'artist': ``,
+      'list': list
+    }
+    musicBoxList.splice(0, 1, newLikeList);
+  }
+  window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+}
+
+function likeListAdd() {
+  if (lastNum !== 999) {
+    list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[0].list;
+    if (playListFlag == 0) {
+      if (playList.length > lastNum) {
+        list.push(playList[lastNum]);
+        window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${playList[lastNum]["name"]}(${playList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
+      }
+      else {
+        window.parent.dialogDisplay('无法添加，请检查播放列表是否已被清空~');
+      }
+    } else {
+      list.push(searchList[lastNum]);
+      window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${searchList[lastNum]["name"]}(${searchList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
+    }
+    likeList('add', list);
+    if (playFlag == 'like') {
+      localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+      window.parent.listBtn_onclick();
+    }
+  }
+  else {
+    window.parent.dialogDisplay('当前无歌曲播放~');
+  }
+}
+likeList('init');
 
 //调用父页面函数
 //window.parent.函数名();

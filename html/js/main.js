@@ -171,7 +171,7 @@ function playbackModeOnclick() {
 
 //我的喜欢按钮
 function likeOnclick() {
-  dialogDisplay('『我的喜欢』即将开发……');
+  iframe.likeListAdd();
 }
 
 //选择显示列表/内容
@@ -227,14 +227,22 @@ function boxBtn_onclick() {
 
 //当前播放的列表
 function list_now(flag) {
+  if(iframe.playFlag == 'like'){
+    listBtnName = '喜欢';
+  } else {
+    listBtnName = '列表';
+  }
   if (flag == 0) {
-    listBtn.innerHTML = '列表<i class="fa fa-music"></i>';
+    listBtn.innerHTML = listBtnName + '<i class="fa fa-music"></i>';
     listBtn.style.color
     resultBtn.innerHTML = "搜索";
   }
-  else {
+  else if(flag == 1) {
     resultBtn.innerHTML = '搜索<i class="fa fa-music"></i>';
-    listBtn.innerHTML = "列表";
+    listBtn.innerHTML = listBtnName;
+  }
+  else {
+    listBtn.innerHTML = flag;
   }
 }
 
@@ -309,7 +317,7 @@ var root = getComputedStyle(document.documentElement);
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.0.9';
+var Version = '3.1.0';
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -546,10 +554,10 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.修复一些问题 提高兼容性<br>2.APP上线 听歌更方便<a target="_blank" href="http://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"><br>点击下载</a>(仅安卓)<br>或前往『设置→关于』下载</font>`);
+  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.新增『我的喜欢』<br>点击❤图标或双击歌曲封面将当前播放歌曲添加到『喜欢』<br>2.提高轮播（自动下一首）的稳定性</font>`);
   localStorage.setItem('Version', Version)
 }
-version_span.innerHTML = '3.0.9';
+version_span.innerHTML = Version;
 
 //访问量统计(个人搭建，不支持其他url)
 if (window.location.href == 'https://mu-jie.cc/musicBox/') {

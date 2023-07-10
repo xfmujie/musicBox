@@ -6,6 +6,9 @@
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
 
 ## 近期更新
+V3.1.0
+1. 新增『我的喜欢』
+
 V3.0.9
 1. 修复n个小bug
 2. 优化轮播体验
@@ -31,13 +34,11 @@ V3.0.3
 1. 新增主题自定义
 2. 更换依赖包源，访问更快
 
-**由于酷我api不能跨源，需要自行部署接口获取酷我音乐的搜索结果、MP3文件链接和歌词（如您需要私有部署的话），我这里用的是flask来进行部署。**
 
-
-### app.py依赖
-- pip install flask
-- pip install requests
-
+### 说明
+由于酷我api不能跨源，需要自行部署接口获取酷我音乐的搜索结果、MP3文件链接和歌词（如您需要私有部署的话），我这里用的是flask来进行部署。
+- **flask文件夹：转发前端请求的后端接口，使用了python的flask框架**
+- **html文件夹：前端静态页面资源，可直接部署到服务器/虚拟主机上(需要https)**
 
 ### Leancloud
 app.py中使用了Leancloud的数据存储服务以存储用户的歌单数据
