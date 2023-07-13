@@ -238,11 +238,11 @@ function play_btn_onclick() {
           window.parent.listBtn_onclick();
         }
         else {
-          playFlag = 'like';
-          window.parent.list_now('喜欢');
-          document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
           let isEnter = confirm("将覆盖当前播放列表，是否继续？");
           if (isEnter) {
+            playFlag = 'like';
+            window.parent.list_now('喜欢');
+            document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
             localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
             window.parent.listBtn_onclick();
           }
