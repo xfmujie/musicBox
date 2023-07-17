@@ -227,7 +227,7 @@ function boxBtn_onclick() {
 
 //当前播放的列表
 function list_now(flag) {
-  if(iframe.playFlag == 'like'){
+  if (iframe.playFlag == 'like') {
     listBtnName = '喜欢';
   } else {
     listBtnName = '列表';
@@ -237,7 +237,7 @@ function list_now(flag) {
     listBtn.style.color
     resultBtn.innerHTML = "搜索";
   }
-  else if(flag == 1) {
+  else if (flag == 1) {
     resultBtn.innerHTML = '搜索<i class="fa fa-music"></i>';
     listBtn.innerHTML = listBtnName;
   }
@@ -401,8 +401,13 @@ function getMusic(rid) {
   retryRequest('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
     .then(data => {
       // console.log("Data:", data);
-      mp3Url = data;
-      playerPlay(mp3Url);
+      if (data == '该歌曲为付费内容，请下载酷我音乐客户端后付费收听') {
+        dialogDisplay('受酷我限制，现音乐盒不支持播放vip歌曲，短期内无法破解，抱歉~');
+      }
+      else {
+        mp3Url = data;
+        playerPlay(mp3Url);
+      }
     })
     .catch(error => {
       console.log("Error:", error);
@@ -418,6 +423,7 @@ function playerPlay(url) {
 
 //切换歌曲
 function switchSongs(parameter) {
+  getMusic(parameter["rid"]);
   lrc_count = 0;
   audioPlayer.pause();
   lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
@@ -427,7 +433,6 @@ function switchSongs(parameter) {
   songName.innerHTML = name.slice(0, 15 + (name.length - name.replace(/&[a-z]+;/g, " ").length));
   singerName.innerHTML = singer.slice(0, 15 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length));
   document.title = `XF音乐盒(${name.replace(/&[a-z]+;/g, " ")})`;
-  getMusic(parameter["rid"]);
 }
 
 function search_onclick() {
