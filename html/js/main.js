@@ -318,6 +318,7 @@ var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
 var Version = '3.1.0';
+var timeoutId;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -402,7 +403,14 @@ function getMusic(rid) {
     .then(data => {
       // console.log("Data:", data);
       if (data == '该歌曲为付费内容，请下载酷我音乐客户端后付费收听') {
-        dialogDisplay('受酷我限制，现音乐盒不支持播放vip歌曲，短期内无法破解，抱歉~');
+        dialog_none_btn('open', '受酷我限制，现音乐盒不支持播放vip歌曲，后续维护随缘，感谢陪伴~');
+        setTimeout(() => {
+          dialog_none_btn('close');
+        }, 2000);
+        timerId = setTimeout(() => {
+          dialog_none_btn('close');
+          iframe.nextPlay(1);
+        }, 5000);
       }
       else {
         mp3Url = data;

@@ -190,6 +190,7 @@ function play_btn_onclick() {
   /* window.parent.dialog_none_btn(action='close');
   window.parent.dialogDisplay('音乐盒维护中……<br>(顺便骂一句没事干的酷我后端整天改接口)');
   return; */
+  window.parent.clearTimeout(window.parent.timerId);
   for (let i = 0; i < displayList.length; i++) {
     document.getElementById(`play_btn${i}`).onclick = function () {
       if (displayFlag !== 'box') {
