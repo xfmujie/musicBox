@@ -3,6 +3,10 @@ from flask import request
 import requests
 import json
 
+# 酷我接口依赖请求headers（随时会失效，需要自行抓包）
+cookie = "Hm_Iuvt_cdb524f42f0ce19b169b8072123a4727=mkR3Szf2JtpK3DtZ3zzYTyXPDDeNmsY7"
+Secret = "3337285fa9fe8b3bf44f9d0b97a2eda70ecf83d1e99464db3c38699fc9ca4e0c01455ef3"
+
 app = Flask(__name__)
 # 注释的部分是用来存储用户歌单的云存储服务，如你没有私有化部署的需求可无视
 '''
@@ -40,8 +44,8 @@ def kuwoAPI():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67",
         "Accept": "application/json, text/plain, */*",
         "Referer": f"http://www.kuwo.cn/search/list?",
-        "cookie": 'Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1688527584; Hm_token=eirTyF3BhpSyya63nJHFTzrFXARYQzs3',
-        "Cross": '969c3dfee123a1bdfffe061492fa80ed',
+        "cookie": cookie,
+        "Secret": Secret
     }
     try:
         returnText = requests.get(url, headers=headers, timeout=3).text
@@ -58,12 +62,22 @@ def kuwoAPI():
 @app.route('/rid/')
 def ridKuwoAPI():
     rid = request.args.get('rid')
-    url = f'http://www.kuwo.cn/api/v1/www/music/playUrl?mid={rid}&type=convert_url3&br=320kmp3'
+    url = f'https://www.kuwo.cn/api/v1/www/music/playUrl?mid={rid}&type=music&httpsStatus=1&reqId=cd5f4410-246a-11ee-a357-13676abd9868&plat=web_www&from='
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67",
+        "Accept": "application/json, text/plain, */*",
+        "cookie": cookie,
+        "Secret": Secret,
+    }
     try:
-        download_url = requests.get(url=url, timeout=3).json()["data"]["url"]
+        download_url = requests.get(url=url, headers=headers, timeout=3).text
     except requests.Timeout:
         print('获取mp3链接超时，正在重试……')
-        download_url = requests.get(url=url).json()["data"]["url"]
+        download_url = requests.get(url=url, headers=headers).text
+    try:
+        download_url = json.loads(download_url)["data"]["url"]
+    except:
+        download_url = json.loads(download_url)["msg"]
     print(f'已获取到mp3文件链接=>\n{str(download_url)}')
     return str(download_url)
 
