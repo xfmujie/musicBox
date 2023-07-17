@@ -404,6 +404,8 @@ function getMusic(rid) {
       // console.log("Data:", data);
       if (data == '该歌曲为付费内容，请下载酷我音乐客户端后付费收听') {
         dialog_none_btn('open', '受酷我限制，现音乐盒不支持播放vip歌曲，后续维护随缘，感谢陪伴~');
+        songName.innerHTML = '即将播放下一首……';
+        singerName.innerHTML = '';
         setTimeout(() => {
           dialog_none_btn('close');
         }, 2000);
