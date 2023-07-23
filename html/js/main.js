@@ -415,7 +415,7 @@ function getMusic(rid) {
         }, 5000);
       }
       else {
-        mp3Url = data;
+        mp3Url = data.replace(/^http:\/\//, "//");
         playerPlay(mp3Url);
       }
     })
