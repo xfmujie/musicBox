@@ -1,4 +1,4 @@
-console.log = function () { };
+// console.log = function () { };
 
 //自动重试的请求函数
 function retryRequest(url, maxRetries = 5) {
@@ -415,7 +415,8 @@ function getMusic(rid) {
         }, 5000);
       }
       else {
-        mp3Url = data.replace(/^http:\/\//, "//");
+        mp3Url = data.replace(/\$/g, "=");
+        console.log(mp3Url);
         playerPlay(mp3Url);
       }
     })
