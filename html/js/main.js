@@ -472,11 +472,9 @@ function onIFrameLoaded(iframe, callback) {
     iframe.addEventListener('load', iframeLoaded);
   }
 }
-// 使用实例
 var myIframe = document.getElementById('iframe');
 onIFrameLoaded(myIframe, function () {
   console.log('iframe已加载完成');
-  // 执行其他逻辑
   theme.init();
   listBtn_onclick();
 });
