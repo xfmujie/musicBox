@@ -385,7 +385,7 @@ document.addEventListener('keydown', function (event) { // 监听键盘按下事
 
 function getMusic(rid) {
   //获取歌词
-  retryRequest('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid)
+  retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid)
     .then(data => {
       // console.log("Data:", data);
       lrc = JSON.parse(data);
@@ -399,7 +399,7 @@ function getMusic(rid) {
     });
 
   //获取歌曲链接
-  retryRequest('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
+  retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
     .then(data => {
       // console.log("Data:", data);
       if (data == '该歌曲为付费内容，请下载酷我音乐客户端后付费收听') {
@@ -574,7 +574,7 @@ version_span.innerHTML = Version;
 
 //访问量统计(个人搭建，不支持其他url)
 if (window.location.href == 'https://mu-jie.cc/musicBox/') {
-  fetch('http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
+  fetch('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
     .then(response => response.text())
     .then(data => {
       console.log(data);

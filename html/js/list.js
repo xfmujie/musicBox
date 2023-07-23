@@ -7,7 +7,7 @@ function getSearchResult(SearchContent) {
   if (SearchContent !== oldContent) {
     pageNum = 1;
   }
-  xhrList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=${name}&pn=${pageNum}`);
+  xhrList.open('get', `https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=${name}&pn=${pageNum}`);
   xhrList.send();
   xhrList.onreadystatechange = function () {
     if (xhrList.readyState == 4 && xhrList.status == 200) {
@@ -554,7 +554,7 @@ function importFromPlay(name) {
     'list': displayList
   }
   var musicBoxData = new XMLHttpRequest();
-  musicBoxData.open('post', 'http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
+  musicBoxData.open('post', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
   musicBoxData.setRequestHeader('Content-Type', 'application/json');
   musicBoxData.send(JSON.stringify(list));
   window.parent.dialog_none_btn(action = 'open', content = '正在添加……');
@@ -599,7 +599,7 @@ function getSongList() {
     par = `/kuwolist/?id=${ID.match(reg2)[0]}`;
 
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `http://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
+  getMusicBoxList.open('get', `https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
   getMusicBoxList.send();
   window.parent.dialog_none_btn(action = 'open', content = '正在加载歌单……');
   getMusicBoxList.onreadystatechange = function () {
