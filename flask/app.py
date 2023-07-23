@@ -2,6 +2,9 @@ from flask import Flask
 from flask import request
 import requests
 import json
+from kw import kwFirstUrl
+import re
+
 
 # 酷我接口依赖请求headers（随时会失效，需要自行抓包）
 cookie = "Hm_Iuvt_cdb524f42f0ce19b169b8072123a4727=mkR3Szf2JtpK3DtZ3zzYTyXPDDeNmsY7"
@@ -62,24 +65,26 @@ def kuwoAPI():
 @app.route('/rid/')
 def ridKuwoAPI():
     rid = request.args.get('rid')
-    url = f'https://www.kuwo.cn/api/v1/www/music/playUrl?mid={rid}&type=music&httpsStatus=1&reqId=cd5f4410-246a-11ee-a357-13676abd9868&plat=web_www&from='
+    url = kwFirstUrl(rid=rid)
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67",
-        "Accept": "application/json, text/plain, */*",
-        "cookie": cookie,
-        "Secret": Secret,
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36 Edg/110.0.1587.50",
+        "csrf": "96Y8RG5X3X64",
+        "Referer": "https://www.kuwo.cn"
     }
     try:
-        download_url = requests.get(url=url, headers=headers, timeout=3).text
+        music_url = requests.get(url=url, headers=headers, timeout=3).text
     except requests.Timeout:
         print('获取mp3链接超时，正在重试……')
-        download_url = requests.get(url=url, headers=headers).text
-    try:
-        download_url = json.loads(download_url)["data"]["url"]
-    except:
-        download_url = json.loads(download_url)["msg"]
-    print(f'已获取到mp3文件链接=>\n{str(download_url)}')
-    return str(download_url)
+        music_url = requests.get(url=url, headers=headers).text
+    # 正则提取最终url
+    pattern = r'url=(.*)'
+    match = re.search(pattern, music_url)
+    if match:
+        music_url = match.group(1)
+    else:
+        print("未找到URL")
+    print(f'已获取到mp3文件链接=>{str(music_url)}')
+    return str(music_url)
 
 
 @app.route('/lrc/')
