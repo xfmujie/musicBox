@@ -1,4 +1,4 @@
-// console.log = function () { };
+console.log = function () { };
 
 //自动重试的请求函数
 function retryRequest(url, maxRetries = 5) {
