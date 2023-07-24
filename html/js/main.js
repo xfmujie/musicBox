@@ -248,6 +248,7 @@ function list_now(flag) {
 
 //弹窗
 function dialogDisplay(content) {
+  dialog.close();
   dialog.innerHTML = content + '<p><br><div><button id="closeBtn">关闭</button></div>';
   dialog.showModal();
   var closeBtn = document.getElementById('closeBtn');
@@ -273,6 +274,7 @@ function dialogDisplay(content) {
 
 //无按钮弹窗
 function dialog_none_btn(action, content = "") {
+  dialog.close();
   if (action == 'open') {
     dialog.innerHTML = content;
     dialog.showModal();
@@ -415,7 +417,7 @@ function getMusic(rid) {
         }, 5000);
       }
       else {
-        mp3Url = data.replace(/\$/g, "=");
+        mp3Url = data;
         console.log(mp3Url);
         playerPlay(mp3Url);
       }
@@ -591,6 +593,15 @@ if (window.location.href == 'https://music-box-lilac.vercel.app/') {
 
 const like = document.querySelector("#cover");
 like.addEventListener('dblclick', likeOnclick);
+
+
+window.addEventListener('error', function(event) {
+  var target = event.target;
+  if (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3')) {
+    console.log('音频资源加载失败：', target.src);
+    dialogDisplay('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a>')
+  }
+}, true);
 
 //调用子页面函数
 //iframe.函数名()
