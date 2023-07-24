@@ -29,9 +29,9 @@ function getSearchResult(SearchContent) {
 
     }
     else if (xhrList.status >= 400) {
+      pageNum--;
       clearTimeout(timer);
       count = 0;
-      window.parent.dialog_none_btn(action = 'close');
       window.parent.dialog_none_btn(action = 'open', content = '出错了，请重新搜索~');
       autoCLose = true;
       waitTime();

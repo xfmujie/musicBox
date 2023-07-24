@@ -1,6 +1,5 @@
 # XF音乐盒
 
-**2023.7.17：已无法解析vip歌曲（悲）**
 
 一个在线音乐播放器<br>在线使用：[https://mu-jie.cc/musicBox/](https://mu-jie.cc/musicBox/)
 

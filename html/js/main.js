@@ -138,7 +138,12 @@ plyrEm.style.width = '100%';
 
 // 下载按钮
 function downloadOnclick() {
-  dialogDisplay(`${songName.innerText}&nbsp;-&nbsp;${singerName.innerText}<br><br>点击右边三个点下载<br><audio controls="controls"><source id="tempAudio" src="${mp3Url}"></audio><br>ios下载通道: <a href="${mp3Url}" target="_blank" rel="noopener noreferrer">点击跳转下载</a>`);
+  if (iframe.lastNum == 999) {
+    dialogDisplay('当前无歌曲播放~');
+  }
+  else {
+    dialogDisplay(`${songName.innerText}&nbsp;-&nbsp;${singerName.innerText}<br><br>点击右边三个点下载<br><audio controls="controls"><source id="tempAudio" src="${mp3Url}"></audio><br>ios下载通道: <a href="${mp3Url}" target="_blank" rel="noopener noreferrer">点击跳转下载</a>`);
+  }
 }
 
 // 播放模式按钮
@@ -296,7 +301,7 @@ function isMobile() {
 
 
 //全局变量定义
-var lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
+var lrc = [{ "lineLyric": "XF音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
 var displayFlag = 0;
@@ -319,7 +324,7 @@ var root = getComputedStyle(document.documentElement);
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.0';
+var Version = '3.1.1';
 var timeoutId;
 
 //音频播放监听与更新歌词
@@ -516,22 +521,29 @@ function getTimestamp() {
 }
 //计时
 audioPlayer.addEventListener('play', function () {
-  timeCount = setInterval(function () {
-    let seconds = parseInt(localStorage.getItem("playTime"));
-    localStorage.setItem('playTime', seconds += 1);
-    iframe.loadplayTime(getPlayTime());
-    if (getTimestamp() > setTimer && setTimedFlag) {
-      audioPlayer.pause();
-      iframe.document.getElementById('timerTips').innerHTML = '定时结束 已停止播放';
-      setTimedFlag = false;
-    } else if (setTimedFlag) {
-      let timeDifference = setTimer - getTimestamp();
-      let hours = Math.floor(timeDifference / 3600);
-      let minutes = Math.floor((timeDifference - (hours * 3600)) / 60);
-      let sec = Math.floor(timeDifference % 60);
-      iframe.document.getElementById('timerTips').innerHTML = `将于${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}后停止播放`
-    }
-  }, 1000);
+  if (iframe.lastNum == 999) {
+    dialogDisplay('当前无歌曲播放~');
+    audioPlayer.pause();
+    timeCount = function(){};
+  }
+  else {
+    timeCount = setInterval(function () {
+      let seconds = parseInt(localStorage.getItem("playTime"));
+      localStorage.setItem('playTime', seconds += 1);
+      iframe.loadplayTime(getPlayTime());
+      if (getTimestamp() > setTimer && setTimedFlag) {
+        audioPlayer.pause();
+        iframe.document.getElementById('timerTips').innerHTML = '定时结束 已停止播放';
+        setTimedFlag = false;
+      } else if (setTimedFlag) {
+        let timeDifference = setTimer - getTimestamp();
+        let hours = Math.floor(timeDifference / 3600);
+        let minutes = Math.floor((timeDifference - (hours * 3600)) / 60);
+        let sec = Math.floor(timeDifference % 60);
+        iframe.document.getElementById('timerTips').innerHTML = `将于${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}后停止播放`
+      }
+    }, 1000);
+  }
 });
 audioPlayer.addEventListener("pause", function () {
   clearInterval(timeCount);
@@ -570,13 +582,13 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.新增『我的喜欢』<br>点击❤图标或双击歌曲封面将当前播放歌曲添加到『喜欢』<br>2.提高轮播（自动下一首）的稳定性</font>`);
+  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>VIP复活！但由于限制，某些浏览器需要设置网站权限才能正常播放<br>无法播放时会引导您设置权限</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
 
 //访问量统计(个人搭建，不支持其他url)
-if (window.location.href == 'https://mu-jie.cc/musicBox/') {
+if (window.location.href == 'https://mu-jie.cc/musicBox/' || window.location.href == 'http://qnobjsg.mu-jie.cc/musicBox/') {
   fetch('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
     .then(response => response.text())
     .then(data => {
@@ -595,7 +607,7 @@ const like = document.querySelector("#cover");
 like.addEventListener('dblclick', likeOnclick);
 
 
-window.addEventListener('error', function(event) {
+window.addEventListener('error', function (event) {
   var target = event.target;
   if (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3')) {
     console.log('音频资源加载失败：', target.src);
