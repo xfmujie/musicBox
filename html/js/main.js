@@ -582,7 +582,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.新增歌单和列表的数据备份恢复功能<br>2.为了用户体验，可使用新版的音乐盒<a class="link" target="_blank" href="http://ali.mu-jie.cc/musicBox/index.html">点击跳转</a></font>`);
+  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.新增歌单和列表的数据备份恢复功能</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
