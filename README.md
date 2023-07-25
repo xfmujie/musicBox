@@ -1,7 +1,7 @@
 # XF音乐盒
 
 
-一个在线音乐播放器<br>在线使用：[http://ali.mu-jie.cc/musicBox/index.html](http://ali.mu-jie.cc/musicBox/index.html)
+一个在线音乐播放器<br>在线使用：[https://mu-jie.cc/musicBox/](https://mu-jie.cc/musicBox/)
 
 ![pagePC](http://ali.mu-jie.cc/img/uipc.jpg)
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
