@@ -78,7 +78,7 @@
       </div>
       一键
       <a href="javascript:;" onclick="set_a_enter(4)">导入</a>&<a href="javascript:;"
-        onclick="set_a_enter(5)" id="export_btn" data-clipboard-text="hello">导出</a>主题<br>
+        onclick="set_a_enter(5)" class="export_btn" data-clipboard-text="copy_content">导出</a>主题<br>
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/post/theme/">主题市场</a>
       &
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/static-pages/color.html">颜色选择器</a>
@@ -111,6 +111,12 @@
         <a class="link" target="_blank" style="font-size: 12px;" href="https://mu-jie.cc/static-pages/zanshang.html">buy
           me a juice ^o^</a>
       </p>
+    </div>
+    <div id="backups_box">
+      <h2>备份</h2>
+      <a href="javascript:;"  class="export_btn" onclick="backup_onclick('export')" data-clipboard-text="copy_content">导出备份</a>
+      &emsp;
+      <a href="javascript:;" onclick="backup_onclick('import')" data-clipboard-text="copy_content">恢复数据</a>
     </div>
     <div id="play_time"></div>
     <div class="content_box">

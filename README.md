@@ -1,12 +1,15 @@
 # XF音乐盒
 
 
-一个在线音乐播放器<br>在线使用：[https://mu-jie.cc/musicBox/](https://mu-jie.cc/musicBox/)
+一个在线音乐播放器<br>在线使用：[http://ali.mu-jie.cc/musicBox/index.html](http://ali.mu-jie.cc/musicBox/index.html)
 
 ![pagePC](http://ali.mu-jie.cc/img/uipc.jpg)
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
 
 ## 近期更新
+V3.1.2
+1. 新增歌单和列表的数据备份恢复功能
+
 V3.1.1
 1. 回来了~
 
@@ -46,9 +49,5 @@ V3.0.3
 from kw import kwFirstUrl
 ```
 kw.py来自某位未知大佬，详见 [#5](https://github.com/xfmujie/musicBox/issues/5)
-- **html文件夹：前端静态页面资源，可直接部署到服务器/虚拟主机上(http协议最佳)**
 
-### Leancloud
-app.py中使用了Leancloud的数据存储服务以存储用户的歌单数据
-![](http://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/musicBox%E6%AD%8C%E5%8D%95%E5%90%8E%E7%AB%AF%E7%BB%93%E6%9E%84%E5%9B%BE%20(2).png)
-（此部分只作存储原理说明，如您没有私有化的需求，可无视）
+- **html文件夹：前端静态页面资源，可直接部署到服务器/虚拟主机上(http协议最佳)**

@@ -435,6 +435,7 @@ var oldContent = '';
 var playPage = 0;
 var pagePX = 0;
 var playFlag = 'normal';
+var copyCententFlag = '';
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -519,7 +520,8 @@ function set_a_enter(i) {
       break;
     //set_a_5
     case 5:
-      document.getElementById('export_btn').setAttribute("data-clipboard-text", window.parent.theme_set('export'));
+      copyCententFlag = 'theme';
+      document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
       break;
   }
 }
@@ -654,11 +656,16 @@ function scrollToTop() {
 }
 
 // 复制主题参数到剪贴板
-let clipboard = new ClipboardJS('#export_btn');
+let clipboard = new ClipboardJS('.export_btn');
 clipboard.on('success', function (e) {
   console.log('已复制文本：' + e.text);
   //window.parent.dialogDisplay(`已复制文本：${e.text}`);
-  window.parent.dialogDisplay('主题参数复制成功！');
+  if (copyCententFlag == 'theme') {
+    window.parent.dialogDisplay('主题参数复制成功！');
+  }
+  else {
+    window.parent.dialogDisplay('备份数据复制成功！');
+  }
   e.clearSelection();
 });
 clipboard.on('error', function (e) {
@@ -716,5 +723,30 @@ function likeListAdd() {
 }
 likeList('init');
 
+function backup_onclick(flag) {
+  if (flag == 'export') {
+    copyCententFlag = 'export';
+    let backupData = JSON.stringify({
+      playList: JSON.parse(window.parent.localStorage.getItem('playList')),
+      musicBoxList: JSON.parse(window.parent.localStorage.getItem('musicBoxList'))
+    });
+    document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", backupData);
+    document.querySelector('#export_bak_btn');
+  }
+  else {
+    let val = prompt("将备份数据粘贴到此处", "");
+    if (val !== null && val !== '') {
+      try {
+        let obj = JSON.parse(val);
+        window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
+        window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
+        window.parent.dialogDisplay('列表与歌单恢复成功！');
+      }
+      catch (error) {
+        window.parent.dialogDisplay('粘贴数据有误！');
+      }
+    }
+  }
+}
 //调用父页面函数
 //window.parent.函数名();
