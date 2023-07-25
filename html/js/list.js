@@ -738,9 +738,14 @@ function backup_onclick(flag) {
     if (val !== null && val !== '') {
       try {
         let obj = JSON.parse(val);
-        window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
-        window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
-        window.parent.dialogDisplay('列表与歌单恢复成功！');
+        if ('musicBoxList' in obj && 'playList' in obj) {
+          window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
+          window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
+          window.parent.dialogDisplay('列表与歌单恢复成功！');
+        }
+        else {
+          window.parent.dialogDisplay('粘贴数据有误！');
+        }
       }
       catch (error) {
         window.parent.dialogDisplay('粘贴数据有误！');
