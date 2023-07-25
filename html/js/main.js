@@ -611,7 +611,7 @@ window.addEventListener('error', function (event) {
   var target = event.target;
   if (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3')) {
     console.log('音频资源加载失败：', target.src);
-    dialogDisplay('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a> 或 <a class="link" target="_blank" href="http://ali.mu-jie.cc/musicBox/index.html">跳转新版音乐盒</a><br>可前往设置>>备份中迁移歌单数据~');
+    dialogDisplay('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a>');
   }
 }, true);
 
