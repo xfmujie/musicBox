@@ -521,7 +521,7 @@ function set_a_enter(i) {
     //set_a_5
     case 5:
       copyCententFlag = 'theme';
-      document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
+      document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
       break;
   }
 }
@@ -731,8 +731,7 @@ function backup_onclick(flag) {
       playList: JSON.parse(window.parent.localStorage.getItem('playList')),
       musicBoxList: JSON.parse(window.parent.localStorage.getItem('musicBoxList'))
     });
-    document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", backupData);
-    document.querySelector('#export_bak_btn');
+    document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", backupData);
   }
   else {
     let val = prompt("将备份数据粘贴到此处", "");
