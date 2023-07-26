@@ -147,6 +147,11 @@ h5 {
   outline: 0;
 }
 
+.set_val:focus,
+#setTimer:focus {
+  border-color: rgba(212, 70, 70, 0.616);
+}
+
 a {
   font-size: 16px;
   color: #3980b2;
