@@ -83,6 +83,19 @@
       <br>不会更换颜色和背景图？
       <a target="_blank" href="https://mu-jie.cc/static-pages/theme-help.html" style="font-size: 12px;">查看帮助</a>
     </div>
+    <div id="backups_box">
+      <h2>备份</h2>
+      <h3 style="display: inline;">列表与歌单&emsp;</h3>
+      <a href="javascript:;" class="export_btn" onclick="backup_onclick('export')"
+        data-clipboard-text="copy_content">导出备份</a>
+      &ensp;
+      <a href="javascript:;" onclick="backup_onclick('import')" data-clipboard-text="copy_content">恢复数据</a>
+      <br>
+      <h3 style="display: inline;">主题&emsp;</h3>
+      <a href="javascript:;" onclick="set_a_enter(5)" class="export_btn" data-clipboard-text="copy_content">导出主题</a>
+      &ensp;
+      <a href="javascript:;" onclick="set_a_enter(4)">导入主题</a>
+    </div>
     <div id="about_box">
       <h2>关于</h2>
       <p>作者:
@@ -104,22 +117,12 @@
       <font color="#323232">音乐盒APP<a target="_blank" style="font-size: 14px;"
           href="https://ali.mu-jie.cc/static/%E6%98%94%E6%9E%AB%E9%9F%B3%E4%B9%90%E7%9B%92.apk"> 点击下载</a>(仅安卓)</font>
       <p>
+        版本: v<span id="version"></span>
+      </p>
+      <p>
         <a class="link" target="_blank" style="font-size: 12px;" href="https://mu-jie.cc/static-pages/zanshang.html">buy
           me a juice ^o^</a>
       </p>
-    </div>
-    <div id="backups_box">
-      <h2>备份</h2>
-      <h3 style="display: inline;">列表与歌单&emsp;</h3>
-      <a href="javascript:;" class="export_btn" onclick="backup_onclick('export')"
-        data-clipboard-text="copy_content">导出备份</a>
-      &ensp;
-      <a href="javascript:;" onclick="backup_onclick('import')" data-clipboard-text="copy_content">恢复数据</a>
-      <br>
-      <h3 style="display: inline;">主题&emsp;</h3>
-      <a href="javascript:;" onclick="set_a_enter(5)" class="export_btn" data-clipboard-text="copy_content">导出主题</a>
-      &ensp;
-      <a href="javascript:;" onclick="set_a_enter(4)">导入主题</a>
     </div>
     <div id="play_time"></div>
     <div class="content_box">

@@ -485,6 +485,7 @@ onIFrameLoaded(myIframe, function () {
   console.log('iframe已加载完成');
   theme.init();
   listBtn_onclick();
+  iframe.document.getElementById('version').innerHTML = Version;
 });
 
 function inputBlur() {
