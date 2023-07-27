@@ -108,7 +108,9 @@ function theme_set(method, val) {
       theme.setList(JSON.parse(val)["list"]);
       theme.setBtn(JSON.parse(val)["btn"]);
       theme.setLrc(JSON.parse(val)["lrc"]);
-      theme.setBgImg(JSON.parse(val)["bg"]);
+      if (!theme.isNull(JSON.parse(val)["bg"])) {
+        theme.setBgImg(JSON.parse(val)["bg"]);
+      }
       break;
     case 'export':
       var configure = {

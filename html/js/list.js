@@ -523,19 +523,24 @@ function set_a_enter(i) {
       setVal[i].value = '';
     }
       break;
-    //set_a_4
-    case 4: var val = prompt("将主题参数粘贴到此处", "");
-      if (val !== null && val !== '') {
-        window.parent.theme_set('import', val);
-      }
-      break;
-    //set_a_5
-    case 5:
-      copyCententFlag = 'theme';
-      document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
-      break;
   }
 }
+
+function theme_onclick(flag) {
+  if (flag == 'export') {
+    copyCententFlag = 'theme';
+    document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
+  }
+  else {
+    window.parent.dialog_text("将主题参数粘贴到此处")
+      .then(val => {
+        if (val !== null && val !== '') {
+          window.parent.theme_set('import', val);
+        }
+      });
+  }
+}
+
 function clear_onclick() {
   if (playFlag !== 'like') {
     window.parent.dialog_enter("是否清空当前播放列表？")
@@ -757,23 +762,26 @@ function backup_onclick(flag) {
     document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", backupData);
   }
   else {
-    let val = prompt("将备份数据粘贴到此处", "");
-    if (val !== null && val !== '') {
-      try {
-        let obj = JSON.parse(val);
-        if ('musicBoxList' in obj && 'playList' in obj) {
-          window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
-          window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
-          window.parent.dialogDisplay('列表与歌单恢复成功！');
+    window.parent.dialog_text("将备份数据粘贴到此处")
+      .then(val => {
+        if (val !== null && val !== '') {
+          try {
+            let obj = JSON.parse(val);
+            if ('musicBoxList' in obj && 'playList' in obj) {
+              window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
+              window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
+              window.parent.dialogDisplay('列表与歌单恢复成功！');
+            }
+            else {
+              window.parent.dialogDisplay('粘贴数据有误！');
+            }
+          }
+          catch (error) {
+            window.parent.dialogDisplay('粘贴数据有误！');
+          }
         }
-        else {
-          window.parent.dialogDisplay('粘贴数据有误！');
-        }
-      }
-      catch (error) {
-        window.parent.dialogDisplay('粘贴数据有误！');
-      }
-    }
+      });
+
   }
 }
 //调用父页面函数
