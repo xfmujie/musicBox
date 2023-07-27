@@ -309,7 +309,7 @@ function dialog_text(tips) {
       }
     });
     document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
-      resolve(false);
+      resolve(null);
       dialog.close();
     });
   });
