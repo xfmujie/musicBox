@@ -510,10 +510,6 @@ onIFrameLoaded(myIframe, function () {
   theme.init();
   listBtn_onclick();
   iframe.document.getElementById('version').innerHTML = Version;
-  dialog_enter('这是提示文字这是提示文字')
-    .then(isEnter => {
-      alert(isEnter);
-    });
 });
 
 function inputBlur() {
