@@ -588,7 +588,7 @@ if (localStorage.getItem('Version') !== Version) {
 version_span.innerHTML = Version;
 
 //访问量统计(个人搭建，不支持其他url)
-if (window.location.href == 'https://mu-jie.cc/musicBox/' || window.location.href == 'http://ali.mu-jie.cc/musicBox/index.html') {
+if (window.location.href == 'https://mu-jie.cc/musicBox/' || window.location.href == 'http://localhost:5930/') {
   fetch('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
     .then(response => response.text())
     .then(data => {
