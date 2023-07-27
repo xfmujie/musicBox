@@ -535,7 +535,18 @@ function theme_onclick(flag) {
     window.parent.dialog_text("将主题参数粘贴到此处")
       .then(val => {
         if (val !== null && val !== '') {
-          window.parent.theme_set('import', val);
+          try {
+            let obj = JSON.parse(val);
+            if ('bg' in obj) {
+              window.parent.theme_set('import', val);
+            }
+            else {
+              window.parent.dialogDisplay('粘贴数据有误！');
+            }
+          }
+          catch (error) {
+            window.parent.dialogDisplay('粘贴数据有误！');
+          }
         }
       });
   }
