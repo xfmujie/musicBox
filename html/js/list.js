@@ -1,4 +1,4 @@
-console.log = function () { };
+// console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -143,42 +143,48 @@ function add_del_onclick() {
           console.log(playList);
           displayChange('play');
         } else {
-          let isEnter = confirm(`是否从『喜欢』中移除《${playList[i]['name']}》？`);
-          if (isEnter) {
-            let list = {
-              'name': '我的喜欢',
-              'artist': ``,
-              'list': playList
-            }
-            playList.splice(i, 1);
-            localStorage.setItem('playList', JSON.stringify(playList));
-            console.log(playList);
-            displayChange('play');
-            musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
-            musicBoxList.splice(0, 1, list);
-            window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
-          }
+          window.parent.dialog_enter(`是否从『喜欢』中移除《${playList[i]['name']}》？`)
+            .then(isEnter => {
+              if (isEnter) {
+                let list = {
+                  'name': '我的喜欢',
+                  'artist': ``,
+                  'list': playList
+                }
+                playList.splice(i, 1);
+                localStorage.setItem('playList', JSON.stringify(playList));
+                console.log(playList);
+                displayChange('play');
+                musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+                musicBoxList.splice(0, 1, list);
+                window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+              }
+            });
         }
       }
       if (displayFlag === 'box') {
         if (i !== 0) {
-          let isEnter = confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`);
-          if (isEnter) {
-            musicBoxList.splice(i, 1);
-            window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
-            console.log(musicBoxList);
-            displayChange('box');
-          }
+          window.parent.dialog_enter(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`)
+            .then(isEnter => {
+              if (isEnter) {
+                musicBoxList.splice(i, 1);
+                window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+                console.log(musicBoxList);
+                displayChange('box');
+              }
+            });
         }
         else {
-          let isEnter = confirm(`是否清空『我的喜欢』？`);
-          if (isEnter) {
-            likeList('clear', []);
-            if (playFlag == 'like') {
-              localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
-              window.parent.listBtn_onclick();
-            }
-          }
+          window.parent.dialog_enter(`是否清空『我的喜欢』？`)
+            .then(isEnter => {
+              if (isEnter) {
+                likeList('clear', []);
+                if (playFlag == 'like') {
+                  localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+                  window.parent.listBtn_onclick();
+                }
+              }
+            });
         }
       }
     }
@@ -227,29 +233,34 @@ function play_btn_onclick() {
           document.getElementById('clear').innerHTML = '清空播放列表';
           window.parent.list_now('列表');
           console.log(`选中歌单${(i + 1).toString()}`);
-          let isEnter = confirm("是否覆盖当前播放列表？");
-          if (isEnter) {
-            localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
-          }
-          else {
-            let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
-            for (let i = 0; i < list.length; i++) {
-              playList.push(list[i]);
-            }
-            localStorage.setItem('playList', JSON.stringify(playList));
-            window.parent.dialogDisplay('已添加该歌单到播放列表');
-          }
-          window.parent.listBtn_onclick();
+          window.parent.dialog_enter("是否覆盖当前播放列表？")
+            .then(isEnter => {
+              if (isEnter) {
+                localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
+                window.parent.listBtn_onclick();
+              }
+              else {
+                let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
+                for (let i = 0; i < list.length; i++) {
+                  playList.push(list[i]);
+                }
+                localStorage.setItem('playList', JSON.stringify(playList));
+                window.parent.dialogDisplay('已添加该歌单到播放列表');
+                window.parent.listBtn_onclick();
+              }
+            });
         }
         else {
-          let isEnter = confirm("将覆盖当前播放列表，是否继续？");
-          if (isEnter) {
-            playFlag = 'like';
-            window.parent.list_now('喜欢');
-            document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
-            localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
-            window.parent.listBtn_onclick();
-          }
+          window.parent.dialog_enter("将覆盖当前播放列表，是否继续？")
+            .then(isEnter => {
+              if (isEnter) {
+                playFlag = 'like';
+                window.parent.list_now('喜欢');
+                document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
+                localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+                window.parent.listBtn_onclick();
+              }
+            });
         }
       }
     }
@@ -527,11 +538,13 @@ function set_a_enter(i) {
 }
 function clear_onclick() {
   if (playFlag !== 'like') {
-    let isEnter = confirm("是否清空当前播放列表？");
-    if (isEnter) {
-      localStorage.setItem('playList', '[]');
-      displayChange('play');
-    }
+    window.parent.dialog_enter("是否清空当前播放列表？")
+      .then(isEnter => {
+        if (isEnter) {
+          localStorage.setItem('playList', '[]');
+          displayChange('play');
+        }
+      });
   }
   else {
     playFlag = 'normal';
@@ -543,10 +556,12 @@ function clear_onclick() {
 
 /*音乐盒（歌单）*/
 function save_onclick() {
-  let name = prompt("设置歌单名称", "");
-  if (name) {
-    importFromPlay(name);
-  }
+  window.parent.dialog_text('设置歌单名称')
+    .then(value => {
+      if (value) {
+        importFromPlay(value);
+      }
+    });
 }
 
 //从播放列表保存歌单到云端和本地音乐盒
@@ -630,22 +645,30 @@ function getSongList() {
 }
 
 function flippingPages(flag) {
-  if (playListFlag && pageNum == playPage) {
-    let isEnter = confirm('正在播放搜索列表，翻页会影响轮播体验，是否继续？');
-    if (isEnter == false) {
-      return;
+  function a() {
+    if (flag) {
+      pageNum++;
+      getSearchResult(oldContent);
+      window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+    }
+    else if (pageNum > 1) {
+      pageNum--;
+      getSearchResult(oldContent);
+      window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
     }
   }
-  if (flag) {
-    pageNum++;
-    getSearchResult(oldContent);
-    window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+  if (playListFlag && pageNum == playPage) {
+    window.parent.dialog_enter('正在播放搜索列表，翻页会影响轮播体验，是否继续？')
+      .then(isEnter => {
+        if (isEnter) {
+          a();
+        }
+      });
   }
-  else if (pageNum > 1) {
-    pageNum--;
-    getSearchResult(oldContent);
-    window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+  else {
+    a();
   }
+
 }
 
 // 滚动到顶部

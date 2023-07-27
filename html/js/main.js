@@ -254,27 +254,8 @@ function list_now(flag) {
 //弹窗
 function dialogDisplay(content) {
   dialog.close();
-  dialog.innerHTML = content + '<p><br><div><button id="closeBtn">关闭</button></div>';
+  dialog.innerHTML = content + '<p><br><div><button class="dialogBtn" onclick="dialog.close();">关闭</button></div>';
   dialog.showModal();
-  var closeBtn = document.getElementById('closeBtn');
-  closeBtn.style.height = "30px";
-  closeBtn.style.width = "50%";
-  closeBtn.style.outline = "0";
-  closeBtn.style.borderRadius = "20px";
-  closeBtn.style.backgroundColor = "rgba(255,180,180,0.5)";
-  closeBtn.style.border = "0px";
-  closeBtn.addEventListener('touchstart', function () {
-    closeBtn.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-  })
-  closeBtn.addEventListener('mousedown', function () {
-    closeBtn.style.backgroundColor = 'rgba(0, 179, 255, 0.6)';
-  })
-  closeBtn.addEventListener('mouseup', function () {
-    closeBtn.style.backgroundColor = 'rgba(0,0,0,0)';
-  });
-  closeBtn.onclick = function () {
-    dialog.close();
-  }
 }
 
 //无按钮弹窗
@@ -287,6 +268,49 @@ function dialog_none_btn(action, content = "") {
   else {
     dialog.close();
   }
+}
+//确认弹窗
+function dialog_enter(tips) {
+  dialog.close();
+  dialog.innerHTML = `${tips}<br><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn" onclick="dialog.close()">取消</button>`;
+  document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
+  document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
+  dialog.showModal();
+  return new Promise((resolve) => {
+    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
+      resolve(true);
+      dialog.close();
+    });
+    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
+      resolve(false);
+      dialog.close();
+    });
+  });
+}
+
+//文本输入弹窗
+function dialog_text(tips) {
+  dialog.close();
+  dialog.innerHTML = `${tips}<br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn">取消</button>`;
+  document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
+  document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
+  dialog.showModal();
+  return new Promise((resolve) => {
+    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
+      resolve(document.getElementById('dialogText').value);
+      dialog.close();
+    });
+    document.getElementById('dialogText').addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        resolve(document.getElementById('dialogText').value);
+        dialog.close();
+      }
+    });
+    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
+      resolve(false);
+      dialog.close();
+    });
+  });
 }
 
 // 播放器
@@ -486,6 +510,10 @@ onIFrameLoaded(myIframe, function () {
   theme.init();
   listBtn_onclick();
   iframe.document.getElementById('version').innerHTML = Version;
+  dialog_enter('这是提示文字这是提示文字')
+    .then(isEnter => {
+      alert(isEnter);
+    });
 });
 
 function inputBlur() {
@@ -525,7 +553,7 @@ audioPlayer.addEventListener('play', function () {
   if (iframe.lastNum == 999) {
     dialogDisplay('当前无歌曲播放~');
     audioPlayer.pause();
-    timeCount = function(){};
+    timeCount = function () { };
   }
   else {
     timeCount = setInterval(function () {
