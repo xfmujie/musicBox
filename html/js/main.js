@@ -256,7 +256,7 @@ function list_now(flag) {
 //弹窗
 function dialogDisplay(content) {
   dialog.close();
-  dialog.innerHTML = content + '<p><br><div><button class="dialogBtn" onclick="dialog.close();">关闭</button></div>';
+  dialog.innerHTML = `<span id="tipsContent">${content}</span><p><br><div><button class="dialogBtn" onclick="dialog.close();">关闭</button></div>`;
   dialog.showModal();
 }
 
@@ -274,7 +274,7 @@ function dialog_none_btn(action, content = "") {
 //确认弹窗
 function dialog_enter(tips) {
   dialog.close();
-  dialog.innerHTML = `${tips}<br><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn" onclick="dialog.close()">取消</button>`;
+  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn" onclick="dialog.close()">取消</button>`;
   document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
   document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
   dialog.showModal();
@@ -303,7 +303,7 @@ function dialog_text(tips) {
         resolve(document.getElementById('dialogText').value);
         dialog.close();
       } else {
-        document.querySelector('#tipsContent').style.color = '#ff5353';
+        document.querySelector('#tipsContent').style.color = '#f31b1b';
       }
     });
     document.getElementById('dialogText').addEventListener("keydown", function (event) {

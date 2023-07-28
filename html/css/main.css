@@ -18,20 +18,25 @@ dialog {
   border-color: #ffffff;
   min-width: 280px;
   text-align: center;
-  animation: fade 50ms;
+  animation: fade 100ms;
   animation-timing-function: ease-out;
-    /* Safari */
-    -moz-user-select: none;
-    /* Firefox */
-    -ms-user-select: none;
-    /* Internet Explorer/Edge */
-    user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
 }
+
 dialog::backdrop {
   background: transparent;
   backdrop-filter: brightness(0.8) blur(0.5px);
-  animation: ltd 100ms;
+  animation: ltd 200ms;
   animation-timing-function: ease-out;
+}
+
+#tipsContent {
+  font-weight: 520;
 }
 
 @keyframes fade {
@@ -320,7 +325,7 @@ a {
   border-radius: 10px;
   border: 0;
   background-color: #ededed;
-  height: 30px;
+  height: 35px;
   width: calc(100% - 10px);
 }
 
