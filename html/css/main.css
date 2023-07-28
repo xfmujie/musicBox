@@ -17,6 +17,7 @@ dialog {
   border-width: 0px;
   border-color: #ffffff;
   min-width: 280px;
+  max-width: 80vw;
   text-align: center;
   animation: fade 100ms;
   animation-timing-function: ease-out;
@@ -307,7 +308,7 @@ a {
 
 .dialogBtn {
   height: 35px;
-  width: 35%;
+  width: 110px;
   outline: 0;
   border-radius: 20px;
   background-color: rgb(12, 160, 255);
