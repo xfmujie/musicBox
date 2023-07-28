@@ -293,14 +293,18 @@ function dialog_enter(tips) {
 //文本输入弹窗
 function dialog_text(tips) {
   dialog.close();
-  dialog.innerHTML = `${tips}<br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn">取消</button>`;
+  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn">取消</button>`;
   document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
   document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
   dialog.showModal();
   return new Promise((resolve) => {
     document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
-      resolve(document.getElementById('dialogText').value);
-      dialog.close();
+      if (document.getElementById('dialogText').value !== '') {
+        resolve(document.getElementById('dialogText').value);
+        dialog.close();
+      } else {
+        document.querySelector('#tipsContent').style.color = '#ff5353';
+      }
     });
     document.getElementById('dialogText').addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
