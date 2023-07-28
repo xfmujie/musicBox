@@ -308,8 +308,7 @@ function dialog_text(tips) {
     });
     document.getElementById('dialogText').addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
-        resolve(document.getElementById('dialogText').value);
-        dialog.close();
+        document.querySelectorAll('.dialogBtn')[0].click();
       }
     });
     document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
@@ -413,7 +412,7 @@ player.on('timeupdate', event => {
 });
 
 //物理按键监听
-document.addEventListener('keydown', function (event) { // 监听键盘按下事件
+document.getElementById('search_box').addEventListener('keydown', function (event) { // 监听键盘按下事件
   if (event.key === 'Enter') { // 如果按下的是回车键
     search_onclick();
   }

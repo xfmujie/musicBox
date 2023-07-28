@@ -30,8 +30,7 @@ dialog {
 }
 
 dialog::backdrop {
-  background: transparent;
-  backdrop-filter: brightness(0.8) blur(0.5px);
+  backdrop-filter: brightness(0.8) blur(0.8px);
   animation: ltd 200ms;
   animation-timing-function: ease-out;
 }
@@ -42,15 +41,14 @@ dialog::backdrop {
 
 @keyframes fade {
   from {
-    /* opacity: 0; */
+    opacity: 0;
     transform: scale(0.9);
-    backdrop-filter: brightness(1) blur(0px);
   }
 
   to {
-    /* opacity: 1; */
+    opacity: 1;
     transform: scale(1);
-    backdrop-filter: brightness(0.8) blur(0.5px);
+
   }
 }
 
@@ -60,7 +58,7 @@ dialog::backdrop {
   }
 
   to {
-    backdrop-filter: brightness(0.8) blur(1px);
+    backdrop-filter: brightness(0.8) blur(0.8px);
   }
 }
 
@@ -92,10 +90,6 @@ img {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 5px;
   box-shadow: 0 0 5px rgba(82, 82, 82, 0.5);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 
 .lrc_box {
@@ -265,7 +259,6 @@ td:hover {
 .iframe {
   width: 100%;
   height: calc(100% - 45px);
-  ;
   border-radius: 10px;
   border-width: 0px;
   padding: 0px;
@@ -317,7 +310,7 @@ a {
 }
 
 .dialogBtn:active {
-  background-color: rgb(12, 150, 235);
+  background-color: rgb(0, 145, 235);
 }
 
 #dialogText {
