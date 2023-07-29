@@ -182,6 +182,7 @@ function add_del_onclick() {
                 if (playFlag == 'like') {
                   localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
                   window.parent.listBtn_onclick();
+                  window.parent.playReset();
                 }
               }
             });
@@ -237,6 +238,7 @@ function play_btn_onclick() {
             .then(isEnter => {
               if (isEnter) {
                 localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
+                if (playListFlag == 0) window.parent.playReset();
                 window.parent.listBtn_onclick();
               }
               else {
@@ -258,6 +260,7 @@ function play_btn_onclick() {
                 window.parent.list_now('喜欢');
                 document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
                 localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
+                if (playListFlag == 0) window.parent.playReset();
                 window.parent.listBtn_onclick();
               }
             });
@@ -559,6 +562,7 @@ function clear_onclick() {
         if (isEnter) {
           localStorage.setItem('playList', '[]');
           displayChange('play');
+          if (playListFlag == 0) window.parent.playReset();
         }
       });
   }

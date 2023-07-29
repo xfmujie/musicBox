@@ -274,16 +274,21 @@ function dialog_none_btn(action, content = "") {
 //确认弹窗
 function dialog_enter(tips) {
   dialog.close();
-  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn" onclick="dialog.close()">取消</button>`;
-  document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
-  document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
+  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><button class="dialogBtn" onclick="dialog.close()">取消</button>&emsp;<button class="dialogBtn">确定</button>`;
+  document.querySelectorAll('.dialogBtn')[0].style.backgroundColor = '#f0f0f0';
+  document.querySelectorAll('.dialogBtn')[0].style.color = '#000000';
   dialog.showModal();
   return new Promise((resolve) => {
-    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
+    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
       resolve(true);
       dialog.close();
     });
-    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
+    document.getElementById('dialog').addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        document.querySelectorAll('.dialogBtn')[1].click();
+      }
+    });
+    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
       resolve(false);
       dialog.close();
     });
@@ -293,12 +298,12 @@ function dialog_enter(tips) {
 //文本输入弹窗
 function dialog_text(tips) {
   dialog.close();
-  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">确定</button>&emsp;<button class="dialogBtn">取消</button>`;
-  document.querySelectorAll('.dialogBtn')[1].style.backgroundColor = '#f0f0f0';
-  document.querySelectorAll('.dialogBtn')[1].style.color = '#000000';
+  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">取消</button>&emsp;<button class="dialogBtn">确定</button>`;
+  document.querySelectorAll('.dialogBtn')[0].style.backgroundColor = '#f0f0f0';
+  document.querySelectorAll('.dialogBtn')[0].style.color = '#000000';
   dialog.showModal();
   return new Promise((resolve) => {
-    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
+    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
       if (document.getElementById('dialogText').value !== '') {
         resolve(document.getElementById('dialogText').value);
         dialog.close();
@@ -308,10 +313,10 @@ function dialog_text(tips) {
     });
     document.getElementById('dialogText').addEventListener("keydown", function (event) {
       if (event.key === "Enter") {
-        document.querySelectorAll('.dialogBtn')[0].click();
+        document.querySelectorAll('.dialogBtn')[1].click();
       }
     });
-    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
+    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
       resolve(null);
       dialog.close();
     });
@@ -330,7 +335,7 @@ function isMobile() {
 
 
 //全局变量定义
-var lrc = [{ "lineLyric": "XF音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
+var lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
 var displayFlag = 0;
@@ -479,7 +484,7 @@ function switchSongs(parameter) {
   var singer = parameter['artist'];
   songName.innerHTML = name.slice(0, 15 + (name.length - name.replace(/&[a-z]+;/g, " ").length));
   singerName.innerHTML = singer.slice(0, 15 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length));
-  document.title = `XF音乐盒(${name.replace(/&[a-z]+;/g, " ")})`;
+  document.title = `${name.replace(/&[a-z]+;/g, " ")} - ${singer.replace(/&[a-z]+;/g, " ")}(昔枫音乐盒)`;
 }
 
 function search_onclick() {
@@ -639,11 +644,26 @@ like.addEventListener('dblclick', likeOnclick);
 
 window.addEventListener('error', function (event) {
   var target = event.target;
-  if (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3')) {
+  if (!isMobile() && (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3'))) {
     console.log('音频资源加载失败：', target.src);
     dialogDisplay('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a>');
   }
 }, true);
+
+
+function playReset(){
+  audioPlayer.src = 'https://ali.mu-jie.cc/static/null.mp3';
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  audioPlayer.autoplay = false;
+  lrc_count = 0;
+  songName.innerHTML = '歌曲';
+  singerName.innerHTML = '歌手';
+  lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
+  cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
+  iframe.lastNum = 999;
+}
+
 
 //调用子页面函数
 //iframe.函数名()
