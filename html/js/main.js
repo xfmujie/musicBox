@@ -659,6 +659,7 @@ function playReset(){
   lrc_count = 0;
   songName.innerHTML = '歌曲';
   singerName.innerHTML = '歌手';
+  document.title = '昔枫音乐盒';
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
   cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
   iframe.lastNum = 999;
