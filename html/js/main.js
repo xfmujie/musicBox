@@ -1,4 +1,7 @@
-console.log = function () { };
+if(window.location.href !== 'http://127.0.0.1:5500/html/')  console.log = function () { };
+
+// 实例化弹窗对象
+var popup = new Popup();
 
 //自动重试的请求函数
 function retryRequest(url, maxRetries = 5) {
@@ -141,10 +144,10 @@ plyrEm.style.width = '100%';
 // 下载按钮
 function downloadOnclick() {
   if (iframe.lastNum == 999) {
-    dialogDisplay('当前无歌曲播放~');
+    popup.alert('当前无歌曲播放~');
   }
   else {
-    dialogDisplay(`${songName.innerText}&nbsp;-&nbsp;${singerName.innerText}<br><br>点击右边三个点下载<br><audio controls="controls"><source id="tempAudio" src="${mp3Url}"></audio><br>ios下载通道: <a href="${mp3Url}" target="_blank" rel="noopener noreferrer">点击跳转下载</a>`);
+    popup.alert(`${songName.innerText}&nbsp;-&nbsp;${singerName.innerText}<br><br>点击右边三个点下载<br><audio controls="controls"><source id="tempAudio" src="${mp3Url}"></audio><br>ios下载通道: <a href="${mp3Url}" target="_blank" rel="noopener noreferrer">点击跳转下载</a>`);
   }
 }
 
@@ -253,75 +256,7 @@ function list_now(flag) {
   }
 }
 
-//弹窗
-function dialogDisplay(content) {
-  dialog.close();
-  dialog.innerHTML = `<span id="tipsContent">${content}</span><p><br><div><button class="dialogBtn" onclick="dialog.close();">关闭</button></div>`;
-  dialog.showModal();
-}
 
-//无按钮弹窗
-function dialog_none_btn(action, content = "") {
-  dialog.close();
-  if (action == 'open') {
-    dialog.innerHTML = content;
-    dialog.showModal();
-  }
-  else {
-    dialog.close();
-  }
-}
-//确认弹窗
-function dialog_enter(tips) {
-  dialog.close();
-  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><button class="dialogBtn" onclick="dialog.close()">取消</button>&emsp;<button class="dialogBtn">确定</button>`;
-  document.querySelectorAll('.dialogBtn')[0].style.backgroundColor = '#f0f0f0';
-  document.querySelectorAll('.dialogBtn')[0].style.color = '#000000';
-  dialog.showModal();
-  return new Promise((resolve) => {
-    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
-      resolve(true);
-      dialog.close();
-    });
-    document.getElementById('dialog').addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        document.querySelectorAll('.dialogBtn')[1].click();
-      }
-    });
-    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
-      resolve(false);
-      dialog.close();
-    });
-  });
-}
-
-//文本输入弹窗
-function dialog_text(tips) {
-  dialog.close();
-  dialog.innerHTML = `<span id="tipsContent">${tips}</span><br><br><input type="text" id="dialogText" value=""><p><br><button class="dialogBtn">取消</button>&emsp;<button class="dialogBtn">确定</button>`;
-  document.querySelectorAll('.dialogBtn')[0].style.backgroundColor = '#f0f0f0';
-  document.querySelectorAll('.dialogBtn')[0].style.color = '#000000';
-  dialog.showModal();
-  return new Promise((resolve) => {
-    document.querySelectorAll('.dialogBtn')[1].addEventListener('click', () => {
-      if (document.getElementById('dialogText').value !== '') {
-        resolve(document.getElementById('dialogText').value);
-        dialog.close();
-      } else {
-        document.querySelector('#tipsContent').style.color = '#f31b1b';
-      }
-    });
-    document.getElementById('dialogText').addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        document.querySelectorAll('.dialogBtn')[1].click();
-      }
-    });
-    document.querySelectorAll('.dialogBtn')[0].addEventListener('click', () => {
-      resolve(null);
-      dialog.close();
-    });
-  });
-}
 
 // 播放器
 controls.style.backgroundColor = 'rgba(181, 232, 255, 0)'; // 背景颜色
@@ -359,7 +294,7 @@ var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
 var Version = '3.1.2';
-var timeoutId;
+var timeCount;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -442,24 +377,9 @@ function getMusic(rid) {
   //获取歌曲链接
   retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
     .then(data => {
-      // console.log("Data:", data);
-      if (data == '该歌曲为付费内容，请下载酷我音乐客户端后付费收听') {
-        dialog_none_btn('open', '受酷我限制，现音乐盒不支持播放vip歌曲，预计今日内修复~');
-        songName.innerHTML = '即将播放下一首……';
-        singerName.innerHTML = '';
-        setTimeout(() => {
-          dialog_none_btn('close');
-        }, 2000);
-        timerId = setTimeout(() => {
-          dialog_none_btn('close');
-          iframe.nextPlay(1);
-        }, 5000);
-      }
-      else {
         mp3Url = data;
         console.log(mp3Url);
         playerPlay(mp3Url);
-      }
     })
     .catch(error => {
       console.log("Error:", error);
@@ -489,12 +409,12 @@ function switchSongs(parameter) {
 
 function search_onclick() {
   if (SearchContent.value == "") {
-    dialogDisplay('请输入歌曲/歌手');
+    popup.alert('请输入歌曲/歌手');
   }
   else {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
-    dialog_none_btn(action = 'open', content = '正在搜索……');
+    popup.msg('正在搜索……', 5);
   }
 }
 
@@ -534,7 +454,7 @@ if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime'
 //定时关闭
 function setTimedStop() {
   if (!(/^\d+$/.test(iframe.document.getElementById('setTimer').value))) {
-    dialogDisplay('请输入正确的数字');
+    popup.alert('请输入正确的数字');
     return;
   }
   setTimer = (iframe.document.getElementById('setTimer').value) * 60 + getTimestamp();
@@ -544,7 +464,7 @@ function setTimedStop() {
   }
   else {
     setTimedFlag = true;
-    dialogDisplay(`将于${iframe.document.getElementById('setTimer').value}分钟后停止播放`);
+    popup.alert(`将于${iframe.document.getElementById('setTimer').value}分钟后停止播放`);
     iframe.document.getElementById('timerTips').innerHTML = '定时已开启';
   }
 }
@@ -557,7 +477,7 @@ function getTimestamp() {
 //计时
 audioPlayer.addEventListener('play', function () {
   if (iframe.lastNum == 999) {
-    dialogDisplay('当前无歌曲播放~');
+    popup.alert('当前无歌曲播放~');
     audioPlayer.pause();
     timeCount = function () { };
   }
@@ -617,7 +537,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  dialogDisplay(`<font color="#323232">v${Version}更新<br><br>1.新增歌单和列表的数据备份恢复功能</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>1.新增歌单和列表的数据备份恢复功能</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -635,7 +555,7 @@ if (window.location.href == 'https://mu-jie.cc/musicBox/' || window.location.hre
 
 if (window.location.href == 'https://music-box-lilac.vercel.app/') {
   dialog.close();
-  dialogDisplay('该页面为测试版，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
+  popup.alert('该页面为测试版，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
 }
 
 const like = document.querySelector("#cover");
@@ -646,7 +566,7 @@ window.addEventListener('error', function (event) {
   var target = event.target;
   if (!isMobile() && (target.nodeName === 'AUDIO' && target.error !== null && audioPlayer.src.includes('mp3'))) {
     console.log('音频资源加载失败：', target.src);
-    dialogDisplay('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a>');
+    popup.alert('受浏览器限制，播放音频需要用户设置网站权限<br><a class="link" target="_blank" href="https://mu-jie.cc/static-pages/网站权限.html">查看设置步骤</a>');
   }
 }, true);
 
@@ -663,6 +583,7 @@ function playReset(){
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
   cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
   iframe.lastNum = 999;
+  clearInterval(timeCount);
 }
 
 

@@ -1,4 +1,4 @@
-// console.log = function () { };
+if(window.location.href !== 'http://127.0.0.1:5500/html/songList.html')  console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -11,12 +11,10 @@ function getSearchResult(SearchContent) {
   xhrList.send();
   xhrList.onreadystatechange = function () {
     if (xhrList.readyState == 4 && xhrList.status == 200) {
-      window.parent.dialog_none_btn(action = 'close');
-      clearTimeout(timer);
-      count = 0;
+      window.parent.popup.msgClose();
       window.parent.inputBlur();
       if (JSON.parse(xhrList.responseText)[0] === undefined) {
-        window.parent.dialogDisplay('没有更多歌曲~');
+        window.parent.popup.msg('没有更多歌曲~');
         pageNum--;
         return;
       }
@@ -26,42 +24,11 @@ function getSearchResult(SearchContent) {
       window.parent.resultBtn_onclick();  //自动点击搜索结果
       scrollToTop();
       oldContent = SearchContent;
-
-    }
-    else if (xhrList.status >= 400) {
-      if (pageNum > 1) pageNum--;
-      clearTimeout(timer);
-      count = 0;
-      window.parent.dialog_none_btn(action = 'open', content = '出错了，请重新搜索~');
-      autoCLose = true;
-      waitTime();
     }
   }
 }
 
 
-//等待
-function waitTime() {
-  timer = setTimeout(waitTime, 200);
-  count++;
-  console.log(count);
-  if (autoCLose == true && count > 7) {
-    window.parent.dialog_none_btn(action = 'close');
-    clearTimeout(timer);
-    count = 0;
-    autoCLose = false;
-  }
-  else {
-    if (count > 25) {
-      window.parent.dialog_none_btn(action = 'close');
-      window.parent.dialog_none_btn(action = 'open', content = '出错了，请重试~');
-      clearTimeout(timer);
-      count = 0;
-      autoCLose = true;
-      waitTime();
-    }
-  }
-}
 
 //显示列表
 function cloned(clonedList) {
@@ -119,7 +86,7 @@ function add_del_onclick() {
 
       if (displayFlag === 'search') {
         if (playFlag == 'like') {
-          window.parent.dialogDisplay('『喜欢』模式下无法进行此操作~');
+          window.parent.popup.alert('『喜欢』模式下无法进行此操作~');
         }
         else {
           var pic = displayList[i]["pic"];
@@ -132,7 +99,7 @@ function add_del_onclick() {
           }
           playList.push(addSong);
           localStorage.setItem('playList', JSON.stringify(playList));
-          window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`);
+          window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`);
           //console.log(playList);
         }
       }
@@ -140,10 +107,12 @@ function add_del_onclick() {
         if (playFlag !== 'like') {
           playList.splice(i, 1);
           localStorage.setItem('playList', JSON.stringify(playList));
+          if (i < lastNum) lastNum--;
+          else if (i == lastNum) window.parent.playReset();
           console.log(playList);
           displayChange('play');
         } else {
-          window.parent.dialog_enter(`是否从『喜欢』中移除《${playList[i]['name']}》？`)
+          window.parent.popup.confirm(`是否从『喜欢』中移除《${playList[i]['name']}》？`)
             .then(isEnter => {
               if (isEnter) {
                 let list = {
@@ -153,6 +122,8 @@ function add_del_onclick() {
                 }
                 playList.splice(i, 1);
                 localStorage.setItem('playList', JSON.stringify(playList));
+                if (i < lastNum) lastNum--;
+                else if (i == lastNum) window.parent.playReset();
                 console.log(playList);
                 displayChange('play');
                 musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
@@ -164,7 +135,7 @@ function add_del_onclick() {
       }
       if (displayFlag === 'box') {
         if (i !== 0) {
-          window.parent.dialog_enter(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`)
+          window.parent.popup.confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`)
             .then(isEnter => {
               if (isEnter) {
                 musicBoxList.splice(i, 1);
@@ -175,7 +146,7 @@ function add_del_onclick() {
             });
         }
         else {
-          window.parent.dialog_enter(`是否清空『我的喜欢』？`)
+          window.parent.popup.confirm(`是否清空『我的喜欢』？`)
             .then(isEnter => {
               if (isEnter) {
                 likeList('clear', []);
@@ -194,10 +165,8 @@ function add_del_onclick() {
 
 //播放按钮按下
 function play_btn_onclick() {
-  /* window.parent.dialog_none_btn(action='close');
-  window.parent.dialogDisplay('音乐盒维护中……<br>(顺便骂一句没事干的酷我后端整天改接口)');
+  /* window.parent.popup.alert('音乐盒维护中……');
   return; */
-  window.parent.clearTimeout(window.parent.timerId);
   for (let i = 0; i < displayList.length; i++) {
     document.getElementById(`play_btn${i}`).onclick = function () {
       if (displayFlag !== 'box') {
@@ -234,7 +203,7 @@ function play_btn_onclick() {
           document.getElementById('clear').innerHTML = '清空播放列表';
           window.parent.list_now('列表');
           console.log(`选中歌单${(i + 1).toString()}`);
-          window.parent.dialog_enter("是否覆盖当前播放列表？")
+          window.parent.popup.confirm("是否覆盖当前播放列表？")
             .then(isEnter => {
               if (isEnter) {
                 localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
@@ -247,13 +216,13 @@ function play_btn_onclick() {
                   playList.push(list[i]);
                 }
                 localStorage.setItem('playList', JSON.stringify(playList));
-                window.parent.dialogDisplay('已添加该歌单到播放列表');
+                window.parent.popup.alert('已添加该歌单到播放列表');
                 window.parent.listBtn_onclick();
               }
             });
         }
         else {
-          window.parent.dialog_enter("将覆盖当前播放列表，是否继续？")
+          window.parent.popup.confirm("将覆盖当前播放列表，是否继续？")
             .then(isEnter => {
               if (isEnter) {
                 playFlag = 'like';
@@ -426,9 +395,6 @@ function displayChange(flag) {
 var displayList = [];
 var playList = JSON.parse(localStorage.getItem('playList'));
 var searchList = [];
-var count = 0;
-var timer = 0;
-var autoCLose = false;
 var isAgain = false;
 var displayFlag = 'play';
 var playListFlag = 0;
@@ -482,10 +448,10 @@ function set_a_enter(i) {
     case 0: if (setVal[i].value !== '') {
       window.parent.theme_set('list', setVal[i].value);
       if (setVal[i].value == '0') {
-        window.parent.dialogDisplay(`列表颜色已重置`);
+        window.parent.popup.alert(`列表颜色已重置`);
       }
       else {
-        window.parent.dialogDisplay(`列表颜色已设置为${setVal[i].value}`);
+        window.parent.popup.alert(`列表颜色已设置为${setVal[i].value}`);
       }
       setVal[i].value = '';
     }
@@ -494,10 +460,10 @@ function set_a_enter(i) {
     case 1: if (setVal[i].value !== '') {
       window.parent.theme_set('btn', setVal[i].value);
       if (setVal[i].value == '0') {
-        window.parent.dialogDisplay(`选项卡颜色已重置`);
+        window.parent.popup.alert(`选项卡颜色已重置`);
       }
       else {
-        window.parent.dialogDisplay(`选项卡颜色已设置为${setVal[i].value}`);
+        window.parent.popup.alert(`选项卡颜色已设置为${setVal[i].value}`);
       }
       setVal[i].value = '';
     }
@@ -506,10 +472,10 @@ function set_a_enter(i) {
     case 2: if (setVal[i].value !== '') {
       window.parent.theme_set('lrc', setVal[i].value);
       if (setVal[i].value == '0') {
-        window.parent.dialogDisplay(`歌词高亮颜色已重置`);
+        window.parent.popup.alert(`歌词高亮颜色已重置`);
       }
       else {
-        window.parent.dialogDisplay(`歌词高亮颜色已设置为${setVal[i].value}`);
+        window.parent.popup.alert(`歌词高亮颜色已设置为${setVal[i].value}`);
       }
       setVal[i].value = '';
     }
@@ -518,10 +484,10 @@ function set_a_enter(i) {
     case 3: if (setVal[i].value !== '') {
       window.parent.theme_set('bg', setVal[i].value);
       if (setVal[i].value == '0') {
-        window.parent.dialogDisplay(`背景图片已重置`);
+        window.parent.popup.alert(`背景图片已重置`);
       }
       else {
-        window.parent.dialogDisplay(`背景图片已设置为<br><img  height="220px" src="${setVal[i].value}"/>`);
+        window.parent.popup.alert(`背景图片已设置为<br><img  height="220px" src="${setVal[i].value}"/>`);
       }
       setVal[i].value = '';
     }
@@ -535,7 +501,7 @@ function theme_onclick(flag) {
     document.querySelectorAll('.export_btn')[1].setAttribute("data-clipboard-text", window.parent.theme_set('export'));
   }
   else {
-    window.parent.dialog_text("将主题参数粘贴到此处")
+    window.parent.popup.prompt("将主题参数粘贴到此处")
       .then(val => {
         if (val !== null && val !== '') {
           try {
@@ -544,11 +510,11 @@ function theme_onclick(flag) {
               window.parent.theme_set('import', val);
             }
             else {
-              window.parent.dialogDisplay('粘贴数据有误！');
+              window.parent.popup.alert('粘贴数据有误！');
             }
           }
           catch (error) {
-            window.parent.dialogDisplay('粘贴数据有误！');
+            window.parent.popup.alert('粘贴数据有误！');
           }
         }
       });
@@ -557,7 +523,7 @@ function theme_onclick(flag) {
 
 function clear_onclick() {
   if (playFlag !== 'like') {
-    window.parent.dialog_enter("是否清空当前播放列表？")
+    window.parent.popup.confirm("是否清空当前播放列表？")
       .then(isEnter => {
         if (isEnter) {
           localStorage.setItem('playList', '[]');
@@ -568,7 +534,7 @@ function clear_onclick() {
   }
   else {
     playFlag = 'normal';
-    window.parent.dialogDisplay('已恢复普通列表模式~');
+    window.parent.popup.alert('已恢复普通列表模式~');
     document.getElementById('clear').innerHTML = '清空播放列表';
     window.parent.list_now('列表');
   }
@@ -576,7 +542,7 @@ function clear_onclick() {
 
 /*音乐盒（歌单）*/
 function save_onclick() {
-  window.parent.dialog_text('设置歌单名称')
+  window.parent.popup.prompt('设置歌单名称')
     .then(value => {
       if (value) {
         importFromPlay(value);
@@ -594,17 +560,19 @@ function importFromPlay(name) {
   musicBoxData.open('post', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
   musicBoxData.setRequestHeader('Content-Type', 'application/json');
   musicBoxData.send(JSON.stringify(list));
-  window.parent.dialog_none_btn(action = 'open', content = '正在添加……');
+  window.parent.popup.msg('正在添加……', 5, function () {
+    window.parent.popup.alert('添加超时, 请重试');
+  });
   musicBoxData.onreadystatechange = function () {
     if (musicBoxData.readyState == 4 && musicBoxData.status == 200) {
-      window.parent.dialog_none_btn(action = 'close');
+      window.parent.popup.msgClose();
       list = {
         'name': name,
         //此处artist为歌单的ID号
         'artist': `ID${musicBoxData.responseText}`,
         'list': displayList
       };
-      window.parent.dialogDisplay(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${name}》</font><br><font size="2px color="#696969">已保存到音乐盒</font>`);
+      window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${name}》</font><br><font size="2px color="#696969">已保存到音乐盒</font>`);
       musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
       musicBoxList.push(list);
       window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
@@ -627,7 +595,7 @@ function getSongList() {
   let reg2 = /\d{10,}/g;
   let par = '';
   if (!reg1.test(ID) && !reg2.test(ID)) {
-    window.parent.dialogDisplay('请输入正确的歌单ID (如: 10000)<br>或酷我歌单链接');
+    window.parent.popup.alert('请输入正确的歌单ID (如: 10000)<br>或酷我歌单链接');
     return;
   }
   if (reg1.test(ID))
@@ -638,14 +606,16 @@ function getSongList() {
   var getMusicBoxList = new XMLHttpRequest();
   getMusicBoxList.open('get', `https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
   getMusicBoxList.send();
-  window.parent.dialog_none_btn(action = 'open', content = '正在加载歌单……');
+  window.parent.popup.msg('正在加载歌单……', 5, function () {
+    window.parent.popup.alert('加载超时, 请重试');
+  });
   getMusicBoxList.onreadystatechange = function () {
     if (getMusicBoxList.readyState == 4 && getMusicBoxList.status == 200) {
-      window.parent.dialog_none_btn('close');
+      window.parent.popup.msgClose();
       let responseText = JSON.parse(getMusicBoxList.responseText);
       if (responseText["results"][0] !== undefined) {
         console.log(responseText["results"][0]);
-        window.parent.dialogDisplay(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>`);
+        window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>`);
         list = {
           'name': responseText["results"][0]["Name"],
           //此处artist为歌单的ID号
@@ -658,7 +628,7 @@ function getSongList() {
         window.parent.boxBtn_onclick();
         idSearch.value = '';
       } else {
-        window.parent.dialogDisplay('歌单不存在~');
+        window.parent.popup.alert('歌单不存在~');
       }
     }
   }
@@ -669,23 +639,28 @@ function flippingPages(flag) {
     if (flag) {
       pageNum++;
       getSearchResult(oldContent);
-      window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 5, function () {
+        pageNum--;
+        window.parent.popup.alert('加载超时, 请重试');
+      });
     }
     else if (pageNum > 1) {
       pageNum--;
       getSearchResult(oldContent);
-      window.parent.dialog_none_btn(action = 'open', content = `<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`);
+      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 5, function () {
+        pageNum++;
+        window.parent.popup.alert('加载超时, 请重试');
+      });
     }
   }
   if (playListFlag && pageNum == playPage) {
-    window.parent.dialog_enter('正在播放搜索列表，翻页会影响轮播体验，是否继续？')
+    window.parent.popup.confirm('正在播放搜索列表，翻页会影响轮播体验，是否继续？')
       .then(isEnter => {
         if (isEnter) {
           a();
         }
       });
-  }
-  else {
+  } else {
     a();
   }
 
@@ -703,18 +678,18 @@ function scrollToTop() {
 let clipboard = new ClipboardJS('.export_btn');
 clipboard.on('success', function (e) {
   console.log('已复制文本：' + e.text);
-  //window.parent.dialogDisplay(`已复制文本：${e.text}`);
+  //window.parent.popup.alert(`已复制文本：${e.text}`);
   if (copyCententFlag == 'theme') {
-    window.parent.dialogDisplay('主题参数复制成功！');
+    window.parent.popup.alert('主题参数复制成功！');
   }
   else {
-    window.parent.dialogDisplay('备份数据复制成功！');
+    window.parent.popup.alert('备份数据复制成功！');
   }
   e.clearSelection();
 });
 clipboard.on('error', function (e) {
   console.error('出错了：' + e.action);
-  window.parent.dialogDisplay('出错了！');
+  window.parent.popup.alert('出错了！');
 });
 
 function likeList(initFlag = 'init', list) {
@@ -746,14 +721,11 @@ function likeListAdd() {
     if (playListFlag == 0) {
       if (playList.length > lastNum) {
         list.push(playList[lastNum]);
-        window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${playList[lastNum]["name"]}(${playList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
-      }
-      else {
-        window.parent.dialogDisplay('无法添加，请检查播放列表是否已被清空~');
+        window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${playList[lastNum]["name"]}(${playList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
       }
     } else {
       list.push(searchList[lastNum]);
-      window.parent.dialogDisplay(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${searchList[lastNum]["name"]}(${searchList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
+      window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${searchList[lastNum]["name"]}(${searchList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
     }
     likeList('add', list);
     if (playFlag == 'like') {
@@ -762,7 +734,7 @@ function likeListAdd() {
     }
   }
   else {
-    window.parent.dialogDisplay('当前无歌曲播放~');
+    window.parent.popup.alert('当前无歌曲播放~');
   }
 }
 likeList('init');
@@ -777,7 +749,7 @@ function backup_onclick(flag) {
     document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", backupData);
   }
   else {
-    window.parent.dialog_text("将备份数据粘贴到此处")
+    window.parent.popup.prompt("将备份数据粘贴到此处")
       .then(val => {
         if (val !== null && val !== '') {
           try {
@@ -785,14 +757,14 @@ function backup_onclick(flag) {
             if ('musicBoxList' in obj && 'playList' in obj) {
               window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
               window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
-              window.parent.dialogDisplay('列表与歌单恢复成功！');
+              window.parent.popup.alert('列表与歌单恢复成功！');
             }
             else {
-              window.parent.dialogDisplay('粘贴数据有误！');
+              window.parent.popup.alert('粘贴数据有误！');
             }
           }
           catch (error) {
-            window.parent.dialogDisplay('粘贴数据有误！');
+            window.parent.popup.alert('粘贴数据有误！');
           }
         }
       });
