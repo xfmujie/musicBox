@@ -8,61 +8,6 @@ body {
   background-image: var(--bg-image);
 }
 
-dialog {
-  color: #3b3b3b;
-  background-color: rgb(248, 248, 248);
-  box-shadow: 0 0 2px rgba(85, 85, 85, 0.7);
-  border-radius: 15px;
-  transition-duration: 200ms;
-  border-width: 0px;
-  border-color: #ffffff;
-  min-width: 280px;
-  max-width: 80vw;
-  text-align: center;
-  animation: fade 100ms;
-  animation-timing-function: ease-out;
-  /* Safari */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-}
-
-dialog::backdrop {
-  backdrop-filter: brightness(0.8) blur(0.8px);
-  animation: ltd 200ms;
-  animation-timing-function: ease-out;
-}
-
-/* #tipsContent {
-  font-weight: 520;
-} */
-
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-
-  }
-}
-
-@keyframes ltd {
-  from {
-    backdrop-filter: brightness(1) blur(0px);
-  }
-
-  to {
-    backdrop-filter: brightness(0.8) blur(0.8px);
-  }
-}
-
-
 .lrc {
   color: #696969;
   padding-top: 15px;
@@ -297,30 +242,6 @@ a {
 
 .likeBtn {
   display: inline;
-}
-
-.dialogBtn {
-  height: 35px;
-  width: 110px;
-  outline: 0;
-  border-radius: 20px;
-  background-color: rgb(12, 160, 255);
-  color: #ffffff;
-  border: 0;
-}
-
-.dialogBtn:active {
-  background-color: rgb(0, 145, 235);
-}
-
-#dialogText {
-  padding-left: 10px;
-  outline: 0;
-  border-radius: 10px;
-  border: 0;
-  background-color: #ededed;
-  height: 35px;
-  width: calc(100% - 10px);
 }
 
 /*响应式媒体查询*/
