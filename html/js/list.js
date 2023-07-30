@@ -1,4 +1,4 @@
-if(window.location.href !== 'http://127.0.0.1:5500/html/songList.html')  console.log = function () { };
+if (window.location.href !== 'http://127.0.0.1:5500/html/songList.html') console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -107,8 +107,10 @@ function add_del_onclick() {
         if (playFlag !== 'like') {
           playList.splice(i, 1);
           localStorage.setItem('playList', JSON.stringify(playList));
-          if (i < lastNum) lastNum--;
-          else if (i == lastNum) window.parent.playReset();
+          if (playListFlag == 0) {
+            if (i < lastNum) lastNum--;
+            else if (i == lastNum) window.parent.playReset();
+          }
           console.log(playList);
           displayChange('play');
         } else {
@@ -122,8 +124,10 @@ function add_del_onclick() {
                 }
                 playList.splice(i, 1);
                 localStorage.setItem('playList', JSON.stringify(playList));
-                if (i < lastNum) lastNum--;
-                else if (i == lastNum) window.parent.playReset();
+                if (playListFlag == 0) {
+                  if (i < lastNum) lastNum--;
+                  else if (i == lastNum) window.parent.playReset();
+                }
                 console.log(playList);
                 displayChange('play');
                 musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
