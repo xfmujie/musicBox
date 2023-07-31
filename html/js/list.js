@@ -63,7 +63,7 @@ function cloned(clonedList) {
     clonedDiv.querySelector(`#songName${iStr}`).innerHTML = name.slice(0, 20 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + '<br><p class="singerName">' + singer.slice(0, 25 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length)) + '</p>';
     document.body.appendChild(clonedDiv);// 将克隆的div元素添加到页面上
   }
-  window.scrollTo(0, pagePX);
+  window.scrollTo(0, scrollToPx);
 }
 
 //清空显示
@@ -191,13 +191,15 @@ function play_btn_onclick() {
           playListFlag = 0;
           window.parent.list_now(0);
           pagePX = window.scrollY;
+          SearchPagePX = 0;
           displayChange('play');
         }
         else {
           playListFlag = 1;
           playPage = pageNum;
           window.parent.list_now(1);
-          pagePX = window.scrollY;
+          SearchPagePX = window.scrollY;
+          pagePX = 0;
           displayChange('search');
         }
       }
@@ -294,7 +296,7 @@ function nextPlay(flag) {
     var pic = List[nextNum]["pic"];
     pic = pic.replace(/\/\d+\//, "/300/");
     if (displayFlag == 'search') {
-      pagePX = (lastNum - 2) * 68 - 90;
+      SearchPagePX = (lastNum - 2) * 68 - 90;
       displayChange('search');
     }
   }
@@ -302,7 +304,7 @@ function nextPlay(flag) {
     List = playList;
     pic = List[nextNum]["pic"];
     if (displayFlag == 'play') {
-      pagePX = pagePX = (lastNum + 2) * 68 - 90;
+      pagePX = (lastNum + 2) * 68 - 90;
       displayChange('play');
     }
   }
@@ -340,6 +342,7 @@ function displayChange(flag) {
     } else {
       playListPageEmDisplay('none');
     }
+    scrollToPx = pagePX;
     cloned(displayList);
     isAgain = true;
     play_btn_onclick();
@@ -354,6 +357,7 @@ function displayChange(flag) {
     box.style.display = 'none';
     playListPageEmDisplay('none');
     displayList = searchList;
+    scrollToPx = SearchPagePX;
     cloned(displayList);
     isAgain = true;
     play_btn_onclick();
@@ -418,6 +422,8 @@ var pageNum = 1;
 var oldContent = '';
 var playPage = 0;
 var pagePX = 0;
+var SearchPagePX = 0;
+var scrollToPx = 0;
 var playFlag = 'normal';
 var copyCententFlag = '';
 
