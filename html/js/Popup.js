@@ -2,8 +2,8 @@
  * @file Popup.js
  * @description 利用html的<dialog>标签实现常用模态弹窗显示
  * @author 昔枫沐杰
- * @github https://github.com/xfmujie
- * @date 修改日期: 2023/7/30
+ * @github https://github.com/xfmujie/html-popup
+ * @date 创建日期: 2023/7/30
  */
 
 class Popup {
@@ -20,6 +20,8 @@ class Popup {
       border-color: #ffffff;
       min-width: 280px;
       max-width: 80vw;
+      word-wrap: break-word;
+      white-space: normal;
       text-align: center;
       animation: scaleAnimation 100ms;
       animation-timing-function: ease-out;
@@ -57,7 +59,7 @@ class Popup {
     .popupConfirmButton,
     .popupCancelButton {
       height: 35px;
-      width: 110px;
+      width: 100px;
       outline: 0;
       border-radius: 20px;
       background-color: rgb(12, 160, 255);
@@ -67,7 +69,7 @@ class Popup {
     }
     
     .popupConfirmButton:active {
-      background-color: rgb(0, 138, 224);
+      background-color: rgb(0, 150, 243);
     }
     
     .popupCancelButton {
@@ -76,7 +78,7 @@ class Popup {
     }
     
     .popupCancelButton:active {
-      background-color: rgb(225, 225, 225)
+      background-color: rgb(225, 225, 225);
     }
     
     #dialogInputText {
@@ -87,26 +89,6 @@ class Popup {
       background-color: #ededed;
       height: 35px;
       width: calc(100% - 10px);
-    }
-    
-    
-    @media screen and (min-width:760px) {
-    
-      .popupConfirmButton:hover,
-      .popupCancelButton:hover {
-        animation: buttonZoom 200ms;
-        transform: scale(1.1);
-      }
-    
-      @keyframes buttonZoom {
-        from {
-          transform: scale(1);
-        }
-    
-        to {
-          transform: scale(1.1);
-        }
-      }
     }`;
     document.head.appendChild(popupStyle);
     this.dialog = document.createElement("dialog");
