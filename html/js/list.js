@@ -112,6 +112,7 @@ function add_del_onclick() {
             else if (i == lastNum) window.parent.playReset();
           }
           console.log(playList);
+          pagePX = pagePX = window.scrollY;
           displayChange('play');
         } else {
           window.parent.popup.confirm(`是否从『喜欢』中移除《${playList[i]['name']}》？`)
@@ -129,6 +130,7 @@ function add_del_onclick() {
                   else if (i == lastNum) window.parent.playReset();
                 }
                 console.log(playList);
+                pagePX = window.scrollY;
                 displayChange('play');
                 musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
                 musicBoxList.splice(0, 1, list);
