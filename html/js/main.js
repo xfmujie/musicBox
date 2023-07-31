@@ -584,6 +584,7 @@ function playReset(){
   cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
   iframe.lastNum = 999;
   clearInterval(timeCount);
+  iframe.pagePX = 0;
 }
 
 
