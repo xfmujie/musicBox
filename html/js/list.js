@@ -19,6 +19,7 @@ function getSearchResult(SearchContent) {
         return;
       }
       searchList = JSON.parse(xhrList.responseText);
+      window.parent.searchList = JSON.parse(xhrList.responseText);
       remove();
       displayChange('search');  //更换显示内容
       window.parent.resultBtn_onclick();  //自动点击搜索结果
@@ -35,7 +36,7 @@ function cloned(clonedList) {
   console.log(clonedList);
   for (let i = 0; i < clonedList.length; i++) {
     var originalDiv = document.getElementById('song_box');    // 获取原始div元素
-    originalDiv.style.backgroundColor = window.parent.localStorage.getItem('themeListColor');
+    originalDiv.style.backgroundColor = localStorage.getItem('themeListColor');
     var clonedDiv = originalDiv.cloneNode(true);    // 复制原始div元素及其所有子元素和属性
     clonedDiv.classList.remove('song_box');               // 移除克隆节点上的旧类名
     clonedDiv.classList.add('new_song_box');                  // 添加克隆节点上的新类名
@@ -51,8 +52,9 @@ function cloned(clonedList) {
     play_btnid.setAttribute('id', `play_btn${iStr}`)
     //更改元素内容
     let songNum = clonedDiv.querySelector('#songNum');
-    songNum.textContent = (i + 1).toString().padStart(2, '0'); // 将数字转换成字符串并在左侧填充0以达到2位整数的效果;
-    if (i == lastNum && (playListFlag == window.parent.displayFlag)) {
+    if (window.parent.displayFlag == 'search') songNum.textContent = ((pageNum - 1) * 30 + i + 1).toString().padStart(2, '0');
+    else songNum.textContent = (i + 1).toString().padStart(2, '0');
+    if (i == window.parent.playingNum && (playListFlag == window.parent.displayFlag)) {
       songNum.innerHTML = '<i class="fa fa-music"></i>';
       songNum.style.color = 'rgb(0, 179, 255)';
       songNum.style.fontSize = '20px';
@@ -107,9 +109,9 @@ function add_del_onclick() {
         if (playFlag !== 'like') {
           playList.splice(i, 1);
           localStorage.setItem('playList', JSON.stringify(playList));
-          if (playListFlag == 0) {
-            if (i < lastNum) lastNum--;
-            else if (i == lastNum) window.parent.playReset();
+          if (playListFlag == 'play') {
+            if (i < window.parent.playingNum) window.parent.playingNum--;
+            else if (i == window.parent.playingNum) window.parent.playReset();
           }
           console.log(playList);
           pagePX = pagePX = window.scrollY;
@@ -125,27 +127,27 @@ function add_del_onclick() {
                 }
                 playList.splice(i, 1);
                 localStorage.setItem('playList', JSON.stringify(playList));
-                if (playListFlag == 0) {
-                  if (i < lastNum) lastNum--;
-                  else if (i == lastNum) window.parent.playReset();
+                if (playListFlag == 'play') {
+                  if (i < window.parent.playingNum) window.parent.playingNum--;
+                  else if (i == window.parent.playingNum) window.parent.playReset();
                 }
                 console.log(playList);
                 pagePX = window.scrollY;
                 displayChange('play');
-                musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+                musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
                 musicBoxList.splice(0, 1, list);
-                window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+                localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
               }
             });
         }
       }
       if (displayFlag === 'box') {
         if (i !== 0) {
-          window.parent.popup.confirm(`是否移除歌单《${JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`)
+          window.parent.popup.confirm(`是否移除歌单《${JSON.parse(localStorage.getItem('musicBoxList'))[i]['name']}》？（移除后仍可搜索歌单ID号添加）`)
             .then(isEnter => {
               if (isEnter) {
                 musicBoxList.splice(i, 1);
-                window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+                localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
                 console.log(musicBoxList);
                 displayChange('box');
               }
@@ -184,22 +186,23 @@ function play_btn_onclick() {
           pic: pic,
           name: displayList[i]["name"],
           artist: displayList[i]["artist"],
-          function: "switchSongs"
         }
         console.log(displayList);
         console.log(parameter);
         window.parent.switchSongs(parameter);
         // window.parent.postMessage(parameter, '/');
-        lastNum = i;
+        window.parent.playingNum = i;
         if (displayFlag == 'play') {
-          playListFlag = 0;
+          playListFlag = 'play';
+          window.parent.playListFlag = 'play';
           window.parent.list_now(0);
           pagePX = window.scrollY;
           SearchPagePX = 0;
           displayChange('play');
         }
         else {
-          playListFlag = 1;
+          playListFlag = 'search';
+          window.parent.playListFlag = 'search';
           playPage = pageNum;
           window.parent.list_now(1);
           SearchPagePX = window.scrollY;
@@ -217,11 +220,11 @@ function play_btn_onclick() {
             .then(isEnter => {
               if (isEnter) {
                 localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[i]['list']));
-                if (playListFlag == 0) window.parent.playReset();
+                if (playListFlag == 'play') window.parent.playReset();
                 window.parent.listBtn_onclick();
               }
               else {
-                let list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[i]['list'];
+                let list = JSON.parse(localStorage.getItem('musicBoxList'))[i]['list'];
                 for (let i = 0; i < list.length; i++) {
                   playList.push(list[i]);
                 }
@@ -239,7 +242,7 @@ function play_btn_onclick() {
                 window.parent.list_now('喜欢');
                 document.getElementById('clear').innerHTML = '<i class="fa fa-chevron-left"></i> 返回列表';
                 localStorage.setItem('playList', window.parent.JSON.stringify(JSON.parse(localStorage.getItem('musicBoxList'))[0]['list']));
-                if (playListFlag == 0) window.parent.playReset();
+                if (playListFlag == 'play') window.parent.playReset();
                 window.parent.listBtn_onclick();
               }
             });
@@ -249,82 +252,10 @@ function play_btn_onclick() {
   }
 }
 
-//上一首/下一首触发
-function switchSongs(flag) {
-  if (flag) {
-    if (playListFlag == 0 && lastNum + 1 < playList.length) {
-      var nextNum = lastNum + 1;
-      lastNum = lastNum + 1;
-    }
-    else if (playListFlag == 0 && lastNum + 1 >= playList.length) {
-      nextNum = 0;
-      lastNum = 0;
-    }
-    else if (playListFlag == 1 && lastNum + 1 < searchList.length) {
-
-      nextNum = lastNum + 1;
-      lastNum = lastNum + 1;
-    }
-    else if (playListFlag == 1 && lastNum + 1 >= searchList.length) {
-      nextNum = 0;
-      lastNum = 0;
-    }
-  }
-  else {
-    if (playListFlag == 0 && lastNum == 0) {
-      var nextNum = playList.length - 1;
-      lastNum = playList.length - 1;
-    }
-    else if (playListFlag == 0 && lastNum != 0) {
-      nextNum = lastNum - 1;
-      lastNum = lastNum - 1;
-    }
-    else if (playListFlag == 1 && lastNum == 0) {
-      nextNum = searchList.length - 1;
-      lastNum = searchList.length - 1;
-    }
-    else if (playListFlag == 1 && lastNum != 0) {
-      nextNum = lastNum - 1;
-      lastNum = lastNum - 1;
-    }
-  }
-  return nextNum;
-}
 
 
-//上一首/下一首开始播放
-function nextPlay(flag) {
-  var nextNum = switchSongs(flag);
-  if (playListFlag) {
-    var List = searchList;
-    var pic = List[nextNum]["pic"];
-    pic = pic.replace(/\/\d+\//, "/300/");
-    if (displayFlag == 'search') {
-      SearchPagePX = (lastNum - 2) * 68 - 90;
-      displayChange('search');
-    }
-  }
-  else {
-    List = playList;
-    pic = List[nextNum]["pic"];
-    if (displayFlag == 'play') {
-      pagePX = (lastNum + 2) * 68 - 90;
-      displayChange('play');
-    }
-  }
 
-  var parameter = {
-    rid: List[nextNum]["rid"],
-    pic: pic,
-    name: List[nextNum]["name"],
-    artist: List[nextNum]["artist"],
-    function: "switchSongs"
-  }
-  console.log(List);
-  console.log(parameter);
-  window.parent.switchSongs(parameter);
-  // window.parent.postMessage(parameter, '/');
-}
+
 
 function playListPageEmDisplay(display) {
   saveBtn.style.display = display;
@@ -339,6 +270,7 @@ function displayChange(flag) {
     document.getElementById('play_btn').innerHTML = '<i class="fa fa-play-circle">';
     remove();
     playList = JSON.parse(localStorage.getItem('playList'));
+    window.parent.playList = playList;
     displayList = playList;
     set.style.display = 'none';
     box.style.display = 'none';
@@ -383,7 +315,7 @@ function displayChange(flag) {
     box.style.display = 'inline';
     playListPageEmDisplay('none');
     page_num.style.display = 'none';
-    musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+    musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
     displayList = musicBoxList;
     cloned(displayList);
     //console.log(displayList);
@@ -411,8 +343,7 @@ var playList = JSON.parse(localStorage.getItem('playList'));
 var searchList = [];
 var isAgain = false;
 var displayFlag = 'play';
-var playListFlag = 0;
-var lastNum = 999;
+var playListFlag = 'play';
 var strayBirdsYiyan = "";
 var set = document.getElementById('set_box');
 var box = document.getElementById('box_box');
@@ -445,15 +376,6 @@ function loadplayTime(time) {
 }
 
 
-/*飞鸟集一言*/
-getStrayBirds();
-function getStrayBirds() {
-  fetch('https://api.mu-jie.cc/stray-birds/range?from=1&type=json')
-    .then(response => response.json())
-    .then(data => {
-      yiyan.innerHTML = `${data["cn"]}<br>——泰戈尔《飞鸟集》【${data["num"]}】`;
-    })
-}
 
 /*确定颜色 主题*/
 var a = document.getElementsByTagName('a');
@@ -544,7 +466,7 @@ function clear_onclick() {
         if (isEnter) {
           localStorage.setItem('playList', '[]');
           displayChange('play');
-          if (playListFlag == 0) window.parent.playReset();
+          if (playListFlag == 'play') window.parent.playReset();
         }
       });
   }
@@ -589,9 +511,9 @@ function importFromPlay(name) {
         'list': displayList
       };
       window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${name}》</font><br><font size="2px color="#696969">已保存到音乐盒</font>`);
-      musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+      musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
       musicBoxList.push(list);
-      window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+      localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
       window.parent.boxBtn_onclick();
     }
   }
@@ -638,9 +560,9 @@ function getSongList() {
           'artist': `ID${responseText["results"][0]["ID"]}`,
           'list': responseText["results"][0]["List"]
         };
-        musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+        musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
         musicBoxList.push(list);
-        window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+        localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
         window.parent.boxBtn_onclick();
         idSearch.value = '';
       } else {
@@ -714,7 +636,7 @@ function likeList(initFlag = 'init', list) {
     'artist': ``,
     'list': []
   }
-  musicBoxList = JSON.parse(window.parent.localStorage.getItem('musicBoxList'));
+  musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
   if (musicBoxList.length == 0) {
     musicBoxList.push(likeInit);
   }
@@ -728,20 +650,20 @@ function likeList(initFlag = 'init', list) {
     }
     musicBoxList.splice(0, 1, newLikeList);
   }
-  window.parent.localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
+  localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
 }
 
 function likeListAdd() {
-  if (lastNum !== 999) {
-    list = JSON.parse(window.parent.localStorage.getItem('musicBoxList'))[0].list;
-    if (playListFlag == 0) {
-      if (playList.length > lastNum) {
-        list.push(playList[lastNum]);
-        window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${playList[lastNum]["name"]}(${playList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
+  if (window.parent.playingNum !== 999) {
+    list = JSON.parse(localStorage.getItem('musicBoxList'))[0].list;
+    if (playListFlag == 'play') {
+      if (playList.length > window.parent.playingNum) {
+        list.push(playList[window.parent.playingNum]);
+        window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${playList[window.parent.playingNum]["name"]}(${playList[window.parent.playingNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
       }
     } else {
-      list.push(searchList[lastNum]);
-      window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${searchList[lastNum]["name"]}(${searchList[lastNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
+      list.push(searchList[window.parent.playingNum]);
+      window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${searchList[window.parent.playingNum]["name"]}(${searchList[window.parent.playingNum]["artist"]})</font><br><font size="2px color="#696969">到『喜欢』</font>`);
     }
     likeList('add', list);
     if (playFlag == 'like') {
@@ -759,8 +681,8 @@ function backup_onclick(flag) {
   if (flag == 'export') {
     copyCententFlag = 'export';
     let backupData = JSON.stringify({
-      playList: JSON.parse(window.parent.localStorage.getItem('playList')),
-      musicBoxList: JSON.parse(window.parent.localStorage.getItem('musicBoxList'))
+      playList: JSON.parse(localStorage.getItem('playList')),
+      musicBoxList: JSON.parse(localStorage.getItem('musicBoxList'))
     });
     document.querySelectorAll('.export_btn')[0].setAttribute("data-clipboard-text", backupData);
   }
@@ -771,8 +693,8 @@ function backup_onclick(flag) {
           try {
             let obj = JSON.parse(val);
             if ('musicBoxList' in obj && 'playList' in obj) {
-              window.parent.localStorage.setItem('playList', JSON.stringify(obj.playList));
-              window.parent.localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
+              localStorage.setItem('playList', JSON.stringify(obj.playList));
+              localStorage.setItem('musicBoxList', JSON.stringify(obj.musicBoxList));
               window.parent.popup.alert('列表与歌单恢复成功！');
             }
             else {

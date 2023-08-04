@@ -143,7 +143,7 @@ plyrEm.style.width = '100%';
 
 // 下载按钮
 function downloadOnclick() {
-  if (iframe.lastNum == 999) {
+  if (playingNum == 999) {
     popup.alert('当前无歌曲播放~');
   }
   else {
@@ -201,7 +201,7 @@ class Highlight {
 }
 const HL = new Highlight();
 function listBtn_onclick() {
-  displayFlag = 0;
+  displayFlag = 'play';
   //高亮当前按钮
   HL.yes(listBtn);
   //取消高亮其他3个按钮
@@ -211,7 +211,7 @@ function listBtn_onclick() {
   iframe.displayChange('play');
 }
 function resultBtn_onclick() {
-  displayFlag = 1;
+  displayFlag = 'search';
   HL.yes(resultBtn);
   HL.no(listBtn);
   HL.no(setBtn);
@@ -219,7 +219,7 @@ function resultBtn_onclick() {
   iframe.displayChange('search');
 }
 function setBtn_onclick() {
-  displayFlag = 999;
+  displayFlag = 'set';
   HL.yes(setBtn);
   HL.no(resultBtn);
   HL.no(listBtn);
@@ -227,7 +227,7 @@ function setBtn_onclick() {
   iframe.displayChange('set');
 }
 function boxBtn_onclick() {
-  displayFlag = 999;
+  displayFlag = 'box';
   HL.yes(boxBtn);
   HL.no(setBtn);
   HL.no(resultBtn);
@@ -273,7 +273,7 @@ function isMobile() {
 var lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
 var lrc_count = 0;
 var mp3Url = "";
-var displayFlag = 0;
+var displayFlag = 'play';
 var music_box = document.getElementById('music_box');
 var lrc1 = document.getElementById('lrc1');
 var lrc2 = document.getElementById('lrc2');
@@ -325,11 +325,11 @@ player.on('timeupdate', event => {
     }
     else {
       console.log('已自动下一首');
-      iframe.nextPlay(1);
-/*       iframe.postMessage({
-        function: "nextPlay",
-        flag: 1
-      }); */
+      nextPlay('next');
+      /*       iframe.postMessage({
+              function: "nextPlay",
+              flag: 1
+            }); */
     }
   }
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
@@ -474,7 +474,7 @@ function getTimestamp() {
 }
 //计时
 audioPlayer.addEventListener('play', function () {
-  if (iframe.lastNum == 999) {
+  if (playingNum == 999) {
     popup.alert('当前无歌曲播放~');
     audioPlayer.pause();
     timeCount = function () { };
@@ -581,6 +581,7 @@ function playReset() {
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
   cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
   iframe.lastNum = 999;
+  playingNum = 999;
   clearInterval(timeCount);
   iframe.pagePX = 0;
 }
@@ -594,7 +595,81 @@ function playReset() {
 }); */
 
 
+//上一首/下一首
+var playingNum = 999;
+var playListFlag = 'play';
+var searchList;
+var playList = JSON.parse(localStorage.getItem('playList'));
+var switchSongDelay;
+function nextPlay(flag) {
+  clearTimeout(switchSongDelay);
+  if (flag == 'next') {
+    if (playListFlag == 'play' && playingNum + 1 < playList.length) {
+      var nextNum = playingNum + 1;
+      playingNum = playingNum + 1;
+    }
+    else if (playListFlag == 'play' && playingNum + 1 >= playList.length) {
+      nextNum = 0;
+      playingNum = 0;
+    }
+    else if (playListFlag == 'search' && playingNum + 1 < searchList.length) {
+      nextNum = playingNum + 1;
+      playingNum = playingNum + 1;
+    }
+    else if (playListFlag == 'search' && playingNum + 1 >= searchList.length) {
+      nextNum = 0;
+      playingNum = 0;
+    }
+  } else {
+    if (playListFlag == 'play' && playingNum == 0) {
+      var nextNum = playList.length - 1;
+      playingNum = playList.length - 1;
+    }
+    else if (playListFlag == 'play' && playingNum != 0) {
+      nextNum = playingNum - 1;
+      playingNum = playingNum - 1;
+    }
+    else if (playListFlag == 'search' && playingNum == 0) {
+      nextNum = searchList.length - 1;
+      playingNum = searchList.length - 1;
+    }
+    else if (playListFlag == 'search' && playingNum != 0) {
+      nextNum = playingNum - 1;
+      playingNum = playingNum - 1;
+    }
+  }
 
+  if (playListFlag == 'play') {
+    var List = JSON.parse(localStorage.getItem('playList'));
+    pic = List[nextNum]["pic"];
+    if (displayFlag == 'play') {
+      iframe.pagePX = playingNum * 68 - 90;
+    }
+  } else {
+    List = searchList;
+    var pic = List[nextNum]["pic"];
+    pic = pic.replace(/\/\d+\//, "/300/");
+    if (displayFlag == 'search') {
+      iframe.SearchPagePX = (playingNum - 2) * 68;
+    }
+  }
+
+  switchSongDelay = setTimeout(() => {
+    let parameter = {
+      rid: List[nextNum]["rid"],
+      pic: pic,
+      name: List[nextNum]["name"],
+      artist: List[nextNum]["artist"],
+    }
+    console.log(List);
+    console.log(parameter);
+    switchSongs(parameter);
+  }, 300);
+
+  // postMessage(parameter, '/');
+  if (displayFlag == 'play' && playListFlag == 'play') listBtn_onclick();
+  if (displayFlag == 'search' && playListFlag == 'search') resultBtn_onclick();
+}
 //调用子页面函数
 //iframe.函数名()
 
