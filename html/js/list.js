@@ -180,14 +180,16 @@ function play_btn_onclick() {
         var pic = displayList[i]["pic"];
         pic = pic.replace(/\/\d+\//, "/300/");
         var parameter = {
-          "rid": displayList[i]["rid"],
-          "pic": pic,
-          "name": displayList[i]["name"],
-          "artist": displayList[i]["artist"]
+          rid: displayList[i]["rid"],
+          pic: pic,
+          name: displayList[i]["name"],
+          artist: displayList[i]["artist"],
+          function: "switchSongs"
         }
         console.log(displayList);
         console.log(parameter);
-        window.parent.switchSongs(parameter);
+        // window.parent.switchSongs(parameter);
+        window.parent.postMessage(parameter, '/');
         lastNum = i;
         if (displayFlag == 'play') {
           playListFlag = 0;
@@ -312,14 +314,16 @@ function nextPlay(flag) {
   }
 
   var parameter = {
-    "rid": List[nextNum]["rid"],
-    "pic": pic,
-    "name": List[nextNum]["name"],
-    "artist": List[nextNum]["artist"]
+    rid: List[nextNum]["rid"],
+    pic: pic,
+    name: List[nextNum]["name"],
+    artist: List[nextNum]["artist"],
+    function: "switchSongs"
   }
   console.log(List);
   console.log(parameter);
-  window.parent.switchSongs(parameter);
+  // window.parent.switchSongs(parameter);
+  window.parent.postMessage(parameter, '/');
 }
 
 function playListPageEmDisplay(display) {
@@ -783,5 +787,13 @@ function backup_onclick(flag) {
 
   }
 }
+
+window.addEventListener('message', function (event) {
+  var data = event.data; // 获取父页面发送的数据
+  console.log(data);
+  if (data.function == 'nextPlay') {
+    nextPlay(data.flag);
+  }
+});
 //调用父页面函数
 //window.parent.函数名();

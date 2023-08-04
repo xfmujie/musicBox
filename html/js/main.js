@@ -1,4 +1,4 @@
-if(window.location.href !== 'http://127.0.0.1:5500/html/')  console.log = function () { };
+if (window.location.href !== 'http://127.0.0.1:5500/html/') console.log = function () { };
 
 // 实例化弹窗对象
 var popup = new Popup();
@@ -325,7 +325,11 @@ player.on('timeupdate', event => {
     }
     else {
       console.log('已自动下一首');
-      iframe.nextPlay(1);
+      // iframe.nextPlay(1);
+      iframe.postMessage({
+        function: "nextPlay",
+        flag: 1
+      })
     }
   }
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
@@ -377,20 +381,14 @@ function getMusic(rid) {
   //获取歌曲链接
   retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
     .then(data => {
-        mp3Url = data;
-        console.log(mp3Url);
-        playerPlay(mp3Url);
+      mp3Url = data;
+      console.log(mp3Url);
+      audioPlayer.src = mp3Url;
+      audioPlayer.play();
     })
     .catch(error => {
       console.log("Error:", error);
     });
-}
-
-
-//播放音乐
-function playerPlay(url) {
-  audioPlayer.src = url;
-  audioPlayer.play();
 }
 
 //切换歌曲
@@ -571,7 +569,7 @@ window.addEventListener('error', function (event) {
 }, true);
 
 
-function playReset(){
+function playReset() {
   audioPlayer.src = 'https://ali.mu-jie.cc/static/null.mp3';
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
@@ -586,6 +584,15 @@ function playReset(){
   clearInterval(timeCount);
   iframe.pagePX = 0;
 }
+
+window.addEventListener('message', function (event) {
+  var data = event.data; // 获取子页面发送的数据
+  // console.log(data);
+  if (data.function == 'switchSongs') {
+    switchSongs(data);
+  }
+});
+
 
 
 //调用子页面函数
