@@ -325,11 +325,11 @@ player.on('timeupdate', event => {
     }
     else {
       console.log('已自动下一首');
-      // iframe.nextPlay(1);
-      iframe.postMessage({
+      iframe.nextPlay(1);
+/*       iframe.postMessage({
         function: "nextPlay",
         flag: 1
-      })
+      }); */
     }
   }
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
@@ -585,13 +585,13 @@ function playReset() {
   iframe.pagePX = 0;
 }
 
-window.addEventListener('message', function (event) {
+/* window.addEventListener('message', function (event) {
   var data = event.data; // 获取子页面发送的数据
   // console.log(data);
   if (data.function == 'switchSongs') {
     switchSongs(data);
   }
-});
+}); */
 
 
 

@@ -160,7 +160,7 @@ td:hover {
   position: relative;
   padding: 2px;
   background-color: #ffffff97;
-  left: calc(50% - 165px);
+  left: calc(50% - 306.17px/2);
   width: max-content;
   height: 30px;
   border-radius: 20px;
@@ -175,7 +175,7 @@ td:hover {
   background-color: #00000000;
   border: 0px;
   border-radius: 20px;
-  width: 78px;
+  width: 72px;
   height: 30px;
   outline: none;
   transition-duration: 50ms;

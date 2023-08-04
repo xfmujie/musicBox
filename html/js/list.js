@@ -188,8 +188,8 @@ function play_btn_onclick() {
         }
         console.log(displayList);
         console.log(parameter);
-        // window.parent.switchSongs(parameter);
-        window.parent.postMessage(parameter, '/');
+        window.parent.switchSongs(parameter);
+        // window.parent.postMessage(parameter, '/');
         lastNum = i;
         if (displayFlag == 'play') {
           playListFlag = 0;
@@ -322,8 +322,8 @@ function nextPlay(flag) {
   }
   console.log(List);
   console.log(parameter);
-  // window.parent.switchSongs(parameter);
-  window.parent.postMessage(parameter, '/');
+  window.parent.switchSongs(parameter);
+  // window.parent.postMessage(parameter, '/');
 }
 
 function playListPageEmDisplay(display) {
@@ -788,12 +788,12 @@ function backup_onclick(flag) {
   }
 }
 
-window.addEventListener('message', function (event) {
+/* window.addEventListener('message', function (event) {
   var data = event.data; // 获取父页面发送的数据
   console.log(data);
   if (data.function == 'nextPlay') {
     nextPlay(data.flag);
   }
-});
+}); */
 //调用父页面函数
 //window.parent.函数名();
