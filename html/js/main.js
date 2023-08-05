@@ -321,22 +321,10 @@ player.on('timeupdate', event => {
     var time_after_10 = Math.floor(parseFloat(lrc[lrc_count + 10]["time"])); // 向下取整，得到整数格式
   }
   var plyr_time = event.detail.plyr.currentTime;  // 当前时间（单位：秒）
-  var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
-  if (plyr_time > 3 && plyr_time == plyr_duration) {
-    if (modeFlag == 1) {
-      event.detail.plyr.currentTime = 0;
-      event.detail.plyr.play();
-      lrc_count = 0;
-    }
-    else {
-      console.log('已自动下一首');
-      nextPlay('next');
-      /*       iframe.postMessage({
-              function: "nextPlay",
-              flag: 1
-            }); */
-    }
-  }
+/*   var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
+    if (plyr_time > 3 && plyr_time == plyr_duration) {
+  
+    } */
   lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
   if (lrc_count + 1 < lrc.length) {
     lrc2.innerHTML = lrc[lrc_count + 1]["lineLyric"].slice(0, 50);
@@ -658,7 +646,6 @@ function nextPlay(flag) {
       iframe.SearchPagePX = (playingNum - 2) * 68;
     }
   }
-
   switchSongDelay = setTimeout(() => {
     let parameter = {
       rid: List[nextNum]["rid"],
@@ -670,11 +657,23 @@ function nextPlay(flag) {
     console.log(parameter);
     switchSongs(parameter);
   }, 300);
-
-  // postMessage(parameter, '/');
   if (displayFlag == 'play' && playListFlag == 'play') listBtn_onclick();
   if (displayFlag == 'search' && playListFlag == 'search') resultBtn_onclick();
 }
+
+//播放结束
+audioPlayer.addEventListener('ended', function () {
+  console.log('end');
+  if (modeFlag == 0) {
+    console.log('已自动下一首');
+    nextPlay('next');
+  }
+  else {
+    audioPlayer.currentTime = 0;
+    audioPlayer.play();
+    lrc_count = 0;
+  }
+});
 
 
 // 请求 Wake Lock
@@ -715,6 +714,9 @@ iframe.addEventListener('touchmove', (event) => {
     if (opBtnNow + 1 < opBtnFunc.length) opBtnFunc[opBtnNow + 1]();
   }
 });
+
+
+
 
 
 //调用子页面函数
