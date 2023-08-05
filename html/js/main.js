@@ -209,6 +209,7 @@ function listBtn_onclick() {
   HL.no(setBtn);
   HL.no(boxBtn);
   iframe.displayChange('play');
+  opBtnNow = 0;
 }
 function resultBtn_onclick() {
   displayFlag = 'search';
@@ -217,14 +218,7 @@ function resultBtn_onclick() {
   HL.no(setBtn);
   HL.no(boxBtn);
   iframe.displayChange('search');
-}
-function setBtn_onclick() {
-  displayFlag = 'set';
-  HL.yes(setBtn);
-  HL.no(resultBtn);
-  HL.no(listBtn);
-  HL.no(boxBtn);
-  iframe.displayChange('set');
+  opBtnNow = 1;
 }
 function boxBtn_onclick() {
   displayFlag = 'box';
@@ -233,6 +227,16 @@ function boxBtn_onclick() {
   HL.no(resultBtn);
   HL.no(listBtn);
   iframe.displayChange('box');
+  opBtnNow = 2;
+}
+function setBtn_onclick() {
+  displayFlag = 'set';
+  HL.yes(setBtn);
+  HL.no(resultBtn);
+  HL.no(listBtn);
+  HL.no(boxBtn);
+  iframe.displayChange('set');
+  opBtnNow = 3;
 }
 
 //当前播放的列表
@@ -295,6 +299,7 @@ var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
 var Version = '3.1.2';
 var timeCount;
+var opBtnNow = 0;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -670,6 +675,48 @@ function nextPlay(flag) {
   if (displayFlag == 'play' && playListFlag == 'play') listBtn_onclick();
   if (displayFlag == 'search' && playListFlag == 'search') resultBtn_onclick();
 }
+
+
+// 请求 Wake Lock
+navigator.wakeLock.request('screen')
+  .then((wakeLock) => {
+    console.log('成功获取 Wake Lock');
+  })
+
+
+// 屏幕滑动
+let startX = 0;
+// let startY = 0;
+let opBtnFunc = [
+  function () { listBtn_onclick() },
+  function () { resultBtn_onclick() },
+  function () { boxBtn_onclick() },
+  function () { setBtn_onclick() },
+]
+iframe.addEventListener('touchstart', (event) => {
+  startX = event.touches[0].clientX;
+  // startY = event.touches[0].clientY;
+});
+iframe.addEventListener('touchmove', (event) => {
+  const currentX = event.touches[0].clientX;
+  // const currentY = event.touches[0].clientY;
+  const deltaX = currentX - startX;
+  // const deltaY = currentY - startY;
+  if (deltaX > 250) {
+    console.log('左滑');
+    startX = event.touches[0].clientX;
+    console.log(startX);
+    if (opBtnNow != 0) opBtnFunc[opBtnNow - 1]();
+  }
+  else if (deltaX < -250) {
+    console.log('右滑');
+    startX = event.touches[0].clientX;
+    console.log(startX);
+    if (opBtnNow + 1 < opBtnFunc.length) opBtnFunc[opBtnNow + 1]();
+  }
+});
+
+
 //调用子页面函数
 //iframe.函数名()
 
