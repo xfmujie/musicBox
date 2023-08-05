@@ -701,13 +701,13 @@ iframe.addEventListener('touchmove', (event) => {
   // const currentY = event.touches[0].clientY;
   const deltaX = currentX - startX;
   // const deltaY = currentY - startY;
-  if (deltaX > 250) {
+  if (deltaX > 200) {
     console.log('左滑');
     startX = event.touches[0].clientX;
     console.log(startX);
     if (opBtnNow != 0) opBtnFunc[opBtnNow - 1]();
   }
-  else if (deltaX < -250) {
+  else if (deltaX < -200) {
     console.log('右滑');
     startX = event.touches[0].clientX;
     console.log(startX);
