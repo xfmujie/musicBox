@@ -1,8 +1,26 @@
 :root {
   --bg-image: linear-gradient(to bottom right, #3a7bd561, #3f5efb56, #af52bf55, #c873e06e);
+  --lrc-HL:#199dfc;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(50, 50, 50);
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+h5,
+h6 {
+  color: rgb(96, 96, 96);
 }
 
 body {
+  position: relative;
   background-attachment: fixed;
   background-size: cover;
   background-image: var(--bg-image);
@@ -20,6 +38,7 @@ body {
 
 p {
   margin: 0;
+  margin-bottom: 5px;
 }
 
 img {
@@ -74,8 +93,8 @@ td {
 }
 
 td:hover {
-  background-color: rgb(80, 182, 255);
-  color: #ffffff;
+  background-color: #e3e5e7;
+  color: rgb(0, 0, 0);
 }
 
 /*搜索框与搜索按钮父级div*/
@@ -91,7 +110,6 @@ td:hover {
 .search_box {
   flex: 9;
   margin-left: 1%;
-  padding-right: 20px;
 }
 
 /*搜索框样式*/
@@ -105,7 +123,7 @@ td:hover {
   height: 40px;
   border-radius: 10px;
   border-width: 0px;
-  padding-left: 25px;
+  padding-left: 10px;
   border-color: #000000;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   transition-duration: 200ms;
@@ -122,7 +140,8 @@ td:hover {
 }
 
 /*搜索按钮样式*/
-#search_btn {
+#search_btn,
+.menu button {
   width: 60px;
   height: 42px;
   border-width: 0;
@@ -135,7 +154,8 @@ td:hover {
 }
 
 /*搜索按钮点击*/
-#search_btn:active {
+#search_btn:active,
+.menu button:active {
   background-color: rgba(0, 179, 255, 0.8);
   border-color: #000000;
   color: #d4edff;
@@ -244,6 +264,185 @@ a {
   display: inline;
 }
 
+/* 侧边栏按钮 */
+.menu button {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  font-size: 1.1rem;
+  transition-duration: 50ms;
+  background-color: rgba(255, 255, 255, 0.6);
+  /* border-radius: 100%; */
+  border-width: 0;
+  outline: 0;
+  padding: 0;
+  z-index: 999;
+}
+
+.menu button:active {
+  color: #ffffff;
+}
+
+/* 侧边栏 */
+.sidebar,
+.sidebar2 {
+  box-shadow: 0 0 10px rgba(59, 59, 59, 0.5);
+  position: absolute;
+  text-align: center;
+  top: 55px;
+  left: -100%;
+  background-color: rgba(252, 252, 252, 0.9);
+  height: 78%;
+  width: 80%;
+  transition-duration: 100ms;
+  border-radius: 10px;
+  z-index: 999;
+  padding: 10px;
+}
+
+/* 侧边栏内歌词盒子 */
+#sidebarLrc {
+  text-align: center;
+  width: calc(100% - 20px);
+  top: calc(36vh - 10px);
+  position: absolute;
+  overflow-y: scroll;
+  height: 30vh;
+  background-color: #3880c300;
+  scroll-behavior: smooth;
+  z-index: -1;
+}
+
+/* 隐藏歌词盒子滚动条 */
+#sidebarLrc::-webkit-scrollbar {
+  width: 0;
+  background-color: #F5F5F5;
+}
+
+/* 侧边栏歌词元素 */
+#sidebarLrc p {
+  color: #6e6e6e;
+  font-size: 1rem;
+}
+
+/* 侧边栏歌词高亮 */
+.lrcHL {
+  color: var(--lrc-HL) !important;
+  font-size: 1.2rem !important;
+  font-weight: bold;
+}
+
+.PlayControlBtn {
+  text-align: center;
+  color: #4f4f4f;
+  border-radius: 100%;
+  font-size: 1.2rem;
+  padding: 0px;
+  width: 50px;
+  height: 50px;
+  border-width: 0;
+  outline: 0;
+  background-color: #fefeff;
+  box-shadow: 3px 5px 5px rgba(77, 77, 77, 0.3), -3px -5px 10px rgba(137, 208, 255, 0.078);
+  margin: 5px;
+}
+
+.PlayControlBtn:active {
+  box-shadow: unset;
+}
+
+#PlayControl {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+#PlayControl>div:nth-child(1) {
+  position: relative;
+  top: 20px;
+  flex: 1;
+}
+
+#PlayControl>div:nth-child(2) {
+  position: relative;
+  flex: 2;
+  top: 5px;
+}
+
+#PlayControl>div:nth-child(3)>button {
+  width: 60px;
+  height: 60px;
+}
+
+#PlayControl>div:nth-child(3) {
+  flex: 2;
+}
+
+#PlayControl>div:nth-child(4) {
+  position: relative;
+  top: 5px;
+  flex: 2;
+}
+
+#PlayControl>div:nth-child(5) {
+  position: relative;
+  top: 20px;
+  flex: 1;
+}
+
+#progressBar {
+  position: absolute;
+  bottom: 90px;
+  width: calc(98% - 110px);
+  height: 10px;
+  background-color: lightgray;
+  border-radius: 20px;
+  /* cursor: pointer; */
+  left: calc(5% + 40px);
+}
+
+#progressBar .progress {
+  height: 100%;
+  background-color: #0095ff;
+  width: 0;
+  border-radius: 20px;
+}
+
+#time-label {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: -5px;
+  left: -50px;
+}
+
+#duration {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  top: -5px;
+  right: -50px;
+}
+
+body > div.sidebar > div:nth-child(2) {
+  position: absolute;
+  top: 70px;
+  width: 50%;
+  left: 25%;
+}
+
+
+
+
+
+
+
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   .music_box {
@@ -252,7 +451,7 @@ a {
   }
 
   #search_box {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
   }
 
   .search {
@@ -262,11 +461,13 @@ a {
     padding-bottom: 20px;
   }
 
-  #search_btn:hover {
+  #search_btn:hover,
+  .menu button:hover {
     background-color: rgba(255, 255, 255, 0.8);
   }
 
-  #search_btn:active {
+  #search_btn:active,
+  .menu button:active {
     background-color: rgba(0, 179, 255, 0.9);
   }
 
@@ -305,5 +506,38 @@ a {
 
   #loopBtn:hover {
     color: #ffffff;
+  }
+
+  .menu button {
+    margin-left: 5px;
+  }
+
+  .sidebar,
+  .sidebar2 {
+    width: 25%;
+    top: 0;
+    left: -30%;
+    height: 97%;
+  }
+
+  .sidebar2 {
+    position: absolute;
+    left: unset;
+    top: -9999px;
+    bottom: 100px;
+  }
+
+  #sidebarLrc {
+    top: calc(27% + 90px);
+    height: calc(100% - 25% - 220px);
+  }
+  #progressBar {
+    cursor: pointer;
+  }
+  body > div.sidebar > div:nth-child(2) {
+    position: absolute;
+    top: 75px;
+    width: 50%;
+    left: 25%;
   }
 }

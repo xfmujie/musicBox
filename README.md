@@ -7,6 +7,10 @@
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
 
 ## 近期更新
+V3.1.3
+1. 新增侧边栏
+2. 新增歌曲播放页
+
 V3.1.2
 1. 新增歌单和列表的数据备份恢复功能
 

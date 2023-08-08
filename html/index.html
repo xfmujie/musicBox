@@ -19,14 +19,49 @@
 </head>
 
 <body>
+  <!-- 侧边栏 -->
+  <div class="sidebar">
+    <span>
+      <h3 id="sidebarSongName">昔枫音乐盒</h3>
+      <h5 id="sidebarSingerName">VIP音乐解析</h6>
+    </span>
+    <div>
+      <img id="cover2" width="100%" src="https://ali.mu-jie.cc/img/cover01.png" />
+    </div>
+    <div id="sidebarLrc">
+      <div style="height: 50%;width: 100%;"></div>
+      <div id="lrc_p">
+      </div>
+      <div style="height: 50%;width: 100%;"></div>
+    </div>
+    <div id="progressBar">
+      <span id="time-label">00:00</span>
+      <div class="progress"> </div>
+      <span id="duration">00:00</span>
+    </div>
+    <div id="PlayControl">
+      <div><button class="playBtn" title="" onclick="likeOnclick();"><i class="fa fa-heart"></i></button></div>
+      <div><button class="PlayControlBtn" title="" onclick="nextPlay('pre');">
+          <i class="fa fa-step-backward"></i>
+        </button></div>
+      <div><button class="PlayControlBtn" id="PlayStatus" title="" onclick="playOrPauseOnclick()"><i
+            class="fa fa-play"></i></button></div>
+      <div><button class="PlayControlBtn" title="" onclick="nextPlay('next');"><i
+            class="fa fa-step-forward"></i></button></div>
+      <div><button class="playBtn" title="" onclick="playListBtnOnclick()"><i class="fa fa-list"></i></button></div>
+    </div>
+  </div>
+  <div class="sidebar2">
+  </div>
   <div class="search">
+    <div class="menu"><button title="" onclick="menu_onclick()"><i class="fa fa-bars"></i></button></div>
     <div class="search_box"><input id="search_box" type="text" placeholder="请输入歌曲/歌手" value=""></div>
-    <div class="search_btn"><button id="search_btn" onclick="search_onclick()"><i class="fa fa-search"></i></button>
+    <div class="search_btn"><button id="search_btn" title="" onclick="search_onclick()"><i
+          class="fa fa-search"></i></button>
     </div>
   </div>
   <div class="music_box" id="music_box" aria-hidden="true">
-    <div class="img"><img id="cover" width="88px"
-        src="https://ali.mu-jie.cc/img/cover01.png" />
+    <div class="img"><img id="cover" width="88px" src="https://ali.mu-jie.cc/img/cover01.png" />
     </div>
     <div class="song">
       <span id="songName">歌曲</span>
@@ -43,7 +78,7 @@
         <source src="https://ali.mu-jie.cc/static/null.mp3">
       </audio>
       <button class="playBtn" onclick="downloadOnclick();"><i class="fa fa-arrow-down"></i></button>
-      <button class="playBtn likeBtn" onclick="likeOnclick();"><i class="fa fa-heart"></i></button>
+      <button class="playBtn" onclick="likeOnclick();"><i class="fa fa-heart"></i></button>
       <button class="playBtn" onclick="nextPlay('pre');"><i class="fa fa-fast-backward"></i></button>
       <button class="playBtn" onclick="playbackModeOnclick();" id="loopBtn"></button>
       <button class="playBtn" onclick="nextPlay('next');"><i class="fa far fa-fast-forward"></i></button>
@@ -51,10 +86,10 @@
   </div>
   <div class="searchORlist">
     <div class="btn_box">
-      <button id="listBtn" onclick="listBtn_onclick()">列表</button>
-      <button id="resultBtn" onclick="resultBtn_onclick()">搜索</button>
-      <button id="boxBtn" onclick="boxBtn_onclick()">音乐盒</button>
-      <button id="setBtn" onclick="setBtn_onclick()">设置</button>
+      <button id="listBtn" title="" onclick="listBtn_onclick()">列表</button>
+      <button id="resultBtn" title="" onclick="resultBtn_onclick()">搜索</button>
+      <button id="boxBtn" title="" onclick="boxBtn_onclick()">音乐盒</button>
+      <button id="setBtn" title="" onclick="setBtn_onclick()">设置</button>
     </div>
     <div class="songList"><iframe class="iframe" id="iframe" src="./songList.html"></iframe></div>
   </div>

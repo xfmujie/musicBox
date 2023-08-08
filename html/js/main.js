@@ -1,5 +1,8 @@
 if (window.location.href !== 'http://127.0.0.1:5500/html/') console.log = function () { };
 
+//API BaseURL
+var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
+
 // 实例化弹窗对象
 var popup = new Popup();
 
@@ -92,7 +95,7 @@ class Theme {
   setBgImg(url) {
     if (url == '0') {
       localStorage.setItem('themeBgImg', '');
-      document.body.style.backgroundImage = root.getPropertyValue('--bg-image');
+      document.body.style.backgroundImage = root.getComputedStyle(getPropertyValue('--bg-image'));
     } else {
       localStorage.setItem('themeBgImg', url);
       theme_bgImg = localStorage.getItem('themeBgImg');
@@ -269,7 +272,7 @@ controls.style.height = "30px";
 controls.style.width = "100%";
 // 检查是否为移动设备
 function isMobile() {
-  return typeof window.orientation !== "undefined" || navigator.userAgent.indexOf('Mobile') !== -1;
+  return /mobile|android|iphone|ipad|ipod|blackberry|opera mini|iemobile|webos/.test(navigator.userAgent.toLowerCase());
 }
 
 
@@ -293,59 +296,36 @@ var boxBtn = document.getElementById('boxBtn');
 var audioPlayer = document.getElementById('music');
 var sug = document.getElementById('sug');
 var iframe = document.getElementById('iframe').contentWindow;
-var root = getComputedStyle(document.documentElement);
+var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.2';
+var Version = '3.1.3';
 var timeCount;
 var opBtnNow = 0;
+var lrcLastNum = 0;
+var lrcCurrentLine = 0;
+var timeUpdateAllow = true;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
+root.style.setProperty('--lrc-HL', theme_lrcColor);
 player.on('timeupdate', event => {
-  if (lrc_count - 10 > 0) {
-    var time_front_10 = Math.floor(parseFloat(lrc[lrc_count - 10]["time"])); // 向下取整，得到整数格式
-  }
-  if (lrc_count - 5 > 0) {
-    var time_front_5 = Math.floor(parseFloat(lrc[lrc_count - 5]["time"])); // 向下取整，得到整数格式
-  }
-  var time_front = Math.floor(parseFloat(lrc[lrc_count]["time"])); // 向下取整，得到整数格式
-  if (lrc_count + 1 < lrc.length) {
-    var time_after = Math.floor(parseFloat(lrc[lrc_count + 1]["time"])); // 向下取整，得到整数格式
-  }
-  if (lrc_count + 5 < lrc.length) {
-    var time_after_5 = Math.floor(parseFloat(lrc[lrc_count + 5]["time"])); // 向下取整，得到整数格式
-  }
-  if (lrc_count + 10 < lrc.length) {
-    var time_after_10 = Math.floor(parseFloat(lrc[lrc_count + 10]["time"])); // 向下取整，得到整数格式
-  }
   var plyr_time = event.detail.plyr.currentTime;  // 当前时间（单位：秒）
-/*   var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
-    if (plyr_time > 3 && plyr_time == plyr_duration) {
-  
-    } */
-  lrc1.innerHTML = lrc[lrc_count]["lineLyric"].slice(0, 50);
-  if (lrc_count + 1 < lrc.length) {
-    lrc2.innerHTML = lrc[lrc_count + 1]["lineLyric"].slice(0, 50);
-    if ((lrc1.innerHTML.length > 20 || lrc2.innerHTML.length > 20) && isMobile()) {
-      lrc1.style.fontSize = "12px";
-      lrc2.style.fontSize = "12px";
-    }
-    else {
-      lrc1.style.fontSize = "15px";
-      lrc2.style.fontSize = "15px";
+  // var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
+
+  // 找当前行歌词
+  if (timeUpdateAllow) {
+    lrcLastNum = lrc.findIndex((lrc) => {
+      return Math.floor(parseFloat(lrc.time)) >= plyr_time;
+    });
+    lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
+    // 歌词更新
+    if (lrcCurrentLine != lrcLastNum) {
+      lrcUpdate(lrcCurrentLine);
     }
   }
-  if (lrc_count + 1 == lrc.length) {
-    lrc2.innerHTML = '--end--';
-  }
-  if (plyr_time > time_after && lrc_count < lrc.length) lrc_count++;
-  if (plyr_time < time_front && lrc_count > 0) lrc_count--;
-  if (plyr_time > time_after_5 && lrc_count + 5 < lrc.length) lrc_count += 5;
-  if (plyr_time < time_front_5 && lrc_count - 5 > 0) lrc_count -= 5;
-  if (plyr_time > time_after_10 && lrc_count + 10 < lrc.length) lrc_count += 10;
-  if (plyr_time < time_front_10 && lrc_count - 10 > 0) lrc_count -= 10;
+  lrcCurrentLine = lrcLastNum;
 });
 
 //物理按键监听
@@ -358,10 +338,14 @@ document.getElementById('search_box').addEventListener('keydown', function (even
 
 function getMusic(rid) {
   //获取歌词
-  retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/lrc/?rid=' + rid)
+  retryRequest(`${BaseURL}/lrc/${rid}`)
     .then(data => {
+      document.querySelector('#lrc_p').innerHTML = '';
       // console.log("Data:", data);
       lrc = JSON.parse(data);
+      for (let i in lrc) {
+        document.querySelector('#lrc_p').innerHTML += `<p>${lrc[i]["lineLyric"]}</p>`;
+      }
       if (lrc == null) {
         lrc = [{ "lineLyric": "纯音乐 请欣赏", "time": "999" }]
       }
@@ -372,7 +356,7 @@ function getMusic(rid) {
     });
 
   //获取歌曲链接
-  retryRequest('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/rid/?rid=' + rid)
+  retryRequest(`${BaseURL}/musicUrl/${rid}`)
     .then(data => {
       mp3Url = data;
       console.log(mp3Url);
@@ -387,7 +371,9 @@ function getMusic(rid) {
 //切换歌曲
 function switchSongs(parameter) {
   getMusic(parameter["rid"]);
-  lrc_count = 0;
+  lrcLastNum = 0;
+  lrcCurrentLine = 0;
+  lyricsScrolling(0);
   audioPlayer.pause();
   lrc = [{ "lineLyric": "歌词加载中……", "time": "2" }, { "lineLyric": "", "time": "4" }];
   cover.src = parameter["pic"];
@@ -396,6 +382,11 @@ function switchSongs(parameter) {
   songName.innerHTML = name.slice(0, 15 + (name.length - name.replace(/&[a-z]+;/g, " ").length));
   singerName.innerHTML = singer.slice(0, 15 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length));
   document.title = `${name.replace(/&[a-z]+;/g, " ")} - ${singer.replace(/&[a-z]+;/g, " ")}  (昔枫音乐盒)`;
+
+  document.querySelector('#cover2').src = parameter["pic"];
+  document.querySelector('#sidebarSongName').innerHTML = songName.innerHTML;
+  document.querySelector('#sidebarSingerName').innerHTML = singerName.innerHTML;
+  document.querySelector('#lrc_p').innerHTML = '<p>歌词加载中……</p>';
 }
 
 function search_onclick() {
@@ -405,7 +396,9 @@ function search_onclick() {
   else {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
-    popup.msg('正在搜索……', 5);
+    popup.msg('正在搜索……', 5, function () {
+      popup.alert('出错了！');
+    });
   }
 }
 
@@ -465,8 +458,9 @@ function getTimestamp() {
   let timestamp = Math.round(now.getTime() / 1000);
   return timestamp;
 }
-//计时
+// 监听音频播放状态
 audioPlayer.addEventListener('play', function () {
+  document.querySelector('#PlayStatus').innerHTML = '<i class="fa fa-pause"></i>';
   if (playingNum == 999) {
     popup.alert('当前无歌曲播放~');
     audioPlayer.pause();
@@ -492,6 +486,7 @@ audioPlayer.addEventListener('play', function () {
   }
 });
 audioPlayer.addEventListener("pause", function () {
+  document.querySelector('#PlayStatus').innerHTML = '<i class="fa fa-play"></i>';
   clearInterval(timeCount);
 });
 //获取
@@ -528,14 +523,14 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>1.新增歌单和列表的数据备份恢复功能</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增侧边栏歌曲播放页<br>侧边栏更多功能开发中</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
 
 //访问量统计(个人搭建，不支持其他url)
 if (window.location.href == 'https://mu-jie.cc/musicBox/' || window.location.href == 'http://localhost:5930/') {
-  fetch('https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/visits/')
+  fetch(`${BaseURL}/visits/`)
     .then(response => response.text())
     .then(data => {
       console.log(data);
@@ -577,6 +572,10 @@ function playReset() {
   playingNum = 999;
   clearInterval(timeCount);
   iframe.pagePX = 0;
+  document.querySelector('#sidebarSongName').innerHTML = '昔枫音乐盒';
+  document.querySelector('#sidebarSingerName').innerHTML = 'VIP音乐解析';
+  document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
+  lrcUpdate(0);
 }
 
 /* window.addEventListener('message', function (event) {
@@ -715,6 +714,139 @@ iframe.addEventListener('touchmove', (event) => {
   }
 });
 
+let overlay;  //半透明遮罩
+
+// 侧边栏呼出/收起
+function menu_onclick() {
+  let sidebar = document.querySelector('.sidebar');
+  // console.log(sidebar.style.left);
+  // 检测是否已经呼起
+  if (['1%', '0px'].includes(sidebar.style.left)) {
+    document.querySelector("body > div.search > div.menu > button").innerHTML = '<i class="fa fa-bars"></i>';
+    if (window.innerWidth < 960) {
+      sidebar.style.left = '-100%';
+      document.body.removeChild(overlay);
+    }
+    else {
+      sidebar.style.left = '-30%';
+    }
+  }
+  else {
+    document.querySelector("body > div.search > div.menu > button").innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
+    if (window.innerWidth < 960) {
+      overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 设置为半透明的黑色
+      overlay.style.zIndex = '1';
+      document.body.appendChild(overlay);
+      sidebar.style.left = '0px';
+    }
+    else {
+      sidebar.style.left = '1%';
+    }
+  }
+}
+
+// 歌词滚动
+document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
+lyricsScrolling(0);
+function lyricsScrolling(i) {
+  var sidebarLrc = document.getElementById("sidebarLrc");
+  var sidebarLrc_p = document.querySelectorAll('#sidebarLrc p')[i];
+  // 计算子元素相对于父级元素的偏移量
+  var offsetTop = sidebarLrc_p.offsetTop;
+  var parentHeight = sidebarLrc.offsetHeight;
+  var childHeight = sidebarLrc_p.offsetHeight;
+  var centerOffset = (parentHeight - childHeight) / 2;
+  // 将滚动条滚动到垂直居中位置
+  sidebarLrc.scrollTop = offsetTop - centerOffset + 20;
+}
+
+//歌词更新
+lrcUpdate(0);
+function lrcUpdate(lrcCurrentLine) {
+  console.log(lrcCurrentLine);
+  if(lrcCurrentLine == -1) return;
+  //侧边栏滚动歌词
+  lyricsScrolling(lrcCurrentLine);
+  let lrc_p = document.querySelectorAll('#lrc_p p');
+  for (let i = 0; i < lrc_p.length; i++) {
+    if (lrc_p[i].classList.contains("lrcHL")) {
+      lrc_p[i].classList.remove("lrcHL");
+    }
+  }
+  lrc_p[lrcCurrentLine].classList.add("lrcHL");
+  //首页歌词
+  lrc1.innerHTML = lrc[lrcCurrentLine]["lineLyric"].slice(0, 50);
+  if (lrcCurrentLine + 1 < lrc.length) {
+    lrc2.innerHTML = lrc[lrcCurrentLine + 1]["lineLyric"].slice(0, 50);
+    if ((lrc1.innerHTML.length > 20 || lrc2.innerHTML.length > 20) && isMobile()) {
+      lrc1.style.fontSize = "12px";
+      lrc2.style.fontSize = "12px";
+    }
+  }
+  if (lrcCurrentLine + 1 == lrc.length) {
+    lrc2.innerHTML = '--end--';
+  }
+}
+
+// 桌面设备自动打开侧边栏
+// if (window.innerWidth >= 960) menu_onclick();
+
+
+function playOrPauseOnclick() {
+  if (audioPlayer.paused) audioPlayer.play();
+  else audioPlayer.pause();
+}
+
+// 格式化时间
+function formatTime(seconds) {
+  let minutes = Math.floor(seconds / 60);
+  seconds = Math.floor(seconds % 60);
+  let formattedMinutes = String(minutes).padStart(2, '0');
+  let formattedSeconds = String(seconds).padStart(2, '0');
+  return `${formattedMinutes}:${formattedSeconds}`;
+}
+
+// 播放页音频进度条
+(function () {
+  var progressBar = document.getElementById('progressBar');
+  var progress = document.querySelector('.progress');
+  var timeLabel = document.getElementById('time-label');
+
+  audioPlayer.addEventListener('timeupdate', function () {
+    var progressPercentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progress.style.width = progressPercentage + '%';
+    timeLabel.innerHTML = formatTime(audioPlayer.currentTime);
+    document.querySelector('#duration').innerHTML = formatTime(audioPlayer.duration);
+  });
+
+  progressBar.addEventListener('click', function (event) {
+    timeUpdateAllow = false;
+    var progressBarWidth = progressBar.offsetWidth;
+    var progressPercentage = (event.offsetX / progressBarWidth) * 100;
+    var currentTime = (progressPercentage / 100) * audioPlayer.duration;
+    audioPlayer.currentTime = currentTime;
+    lrcLastNum = lrc.findIndex((lrc) => {
+      return Math.floor(parseFloat(lrc.time)) >= currentTime;
+    });
+    lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
+    console.log(currentTime);
+    console.log(lrcLastNum);
+    lrcUpdate(lrcLastNum - 1);
+    setTimeout(() => {
+      timeUpdateAllow = true;
+    }, 500);
+  });
+})();
+
+function playListBtnOnclick() {
+  popup.alert('正在开发中……');
+}
 
 
 

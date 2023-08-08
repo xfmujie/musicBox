@@ -7,7 +7,7 @@ function getSearchResult(SearchContent) {
   if (SearchContent !== oldContent) {
     pageNum = 1;
   }
-  xhrList.open('get', `https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/?name=${name}&pn=${pageNum}`);
+  xhrList.open('get', `${BaseURL}/search/${name}/${pageNum}`);
   xhrList.send();
   xhrList.onreadystatechange = function () {
     if (xhrList.readyState == 4 && xhrList.status == 200) {
@@ -363,6 +363,7 @@ var SearchPagePX = 0;
 var scrollToPx = 0;
 var playFlag = 'normal';
 var copyCententFlag = '';
+var BaseURL = window.parent.BaseURL;
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -495,7 +496,7 @@ function importFromPlay(name) {
     'list': displayList
   }
   var musicBoxData = new XMLHttpRequest();
-  musicBoxData.open('post', 'https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com/music-box-list/?method=post');
+  musicBoxData.open('post', `${BaseURL}/music-box-list/?method=post`);
   musicBoxData.setRequestHeader('Content-Type', 'application/json');
   musicBoxData.send(JSON.stringify(list));
   window.parent.popup.msg('正在添加……', 5, function () {
@@ -537,12 +538,12 @@ function getSongList() {
     return;
   }
   if (reg1.test(ID))
-    par = `/music-box-list/?method=get&id=${ID}`;
+    par = `music-box-list/?method=get&id=${ID}`;
   else
-    par = `/kuwolist/?id=${ID.match(reg2)[0]}`;
+    par = `kuwolist/?id=${ID.match(reg2)[0]}`;
 
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `https://service-4v0argn6-1314197819.gz.apigw.tencentcs.com${par}`);
+  getMusicBoxList.open('get', `${BaseURL}/${par}`);
   getMusicBoxList.send();
   window.parent.popup.msg('正在加载歌单……', 5, function () {
     window.parent.popup.alert('加载超时, 请重试');
