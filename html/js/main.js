@@ -86,6 +86,7 @@ class Theme {
     else { localStorage.setItem('themeLrcColor', val); }
     theme_lrcColor = localStorage.getItem('themeLrcColor');
     lrc1.style.color = theme_lrcColor;
+    root.style.setProperty('--lrc-HL', theme_lrcColor);
   }
   //设置列表颜色
   setList(val) {
@@ -97,7 +98,7 @@ class Theme {
   setBgImg(url) {
     if (url == '0') {
       localStorage.setItem('themeBgImg', '');
-      document.body.style.backgroundImage = root.getComputedStyle(getPropertyValue('--bg-image'));
+      document.body.style.backgroundImage = getComputedStyle(root).getPropertyValue('--bg-image');
     } else {
       localStorage.setItem('themeBgImg', url);
       theme_bgImg = localStorage.getItem('themeBgImg');
@@ -386,8 +387,8 @@ function switchSongs(parameter) {
   document.title = `${name.replace(/&[a-z]+;/g, " ")} - ${singer.replace(/&[a-z]+;/g, " ")}  (昔枫音乐盒)`;
 
   document.querySelector('#cover2').src = parameter["pic"];
-  document.querySelector('#sidebarSongName').innerHTML = songName.innerHTML;
-  document.querySelector('#sidebarSingerName').innerHTML = singerName.innerHTML;
+  document.querySelector('#sidebarSongName').innerHTML = name;
+  document.querySelector('#sidebarSingerName').innerHTML = singer;
   document.querySelector('#lrc_p').innerHTML = '<p>歌词加载中……</p>';
 }
 
@@ -577,6 +578,7 @@ function playReset() {
   document.querySelector('#sidebarSongName').innerHTML = '昔枫音乐盒';
   document.querySelector('#sidebarSingerName').innerHTML = 'VIP音乐解析';
   document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
+  document.querySelector('#cover2').src = 'https://ali.mu-jie.cc/img/cover01.png';
   lrcUpdate(0);
 }
 
@@ -746,6 +748,10 @@ function menu_onclick() {
       overlay.style.zIndex = '1';
       document.body.appendChild(overlay);
       sidebar.style.left = '0px';
+      overlay.addEventListener('click', () => {
+        menu_onclick();
+        overlay.remove();
+      });
     }
     else {
       sidebar.style.left = '1%';
@@ -790,6 +796,10 @@ function lrcUpdate(lrcCurrentLine) {
       lrc1.style.fontSize = "12px";
       lrc2.style.fontSize = "12px";
     }
+    else {
+      lrc1.style.fontSize = "15px";
+      lrc2.style.fontSize = "15px";
+    }
   }
   if (lrcCurrentLine + 1 == lrc.length) {
     lrc2.innerHTML = '--end--';
@@ -807,11 +817,16 @@ function playOrPauseOnclick() {
 
 // 格式化时间
 function formatTime(seconds) {
-  let minutes = Math.floor(seconds / 60);
-  seconds = Math.floor(seconds % 60);
-  let formattedMinutes = String(minutes).padStart(2, '0');
-  let formattedSeconds = String(seconds).padStart(2, '0');
-  return `${formattedMinutes}:${formattedSeconds}`;
+  if (seconds) {
+    let minutes = Math.floor(seconds / 60);
+    seconds = Math.floor(seconds % 60);
+    let formattedMinutes = String(minutes).padStart(2, '0');
+    let formattedSeconds = String(seconds).padStart(2, '0');
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
+  else {
+    return '00:00';
+  }
 }
 
 // 播放页音频进度条
