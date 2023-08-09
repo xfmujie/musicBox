@@ -554,5 +554,9 @@ body>div.sidebar>div:nth-child(5) {
     flex: 1.2;
     position: relative;
   }
+
+  body>div.sidebar>div:nth-child(5) {
+    bottom: 10px;
+  }
 }
 
