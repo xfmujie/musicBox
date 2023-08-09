@@ -28,7 +28,7 @@ function getSearchResult(SearchContent) {
     }
     if (xhrList.status >= 400) {
       window.parent.popup.msgClose();
-      window.parent.popup.alert('出错了！');
+      window.parent.popup.msg('出错了！');
     }
   }
 }
