@@ -2,35 +2,27 @@ if (window.location.href !== 'http://127.0.0.1:5500/html/songList.html') console
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
-  var xhrList = new XMLHttpRequest();
   let name = SearchContent;
   if (SearchContent !== oldContent) {
     pageNum = 1;
   }
-  xhrList.open('get', `${BaseURL}/search/${name}/${pageNum}`);
-  xhrList.send();
-  xhrList.onreadystatechange = function () {
-    if (xhrList.readyState == 4 && xhrList.status == 200) {
+  window.parent.retryRequest(`${BaseURL}/search/${name}/${pageNum}`)
+    .then(data => {
       window.parent.popup.msgClose();
       window.parent.inputBlur();
-      if (JSON.parse(xhrList.responseText)[0] === undefined) {
+      if (JSON.parse(data)[0] === undefined) {
         window.parent.popup.msg('没有更多歌曲~');
         pageNum--;
         return;
       }
-      searchList = JSON.parse(xhrList.responseText);
-      window.parent.searchList = JSON.parse(xhrList.responseText);
+      searchList = JSON.parse(data);
+      window.parent.searchList = JSON.parse(data);
       remove();
       displayChange('search');  //更换显示内容
       window.parent.resultBtn_onclick();  //自动点击搜索结果
       scrollToTop();
       oldContent = SearchContent;
-    }
-    if (xhrList.status >= 400) {
-      window.parent.popup.msgClose();
-      window.parent.popup.msg('出错了！');
-    }
-  }
+    });
 }
 
 
@@ -56,7 +48,7 @@ function cloned(clonedList) {
     play_btnid.setAttribute('id', `play_btn${iStr}`)
     //更改元素内容
     let songNum = clonedDiv.querySelector('#songNum');
-    if (window.parent.displayFlag == 'search') songNum.textContent = ((pageNum - 1) * 30 + i + 1).toString().padStart(2, '0');
+    if (window.parent.displayFlag == 'search') songNum.textContent = ((pageNum - 1) * clonedList.length + i + 1).toString().padStart(2, '0');
     else songNum.textContent = (i + 1).toString().padStart(2, '0');
     if (i == window.parent.playingNum && (playListFlag == window.parent.displayFlag)) {
       songNum.innerHTML = '<i class="fa fa-music"></i>';

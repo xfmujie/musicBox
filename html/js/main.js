@@ -25,8 +25,10 @@ function retryRequest(url, maxRetries = 5) {
           console.log("Error:", error);
           retryCount++;
           if (retryCount < maxRetries) {
-            // 继续发送请求
-            sendRequest();
+            // 延时继续发送请求
+            setTimeout(() => {
+              sendRequest();
+            }, 500);
           } else {
             reject(new Error("Maximum retries exceeded"));  // 达到最大重试次数，抛出错误
           }
@@ -770,7 +772,7 @@ function lyricsScrolling(i) {
 lrcUpdate(0);
 function lrcUpdate(lrcCurrentLine) {
   console.log(lrcCurrentLine);
-  if(lrcCurrentLine == -1) return;
+  if (lrcCurrentLine == -1) return;
   //侧边栏滚动歌词
   lyricsScrolling(lrcCurrentLine);
   let lrc_p = document.querySelectorAll('#lrc_p p');
