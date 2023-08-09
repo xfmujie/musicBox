@@ -396,7 +396,7 @@ function search_onclick() {
   else {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
-    popup.msg('正在搜索……', 5, function () {
+    popup.msg('正在搜索……', 10, function () {
       popup.alert('出错了！');
     });
   }

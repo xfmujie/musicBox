@@ -26,6 +26,10 @@ function getSearchResult(SearchContent) {
       scrollToTop();
       oldContent = SearchContent;
     }
+    if (xhrList.status >= 400) {
+      window.parent.popup.msgClose();
+      window.parent.popup.alert('出错了！');
+    }
   }
 }
 
@@ -578,7 +582,7 @@ function flippingPages(flag) {
     if (flag) {
       pageNum++;
       getSearchResult(oldContent);
-      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 5, function () {
+      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 10, function () {
         pageNum--;
         window.parent.popup.alert('加载超时, 请重试');
       });
@@ -586,7 +590,7 @@ function flippingPages(flag) {
     else if (pageNum > 1) {
       pageNum--;
       getSearchResult(oldContent);
-      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 5, function () {
+      window.parent.popup.msg(`<font size="2px color="#696969">正在加载第 </font><font color="#199dfc">${pageNum}</font><font size="2px color="#696969"> 页</font>`, 10, function () {
         pageNum++;
         window.parent.popup.alert('加载超时, 请重试');
       });
