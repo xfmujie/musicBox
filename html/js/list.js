@@ -2,6 +2,7 @@ if (window.location.href !== 'http://127.0.0.1:5500/html/songList.html') console
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
+  if (BaseURL == undefined) BaseURL = window.parent.BaseURL;
   let name = SearchContent;
   window.parent.retryRequest(`${BaseURL}/search?key=${name}&pn=${pageNum}`)
     .then(data => {
