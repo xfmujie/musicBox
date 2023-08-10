@@ -37,8 +37,7 @@ body {
 }
 
 p {
-  margin: 0;
-  margin-bottom: 5px;
+  margin: 7px 0;
 }
 
 img {
@@ -293,7 +292,7 @@ a {
   text-align: center;
   top: 55px;
   left: -100%;
-  background-color: rgba(252, 252, 252, 0.9);
+  background-color: rgba(252, 252, 252, 1);
   height: 78%;
   width: 80%;
   transition-duration: 100ms;
@@ -337,7 +336,7 @@ a {
 /* 侧边栏歌词高亮 */
 .lrcHL {
   color: var(--lrc-HL) !important;
-  font-size: 1.2rem !important;
+  font-size: 1.1rem !important;
   font-weight: bold;
 }
 
@@ -413,9 +412,11 @@ a {
   background-color: #0095ff;
   width: 0;
   border-radius: 20px;
+  transition-duration: 200ms;
 }
 
 #time-label {
+  color: #4f4f4f;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -425,6 +426,7 @@ a {
 }
 
 #duration {
+  color: #4f4f4f;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -557,6 +559,16 @@ body>div.sidebar>div:nth-child(5) {
 
   body>div.sidebar>div:nth-child(5) {
     bottom: 10px;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+
+  .lrcHL {
+    color: var(--lrc-HL) !important;
+    font-size: 1.2rem !important;
+    font-weight: bold;
   }
 }
 
