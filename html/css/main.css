@@ -19,6 +19,10 @@ h6 {
   color: rgb(96, 96, 96);
 }
 
+p {
+  margin: 0;
+}
+
 body {
   position: relative;
   background-attachment: fixed;
@@ -36,7 +40,7 @@ body {
   color: #686868;
 }
 
-p {
+#lrc_p p {
   margin: 7px 0;
 }
 
@@ -561,7 +565,7 @@ body>div.sidebar>div:nth-child(5) {
     bottom: 10px;
   }
 
-  p {
+  #lrc_p p p {
     margin: 10px 0;
   }
 
