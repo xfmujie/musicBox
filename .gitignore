@@ -1,2 +1,3 @@
 test/
 flask/kw.py
+flask/__pycache__/
