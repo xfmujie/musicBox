@@ -2,9 +2,8 @@ if (window.location.href !== 'http://127.0.0.1:5500/html/songList.html') console
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
-  if (BaseURL == undefined) BaseURL = window.parent.BaseURL;
   let name = SearchContent;
-  window.parent.retryRequest(`${BaseURL}/search?key=${name}&pn=${pageNum}`)
+  window.parent.retryRequest(`${window.parent.BaseURL}/search?key=${name}&pn=${pageNum}`)
     .then(data => {
       window.parent.popup.msgClose();
       window.parent.inputBlur();
@@ -357,7 +356,6 @@ var SearchPagePX = 0;
 var scrollToPx = 0;
 var playFlag = 'normal';
 var copyCententFlag = '';
-var BaseURL = window.parent.BaseURL;
 
 //缓存初始化
 if (localStorage.getItem('playList') == null) {
@@ -490,7 +488,7 @@ function importFromPlay(name) {
     'list': displayList
   }
   var musicBoxData = new XMLHttpRequest();
-  musicBoxData.open('post', `${BaseURL}/music-box-list/?method=post`);
+  musicBoxData.open('post', `${window.parent.BaseURL}/music-box-list/?method=post`);
   musicBoxData.setRequestHeader('Content-Type', 'application/json');
   musicBoxData.send(JSON.stringify(list));
   window.parent.popup.msg('正在添加……', 5, function () {
@@ -537,7 +535,7 @@ function getSongList() {
     par = `kuwolist/?id=${ID.match(reg2)[0]}`;
 
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `${BaseURL}/${par}`);
+  getMusicBoxList.open('get', `${window.parent.BaseURL}/${par}`);
   getMusicBoxList.send();
   window.parent.popup.msg('正在加载歌单……', 5, function () {
     window.parent.popup.alert('加载超时, 请重试');
