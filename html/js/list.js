@@ -6,7 +6,7 @@ function getSearchResult(SearchContent) {
   if (SearchContent !== oldContent) {
     pageNum = 1;
   }
-  window.parent.retryRequest(`${BaseURL}/search/${name}/${pageNum}`)
+  window.parent.retryRequest(`${BaseURL}/search?key=${name}&pn=${pageNum}`)
     .then(data => {
       window.parent.popup.msgClose();
       window.parent.inputBlur();

@@ -2,6 +2,7 @@ if (window.location.href !== 'http://127.0.0.1:5500/html/') console.log = functi
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
+// var BaseURL = 'http://127.0.0.1:9000'
 
 // 实例化弹窗对象
 var popup = new Popup();
@@ -341,7 +342,7 @@ document.getElementById('search_box').addEventListener('keydown', function (even
 
 function getMusic(rid) {
   //获取歌词
-  retryRequest(`${BaseURL}/lrc/${rid}`)
+  retryRequest(`${BaseURL}/lrc?rid=${rid}`)
     .then(data => {
       document.querySelector('#lrc_p').innerHTML = '';
       // console.log("Data:", data);
@@ -359,7 +360,7 @@ function getMusic(rid) {
     });
 
   //获取歌曲链接
-  retryRequest(`${BaseURL}/musicUrl/${rid}`)
+  retryRequest(`${BaseURL}/mp3?rid=${rid}`)
     .then(data => {
       mp3Url = data;
       console.log(mp3Url);
