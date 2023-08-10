@@ -1,3 +1,4 @@
+var log = console.log;
 if (window.location.href !== 'http://127.0.0.1:5500/html/') console.log = function () { };
 
 //API BaseURL
@@ -666,8 +667,8 @@ function nextPlay(flag) {
       name: List[nextNum]["name"],
       artist: List[nextNum]["artist"],
     }
-    console.log(List);
-    console.log(parameter);
+    /* console.log(List);
+    console.log(parameter); */
     switchSongs(parameter);
   }, 300);
   if (displayFlag == 'play' && playListFlag == 'play') listBtn_onclick();
@@ -676,7 +677,7 @@ function nextPlay(flag) {
 
 //播放结束
 audioPlayer.addEventListener('ended', function () {
-  console.log('end');
+  /* console.log('end'); */
   if (modeFlag == 0) {
     console.log('已自动下一首');
     nextPlay('next');
@@ -717,13 +718,13 @@ iframe.addEventListener('touchmove', (event) => {
   if (deltaX > 200) {
     console.log('左滑');
     startX = event.touches[0].clientX;
-    console.log(startX);
+    /* console.log(startX); */
     if (opBtnNow != 0) opBtnFunc[opBtnNow - 1]();
   }
   else if (deltaX < -200) {
     console.log('右滑');
     startX = event.touches[0].clientX;
-    console.log(startX);
+    /* console.log(startX); */
     if (opBtnNow + 1 < opBtnFunc.length) opBtnFunc[opBtnNow + 1]();
   }
 });
@@ -787,7 +788,7 @@ function lyricsScrolling(i) {
 //歌词更新
 lrcUpdate(0);
 function lrcUpdate(lrcCurrentLine) {
-  console.log(lrcCurrentLine);
+  /* console.log(lrcCurrentLine); */
   if (lrcCurrentLine == -1) return;
   //侧边栏滚动歌词
   lyricsScrolling(lrcCurrentLine);
@@ -862,8 +863,8 @@ function formatTime(seconds) {
       return Math.floor(parseFloat(lrc.time)) >= currentTime;
     });
     lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
-    console.log(currentTime);
-    console.log(lrcLastNum);
+/*     console.log(currentTime);
+    console.log(lrcLastNum); */
     lrcUpdate(lrcLastNum - 1);
     setTimeout(() => {
       timeUpdateAllow = true;

@@ -26,7 +26,7 @@ function getSearchResult(SearchContent) {
 
 //显示列表
 function cloned(clonedList) {
-  console.log(clonedList);
+  /* console.log(clonedList); */
   for (let i = 0; i < clonedList.length; i++) {
     var originalDiv = document.getElementById('song_box');    // 获取原始div元素
     originalDiv.style.backgroundColor = localStorage.getItem('themeListColor');
@@ -106,7 +106,7 @@ function add_del_onclick() {
             if (i < window.parent.playingNum) window.parent.playingNum--;
             else if (i == window.parent.playingNum) window.parent.playReset();
           }
-          console.log(playList);
+          /* console.log(playList); */
           pagePX = pagePX = window.scrollY;
           displayChange('play');
         } else {
@@ -124,7 +124,7 @@ function add_del_onclick() {
                   if (i < window.parent.playingNum) window.parent.playingNum--;
                   else if (i == window.parent.playingNum) window.parent.playReset();
                 }
-                console.log(playList);
+                /* console.log(playList); */
                 pagePX = window.scrollY;
                 displayChange('play');
                 musicBoxList = JSON.parse(localStorage.getItem('musicBoxList'));
@@ -141,7 +141,7 @@ function add_del_onclick() {
               if (isEnter) {
                 musicBoxList.splice(i, 1);
                 localStorage.setItem('musicBoxList', JSON.stringify(musicBoxList));
-                console.log(musicBoxList);
+                /* console.log(musicBoxList); */
                 displayChange('box');
               }
             });
@@ -180,7 +180,7 @@ function play_btn_onclick() {
           name: displayList[i]["name"],
           artist: displayList[i]["artist"],
         }
-        console.log(displayList);
+        /* console.log(displayList); */
         console.log(parameter);
         window.parent.switchSongs(parameter);
         // window.parent.postMessage(parameter, '/');
