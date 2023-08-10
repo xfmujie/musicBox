@@ -397,7 +397,7 @@ function search_onclick() {
   if (SearchContent.value == "") {
     popup.alert('请输入歌曲/歌手');
   }
-  else {
+  else if(SearchContent.value != iframe.oldContent) {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
     popup.msg('正在搜索……', 10, function () {
