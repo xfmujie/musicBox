@@ -3,12 +3,14 @@
 from flask import Flask
 from flask import request
 from flask import abort
+from flask_cors import CORS
 import requests
 import json
 from kw import kwFirstUrl
 import re
 
 app = Flask(__name__)
+cors = CORS(app)
 
 
 @app.route('/search')
