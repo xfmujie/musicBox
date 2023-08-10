@@ -70,10 +70,12 @@ def ridKuwoAPI():
     match = re.search(pattern, music_url)
     if match:
         music_url = match.group(1)
+        print(f'已获取到mp3文件链接=>{str(music_url)}')
+        return str(music_url)
     else:
         print("未找到URL")
-    print(f'已获取到mp3文件链接=>{str(music_url)}')
-    return str(music_url)
+        print('Error Info:\n' + music_url)
+        abort(500)
 
 
 @app.route('/lrc')
