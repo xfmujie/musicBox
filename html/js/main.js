@@ -391,13 +391,21 @@ function switchSongs(parameter) {
   document.querySelector('#sidebarSongName').innerHTML = name;
   document.querySelector('#sidebarSingerName').innerHTML = singer;
   document.querySelector('#lrc_p').innerHTML = '<p>歌词加载中……</p>';
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: name.replace(/&[a-z]+;/g, " "),
+      artist: singer.replace(/&[a-z]+;/g, " "),
+      album: '昔枫音乐盒',
+      artwork: [{ src: parameter["pic"], sizes: '120x120', type: 'image/png' }]
+    });
+  }
 }
 
 function search_onclick() {
   if (SearchContent.value == "") {
     popup.alert('请输入歌曲/歌手');
   }
-  else if(SearchContent.value != iframe.oldContent) {
+  else if (SearchContent.value != iframe.oldContent) {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
     popup.msg('正在搜索……', 10, function () {
@@ -471,6 +479,7 @@ audioPlayer.addEventListener('play', function () {
     timeCount = function () { };
   }
   else {
+    clearInterval(timeCount);
     timeCount = setInterval(function () {
       let seconds = parseInt(localStorage.getItem("playTime"));
       localStorage.setItem('playTime', seconds += 1);
@@ -681,10 +690,10 @@ audioPlayer.addEventListener('ended', function () {
 
 
 // 请求 Wake Lock
-navigator.wakeLock.request('screen')
+/* navigator.wakeLock.request('screen')
   .then((wakeLock) => {
     console.log('成功获取 Wake Lock');
-  })
+  }) */
 
 
 // 屏幕滑动
@@ -867,6 +876,22 @@ function playListBtnOnclick() {
 }
 
 
+// 系统音频交互
+if ('mediaSession' in navigator) {
+  // Web Media Session API 可用
+  navigator.mediaSession.setActionHandler('play', function () {
+    audioPlayer.play();
+  });
+  navigator.mediaSession.setActionHandler('pause', function () {
+    audioPlayer.pause();
+  });
+  navigator.mediaSession.setActionHandler('previoustrack', function () {
+    nextPlay('prev');
+  });
+  navigator.mediaSession.setActionHandler('nexttrack', function () {
+    nextPlay('next');
+  });
+}
 
 
 //调用子页面函数
