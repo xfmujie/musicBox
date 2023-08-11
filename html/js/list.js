@@ -719,7 +719,7 @@ function getNotificationPerm() {
         // 用户不允许显示通知
       }
     });
-    window.parent.popup.alert('正在获取通知权限<br><br><h4>Chrome:</h4> 请在导航栏左边点击允许<br><h4>Edge:</h4>请点击导航栏右边的红色<font color="#ff0000">×</font>允许<br><h4>页面没有响应?</h4>如你禁止过请手动点击导航栏左边的🔒图标开启权限');
+    window.parent.popup.alert('正在获取通知权限<br><br><h4>Chrome:</h4> 请在导航栏左边点击允许<br><h4>Edge:</h4>若导航栏左边有询问框请点击允许，若没有则点击右边的红色<font color="#ff0000">×</font>允许<br><h4>页面没有响应?</h4>如你禁止过请手动点击导航栏左边的🔒图标开启权限');
 }
 
 
