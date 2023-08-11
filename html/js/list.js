@@ -703,13 +703,14 @@ function backup_onclick(flag) {
   }
 }
 
-
+// 判断是否已有通知权限
 if ('Notification' in window) {
   document.querySelector('#lrcSelect').value = 'close';
   if ((Notification.permission == 'granted')) document.getElementById('NotiPerm').innerHTML = '已获取权限';
   else document.getElementById('NotiPerm').innerHTML = '<span  onclick="getNotificationPerm()" style="cursor: pointer; color: #ff0000;">未获取权限, 点击获取</span>'
 }
 
+// 询问用户授权
 function getNotificationPerm() {
   Notification.requestPermission()
     .then(function (permission) {
@@ -722,7 +723,7 @@ function getNotificationPerm() {
     window.parent.popup.alert('正在获取通知权限<br><br><h4>Chrome:</h4> 请在导航栏左边点击允许<br><h4>Edge:</h4>若导航栏左边有询问框请点击允许，若没有则点击右边的红色<font color="#ff0000">×</font>允许<br><h4>页面没有响应?</h4>如你禁止过请手动点击导航栏左边的🔒图标开启权限');
 }
 
-
+// 歌词显示选择框
 function lrcSelectOnchange() {
   if(document.querySelector('#lrcSelect').value == 'open') {
     window.parent.lrcSelectFlag = true;

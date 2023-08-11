@@ -885,7 +885,7 @@ function formatTime(seconds) {
 })();
 
 function playListBtnOnclick() {
-  popup.alert('正在开发中……');
+  popup.alert('即将开发……');
 }
 
 
@@ -899,14 +899,13 @@ function mediaSessionUpdate() {
   });
 }
 
+// 判断当前Web Media Session API是否可用
 if ('mediaSession' in navigator) {
-  // Web Media Session API 可用
   navigator.mediaSession.setActionHandler('play', function () {
     audioPlayer.play();
     mediaSessionUpdate();
   });
   navigator.mediaSession.setActionHandler('pause', function () {
-
     audioPlayer.pause();
     mediaSessionUpdate();
   });
