@@ -45,6 +45,18 @@
         <a href="javascript:;" onclick="window.parent.setTimedStop()">开启</a>
       </div>
     </div>
+    <div id="pcShowLrc_box">
+      <h2>系统歌词显示</h2>
+      <p style="font-size: 1rem; padding: 5px 0;">显示 &ensp;
+        <span>
+          <select id="lrcSelect" onchange="lrcSelectOnchange()" style="background-color: rgba(255, 255, 255, 0); border-radius: 2px; padding: 1px; outline: 0;">
+            <option value="open">打开</option>
+            <option value="close">关闭</option>
+          </select>
+        </span>
+      </p>
+      <p>当前权限: <span id="NotiPerm"></span></p>
+    </div>
     <div id="theme_box">
       <h2>自定义主题</h2>
       <div class="set_op">
@@ -92,7 +104,8 @@
       <a href="javascript:;" onclick="backup_onclick('import')" data-clipboard-text="copy_content">恢复数据</a>
       <br>
       <h3 style="display: inline;">主题&emsp;</h3>
-      <a href="javascript:;" onclick="theme_onclick('export')" class="export_btn" data-clipboard-text="copy_content">导出主题</a>
+      <a href="javascript:;" onclick="theme_onclick('export')" class="export_btn"
+        data-clipboard-text="copy_content">导出主题</a>
       &ensp;
       <a href="javascript:;" onclick="theme_onclick('import')">导入主题</a>
     </div>

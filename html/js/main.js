@@ -30,7 +30,7 @@ function retryRequest(url, maxRetries = 5) {
             // 延时继续发送请求
             setTimeout(() => {
               sendRequest();
-            }, 500);
+            }, 1200);
           } else {
             reject(new Error("Maximum retries exceeded"));  // 达到最大重试次数，抛出错误
           }
@@ -305,12 +305,13 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.3';
+var Version = '3.1.4';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
 var lrcCurrentLine = 0;
 var timeUpdateAllow = true;
+var lrcSelectFlag = false;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -393,12 +394,7 @@ function switchSongs(parameter) {
   document.querySelector('#sidebarSingerName').innerHTML = singer;
   document.querySelector('#lrc_p').innerHTML = '<p>歌词加载中……</p>';
   if ('mediaSession' in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({
-      title: name.replace(/&[a-z]+;/g, " "),
-      artist: singer.replace(/&[a-z]+;/g, " "),
-      album: '昔枫音乐盒',
-      artwork: [{ src: parameter["pic"], sizes: '120x120', type: 'image/png' }]
-    });
+    mediaSessionUpdate();
   }
 }
 
@@ -437,6 +433,13 @@ onIFrameLoaded(myIframe, function () {
   theme.init();
   listBtn_onclick();
   iframe.document.getElementById('version').innerHTML = Version;
+
+  if ('Notification' in window && !isMobile()) {
+    console.log('支持Notifications API');
+  } 
+  else {
+    iframe.document.querySelector('#pcShowLrc_box').style.display = 'none';
+  }
 });
 
 function inputBlur() {
@@ -537,7 +540,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增侧边栏歌曲播放页<br>侧边栏更多功能开发中</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>1. 新增系统控制中心歌曲交互卡(支持主流浏览器)<br>2. 新增系统歌词显示(实验功能，在[设置>>系统歌词显示]中开启)<br><br>以上均只支持电脑端，且系统歌词只支持Chrome、Edge浏览器和Quicker插件</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -790,6 +793,15 @@ lrcUpdate(0);
 function lrcUpdate(lrcCurrentLine) {
   /* console.log(lrcCurrentLine); */
   if (lrcCurrentLine == -1) return;
+  
+  if ('Notification' in window && playingNum != 999 && lrcSelectFlag) {
+    let lrcShowNotification = new Notification(`${songName.innerText} - ${singerName.innerText}`, {
+      body: `${lrc[lrcCurrentLine]["lineLyric"]}`,
+      tag: `lrc`,
+      renotify: true,
+    });
+    lrcShowNotification.close();
+  }
   //侧边栏滚动歌词
   lyricsScrolling(lrcCurrentLine);
   let lrc_p = document.querySelectorAll('#lrc_p p');
@@ -863,8 +875,8 @@ function formatTime(seconds) {
       return Math.floor(parseFloat(lrc.time)) >= currentTime;
     });
     lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
-/*     console.log(currentTime);
-    console.log(lrcLastNum); */
+    /*     console.log(currentTime);
+        console.log(lrcLastNum); */
     lrcUpdate(lrcLastNum - 1);
     setTimeout(() => {
       timeUpdateAllow = true;
@@ -878,19 +890,33 @@ function playListBtnOnclick() {
 
 
 // 系统音频交互
+function mediaSessionUpdate() {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: document.querySelector('#sidebarSongName').innerHTML.replace(/&[a-z]+;/g, " "),
+    artist: document.querySelector('#sidebarSingerName').innerHTML.replace(/&[a-z]+;/g, " "),
+    album: '昔枫音乐盒',
+    artwork: [{ src: cover.src, sizes: '120x120', type: 'image/png' }]
+  });
+}
+
 if ('mediaSession' in navigator) {
   // Web Media Session API 可用
   navigator.mediaSession.setActionHandler('play', function () {
     audioPlayer.play();
+    mediaSessionUpdate();
   });
   navigator.mediaSession.setActionHandler('pause', function () {
+
     audioPlayer.pause();
+    mediaSessionUpdate();
   });
   navigator.mediaSession.setActionHandler('previoustrack', function () {
     nextPlay('prev');
+    mediaSessionUpdate();
   });
   navigator.mediaSession.setActionHandler('nexttrack', function () {
     nextPlay('next');
+    mediaSessionUpdate();
   });
 }
 

@@ -112,7 +112,8 @@ h5 {
 #theme_box,
 #timer_box,
 #about_box,
-#backups_box {
+#backups_box,
+#pcShowLrc_box {
   /* margin-left: calc(50% - 130px); */
   background-color: rgba(255, 253, 253, 0.8);
   box-shadow: 0 0 3px rgba(85, 85, 85, 0.7);
@@ -124,7 +125,8 @@ h5 {
 #timer_box,
 #theme_box,
 #backups_box,
-#about_box {
+#about_box,
+#pcShowLrc_box {
   margin-bottom: 10px;
 }
 
