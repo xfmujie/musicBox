@@ -312,6 +312,8 @@ var lrcLastNum = 0;
 var lrcCurrentLine = 0;
 var timeUpdateAllow = true;
 var lrcSelectFlag = false;
+var lrcLastNumForNotification = 0;
+var lrcCurrentLineForNotification = 0;
 
 //音频播放监听与更新歌词
 lrc1.style.color = theme_lrcColor;
@@ -320,7 +322,7 @@ player.on('timeupdate', event => {
   var plyr_time = event.detail.plyr.currentTime;  // 当前时间（单位：秒）
   // var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
 
-  // 找当前行歌词
+  // 找当前行歌词(音乐盒内)
   if (timeUpdateAllow) {
     lrcLastNum = lrc.findIndex((lrc) => {
       return Math.floor(parseFloat(lrc.time)) >= plyr_time;
@@ -332,6 +334,24 @@ player.on('timeupdate', event => {
     }
   }
   lrcCurrentLine = lrcLastNum;
+
+  //  找当前行歌词(系统歌词)
+  if ('Notification' in window && playingNum != 999 && lrcSelectFlag) {
+    lrcLastNumForNotification = lrc.findIndex((lrc) => {
+      return Math.floor(parseFloat(lrc.time)) >= plyr_time + 1;
+    });
+    lrcLastNumForNotification = lrcLastNumForNotification == -1 ? 1 : lrcLastNumForNotification;
+    if (lrcCurrentLineForNotification != lrcLastNumForNotification) {
+      let lrcShowNotification = new Notification(`${songName.innerText} - ${singerName.innerText}`, {
+        body: `${lrc[lrcCurrentLineForNotification]["lineLyric"]}`,
+        tag: `lrc`,
+        renotify: true,
+      });
+      lrcShowNotification.close();
+    }
+    lrcCurrentLineForNotification = lrcLastNumForNotification;
+  }
+
 });
 
 //物理按键监听
@@ -436,7 +456,7 @@ onIFrameLoaded(myIframe, function () {
 
   if ('Notification' in window && !isMobile()) {
     console.log('支持Notifications API');
-  } 
+  }
   else {
     iframe.document.querySelector('#pcShowLrc_box').style.display = 'none';
   }
@@ -793,15 +813,7 @@ lrcUpdate(0);
 function lrcUpdate(lrcCurrentLine) {
   /* console.log(lrcCurrentLine); */
   if (lrcCurrentLine == -1) return;
-  
-  if ('Notification' in window && playingNum != 999 && lrcSelectFlag) {
-    let lrcShowNotification = new Notification(`${songName.innerText} - ${singerName.innerText}`, {
-      body: `${lrc[lrcCurrentLine]["lineLyric"]}`,
-      tag: `lrc`,
-      renotify: true,
-    });
-    lrcShowNotification.close();
-  }
+
   //侧边栏滚动歌词
   lyricsScrolling(lrcCurrentLine);
   let lrc_p = document.querySelectorAll('#lrc_p p');
