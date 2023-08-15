@@ -323,16 +323,16 @@ player.on('timeupdate', event => {
   // var plyr_duration = event.detail.plyr.duration;  // 音频总时长（单位：秒）
 
   // 找当前行歌词(音乐盒内)
-  if (timeUpdateAllow) {
-    lrcLastNum = lrc.findIndex((lrc) => {
-      return Math.floor(parseFloat(lrc.time)) >= plyr_time;
-    });
-    lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
-    // 歌词更新
-    if (lrcCurrentLine != lrcLastNum) {
-      lrcUpdate(lrcCurrentLine);
-    }
+
+  lrcLastNum = lrc.findIndex((lrc) => {
+    return Math.floor(parseFloat(lrc.time)) >= plyr_time;
+  });
+  lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
+  // 歌词更新
+  if (lrcCurrentLine != lrcLastNum) {
+    lrcUpdate(lrcCurrentLine);
   }
+
   lrcCurrentLine = lrcLastNum;
 
   //  找当前行歌词(系统歌词)
@@ -799,15 +799,17 @@ document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>
 lyricsScrolling(0);
 function lyricsScrolling(i) {
   try {
-    var sidebarLrc = document.getElementById("sidebarLrc");
-    var sidebarLrc_p = document.querySelectorAll('#sidebarLrc p')[i];
-    // 计算子元素相对于父级元素的偏移量
-    var offsetTop = sidebarLrc_p.offsetTop;
-    var parentHeight = sidebarLrc.offsetHeight;
-    var childHeight = sidebarLrc_p.offsetHeight;
-    var centerOffset = (parentHeight - childHeight) / 2;
-    // 将滚动条滚动到垂直居中位置
-    sidebarLrc.scrollTop = offsetTop - centerOffset + 20;
+    if (timeUpdateAllow) {
+      var sidebarLrc = document.getElementById("sidebarLrc");
+      var sidebarLrc_p = document.querySelectorAll('#sidebarLrc p')[i];
+      // 计算子元素相对于父级元素的偏移量
+      var offsetTop = sidebarLrc_p.offsetTop;
+      var parentHeight = sidebarLrc.offsetHeight;
+      var childHeight = sidebarLrc_p.offsetHeight;
+      var centerOffset = (parentHeight - childHeight) / 2;
+      // 将滚动条滚动到垂直居中位置
+      sidebarLrc.scrollTop = offsetTop - centerOffset + 20;
+    }
   }
   catch {
     return;
