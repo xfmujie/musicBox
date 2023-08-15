@@ -416,6 +416,7 @@ function switchSongs(parameter) {
   if ('mediaSession' in navigator) {
     mediaSessionUpdate();
   }
+  root.style.setProperty('--music-cover', `${parameter["pic"]}`);
 }
 
 function search_onclick() {
@@ -581,8 +582,6 @@ if (window.location.href == 'https://music-box-lilac.vercel.app/') {
   popup.alert('该页面为测试版，请点击<br><a href="https://mu-jie.cc/musicBox/">https://mu-jie.cc/musicBox/</a>访问正式版本<br>国内无需魔法即可直接访问');
 }
 
-const like = document.querySelector("#cover");
-like.addEventListener('dblclick', likeOnclick);
 
 
 window.addEventListener('error', function (event) {
@@ -611,10 +610,11 @@ function playReset() {
   iframe.pagePX = 0;
   document.querySelector('#sidebarSongName').innerHTML = '昔枫音乐盒';
   document.querySelector('#sidebarSingerName').innerHTML = 'VIP音乐解析';
-  document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
+  document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>可能存在Bug</p>';
   document.querySelector('#cover2').src = 'https://ali.mu-jie.cc/img/cover01.png';
   lrcCurrentLine = 0;
   lrcUpdate(0);
+  root.style.setProperty('--music-cover', `url('https://ali.mu-jie.cc/img/cover01.png')`);
 }
 
 /* window.addEventListener('message', function (event) {
@@ -764,7 +764,7 @@ function menu_onclick() {
     document.querySelector("body > div.search > div.menu > button").innerHTML = '<i class="fa fa-bars"></i>';
     if (window.innerWidth < 960) {
       sidebar.style.left = '-100%';
-      document.body.removeChild(overlay);
+      overlay.remove();
     }
     else {
       sidebar.style.left = '-30%';
@@ -795,7 +795,7 @@ function menu_onclick() {
 }
 
 // 歌词滚动
-document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
+document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>可能存在Bug</p>';
 lyricsScrolling(0);
 function lyricsScrolling(i) {
   try {
@@ -985,16 +985,55 @@ document.getElementById('lrc_p').addEventListener('click', function (event) {
     if (clickNum != lrcCurrentLine - 1 && playingNum != 999) {
       console.log(clickNum);
       lrcCurrentLine = clickNum;
-      audioPlayer.currentTime = Math.floor(parseFloat(lrc[clickNum]["time"]));
+      audioPlayer.currentTime = parseFloat(lrc[clickNum]["time"]);
       timeUpdateAllow = true;
       audioPlayer.play();
     }
   }
 });
 
+function captureElement() {
+  html2canvas(document.querySelector(".sidebar2")).then(function (canvas) {
+    // 创建一个新的链接元素
+    var link = document.createElement('a');
+    link.href = canvas.toDataURL();
+    link.download = 'screenshot.png';
+    link.click();
+  });
+}
 
-
-
+// 播放页面
+let sidebar2 = document.querySelector('.sidebar2');
+/* playPageOpenOrClose(); */
+if (window.innerWidth >= 960) {
+  setTimeout(() => {
+    sidebar2.style.position = 'absolute';
+  }, 1000);
+}
+function playPageOpenOrClose() {
+  // 检测是否已经呼起
+  if (['1%', '0px'].includes(sidebar2.style.right)) {
+    document.body.style.overflow = '';
+    if (window.innerWidth < 960) {
+      sidebar2.style.right = '-100%';
+    }
+    else {
+      sidebar2.style.right = '-30%';
+    }
+  }
+  else {
+    if (window.innerWidth < 960) {
+      document.body.style.overflow = 'hidden';
+      if (document.querySelector('.sidebar').style.left == '0px') {
+        menu_onclick();
+      }
+      sidebar2.style.right = '0px';
+    }
+    else {
+      sidebar2.style.right = '1%';
+    }
+  }
+}
 
 
 //调用子页面函数

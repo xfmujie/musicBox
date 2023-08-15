@@ -12,6 +12,7 @@
   <link rel="shortcut icon" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/logoicon.ico"
     type="image/x-icon">
   <script src="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
   <!-- 加载相关 CSS 文件 -->
   <link rel="stylesheet" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.css">
   <link rel="stylesheet" href="./css/main.css">
@@ -21,12 +22,20 @@
 <body>
   <!-- 侧边栏 -->
   <div class="sidebar">
+    <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span>在首页点击歌曲封面也能进入沉浸播放</span></div>
+    <div>待开发</div>
+  </div>
+  <div class="sidebar2">
+    <div>
+      <button id="play_page_close_btn" onclick="playPageOpenOrClose()"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+      <!-- <button id="share_btn" onclick="captureElement()"><i class="fa fa-share-square-o" aria-hidden="true"></i></button> -->
+    </div>
     <div>
       <h3 id="sidebarSongName">昔枫音乐盒</h3>
       <h5 id="sidebarSingerName">VIP音乐解析</h5>
-      </div>
+    </div>
     <div>
-      <img id="cover2" width="50%" src="https://ali.mu-jie.cc/img/cover01.png" />
+      <img id="cover2" width="40%" src="https://ali.mu-jie.cc/img/cover01.png" />
     </div>
     <div id="sidebarLrc">
       <div style="height: 30%;width: 100%;"></div>
@@ -35,10 +44,10 @@
       <div style="height: 30%;width: 100%;"></div>
     </div>
     <div>
-    <div id="progressBar">
-      <span id="time-label">00:00</span>
-      <div class="progress"> </div>
-      <span id="duration">00:00</span>
+      <div id="progressBar">
+        <span id="time-label">00:00</span>
+        <div class="progress"> </div>
+        <span id="duration">00:00</span>
       </div>
     </div>
     <div id="PlayControl">
@@ -52,8 +61,7 @@
             class="fa fa-step-forward"></i></button></div>
       <div><button class="playBtn" title="" onclick="playListBtnOnclick()"><i class="fa fa-list"></i></button></div>
     </div>
-  </div>
-  <div class="sidebar2">
+    <div id="comment"><!-- 评论 --></div>
   </div>
   <div class="search">
     <div class="menu"><button title="" onclick="menu_onclick()"><i class="fa fa-bars"></i></button></div>
@@ -63,7 +71,7 @@
     </div>
   </div>
   <div class="music_box" id="music_box" aria-hidden="true">
-    <div class="img"><img id="cover" width="88px" src="https://ali.mu-jie.cc/img/cover01.png" />
+    <div class="img" onclick="playPageOpenOrClose()"><img id="cover" width="88px" src="https://ali.mu-jie.cc/img/cover01.png" />
     </div>
     <div class="song">
       <span id="songName">歌曲</span>

@@ -1,6 +1,7 @@
 :root {
   --bg-image: linear-gradient(to bottom right, #3a7bd561, #3f5efb56, #af52bf55, #c873e06e);
   --lrc-HL: #199dfc;
+  --music-cover: url('https://ali.mu-jie.cc/img/cover01.png')
 }
 
 h1,
@@ -46,6 +47,7 @@ body {
 
 img {
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .img {
@@ -291,8 +293,6 @@ a {
 .sidebar2 {
   box-shadow: 0 0 10px rgba(59, 59, 59, 0.5);
   position: absolute;
-  display: flex;
-  flex-direction: column;
   text-align: center;
   top: 55px;
   left: -100%;
@@ -304,6 +304,22 @@ a {
   z-index: 999;
   padding: 10px;
 }
+
+.sidebar2 {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  padding: 0;
+  left: unset;
+  right: -100%;
+  top: 0;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #f8fdff, #d9edff);
+  z-index: 9999;
+}
+
 
 /* 侧边栏内歌词盒子 */
 #sidebarLrc {
@@ -366,11 +382,13 @@ a {
 
 #PlayControl {
   display: flex;
+  bottom: unset;
 }
 
 #PlayControl>div:nth-child(1) {
   position: relative;
   flex: 1;
+  left: 10px;
 }
 
 #PlayControl>div:nth-child(2) {
@@ -395,6 +413,7 @@ a {
 #PlayControl>div:nth-child(5) {
   position: relative;
   flex: 1;
+  right: 10px;
 }
 
 /* 滚动条 */
@@ -440,29 +459,41 @@ a {
 }
 
 /* 侧边栏子容器 */
-body>div.sidebar>div:nth-child(1) {
-  flex: 0.3;
-  position: relative;
+body>div.sidebar2>div:nth-child(1) {
+  /*  background-color: #bce3ff; */
+  flex: 0.1;
+  text-align: unset;
 }
 
-body>div.sidebar>div:nth-child(2) {
+body>div.sidebar2>div:nth-child(2) {
+  /* background-color: #ffbcbc; */
+  flex: 0.3;
+  position: relative;
+
+}
+
+body>div.sidebar2>div:nth-child(3) {
+  /* background-color: #b81c33; */
   flex: 0.8;
   position: relative;
 }
 
-body>div.sidebar>div:nth-child(3) {
+body>div.sidebar2>div:nth-child(4) {
+  /* background-color: #db92ff; */
   flex: 2;
   position: relative;
 }
 
-body>div.sidebar>div:nth-child(4) {
+body>div.sidebar2>div:nth-child(5) {
+  /*  background-color: #e6ffbc; */
   flex: 0.2;
   position: relative;
   top: 1%
 }
 
-body>div.sidebar>div:nth-child(5) {
-  flex: 0.4;
+body>div.sidebar2>div:nth-child(6) {
+  /* background-color: #bcffc9; */
+  flex: 0.5;
   position: relative;
   align-items: center;
 }
@@ -471,8 +502,61 @@ body>div.sidebar>div:nth-child(5) {
   color: #0095ff;
 }
 
-#lrc_p p:not(.lrcHL)  {
+#lrc_p p:not(.lrcHL) {
   cursor: pointer;
+}
+
+body>div.sidebar2>div:nth-child(1)>div {
+  background-color: #ffbcee;
+  height: 100%;
+
+  /* margin-top: -3px; */
+}
+
+#share_btn,
+#play_page_close_btn {
+  background-color: rgba(255, 255, 255, 0);
+  font-size: 1.2rem;
+  color: #3880c3;
+  position: absolute;
+  right: 10px;
+  /* top: calc(2.8% - 17.5px); */
+  height: 35px;
+  width: 50px;
+  border-radius: 5px;
+  border-width: 0;
+  outline: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+#play_page_close_btn {
+  right: 0px;
+  font-size: 1.5rem;
+}
+
+#comment {
+  position: relative;
+  height: 20px;
+  font-size: 8px;
+  color: #878787;
+}
+
+.sidebar div {
+  padding: 10px 0;
+  border: 1px solid rgb(190, 190, 190);
+  color: #2c2c2c;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.sidebar>div:nth-child(1)>span {
+  font-size: 0.8rem;
+  color: #696969;
 }
 
 /*响应式媒体查询*/
@@ -553,22 +637,28 @@ body>div.sidebar>div:nth-child(5) {
   }
 
   .sidebar2 {
-    position: absolute;
+    position: fixed;
+    padding: 10px;
     left: unset;
-    top: -9999px;
-    bottom: 100px;
+    right: -30%;
+    top: 0px;
+    border-radius: 10px;
   }
 
   #progressBar {
     cursor: pointer;
   }
 
-  body>div.sidebar>div:nth-child(2) {
+  body>div.sidebar2>div:nth-child(1) {
+    flex: 0.15;
+  }
+
+  body>div.sidebar2>div:nth-child(3) {
     flex: 0.5;
     position: relative;
   }
 
-  body>div.sidebar>div:nth-child(5) {
+  body>div.sidebar2>div:nth-child(6) {
     bottom: 10px;
   }
 
@@ -580,18 +670,25 @@ body>div.sidebar>div:nth-child(5) {
     color: #0095ff;
   }
 
-/*   #lrc_p p:not(.lrcHL):hover::after {
-    content: "\f04b";
-    font-family: "FontAwesome";
-    position: absolute;
-    font-size: 1.1rem;
-    margin-top: 3px;
-    right: 20px;
-  } */
-
   .lrcHL {
     color: var(--lrc-HL) !important;
     font-size: 1.2rem !important;
     font-weight: bold;
+  }
+
+  .sidebar div:hover {
+    background-color: rgba(53, 194, 255, 0.8);
+    color: #ffffff;
+    transition-duration: 100ms;
+  }
+
+  .sidebar div:active,
+  #cover:active {
+    transform: scale(0.95);
+    transition-duration: 100ms;
+  }
+
+  body {
+    overflow-x: hidden;
   }
 }
