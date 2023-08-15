@@ -613,6 +613,7 @@ function playReset() {
   document.querySelector('#sidebarSingerName').innerHTML = 'VIP音乐解析';
   document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
   document.querySelector('#cover2').src = 'https://ali.mu-jie.cc/img/cover01.png';
+  lrcCurrentLine = 0;
   lrcUpdate(0);
 }
 
@@ -797,15 +798,20 @@ function menu_onclick() {
 document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>目前还有Bug</p>';
 lyricsScrolling(0);
 function lyricsScrolling(i) {
-  var sidebarLrc = document.getElementById("sidebarLrc");
-  var sidebarLrc_p = document.querySelectorAll('#sidebarLrc p')[i];
-  // 计算子元素相对于父级元素的偏移量
-  var offsetTop = sidebarLrc_p.offsetTop;
-  var parentHeight = sidebarLrc.offsetHeight;
-  var childHeight = sidebarLrc_p.offsetHeight;
-  var centerOffset = (parentHeight - childHeight) / 2;
-  // 将滚动条滚动到垂直居中位置
-  sidebarLrc.scrollTop = offsetTop - centerOffset + 20;
+  try {
+    var sidebarLrc = document.getElementById("sidebarLrc");
+    var sidebarLrc_p = document.querySelectorAll('#sidebarLrc p')[i];
+    // 计算子元素相对于父级元素的偏移量
+    var offsetTop = sidebarLrc_p.offsetTop;
+    var parentHeight = sidebarLrc.offsetHeight;
+    var childHeight = sidebarLrc_p.offsetHeight;
+    var centerOffset = (parentHeight - childHeight) / 2;
+    // 将滚动条滚动到垂直居中位置
+    sidebarLrc.scrollTop = offsetTop - centerOffset + 20;
+  }
+  catch {
+    return;
+  }
 }
 
 //歌词更新
@@ -930,6 +936,62 @@ if ('mediaSession' in navigator) {
     mediaSessionUpdate();
   });
 }
+
+
+/* 人为滚动禁用自动滚动 */
+let scrollTimeout = 0;
+// 歌词鼠标滚动
+let mouseScrollUnits = 0;
+document.getElementById('sidebarLrc').addEventListener('mousewheel', handleScroll);
+document.getElementById('sidebarLrc').addEventListener('DOMMouseScroll', handleScroll); // 兼容 Firefox
+function handleScroll(event) {
+  deltaY = event.wheelDelta || -event.detail;
+  mouseScrollUnits++;
+  if (mouseScrollUnits > 3) {
+    console.log('鼠标滚动');
+    timeUpdateAllow = false;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      timeUpdateAllow = true;
+      mouseScrollUnits = 0;
+    }, 3000);
+  }
+}
+// 歌词触摸滚动
+let startY = 0;
+document.getElementById('sidebarLrc').addEventListener('touchstart', (event) => {
+  startY = event.touches[0].clientY;
+});
+document.getElementById('sidebarLrc').addEventListener('touchmove', (event) => {
+  const currentY = event.touches[0].clientY;
+  const deltaY = currentY - startY;
+  if (Math.abs(deltaY) > 100) {
+    console.log('触摸滚动');
+    timeUpdateAllow = false;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      timeUpdateAllow = true;
+    }, 3000);
+  }
+});
+
+
+// 点击歌词播放
+document.getElementById('lrc_p').addEventListener('click', function (event) {
+  if (event.target.tagName === 'P') {
+    let clickNum = Array.from(document.querySelectorAll('p')).indexOf(event.target);
+    if (clickNum != lrcCurrentLine - 1 && playingNum != 999) {
+      console.log(clickNum);
+      lrcCurrentLine = clickNum;
+      audioPlayer.currentTime = Math.floor(parseFloat(lrc[clickNum]["time"]));
+      timeUpdateAllow = true;
+    }
+  }
+});
+
+
+
+
 
 
 //调用子页面函数

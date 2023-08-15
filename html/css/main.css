@@ -458,7 +458,7 @@ body>div.sidebar>div:nth-child(3) {
 body>div.sidebar>div:nth-child(4) {
   flex: 0.2;
   position: relative;
-  top:1%
+  top: 1%
 }
 
 body>div.sidebar>div:nth-child(5) {
@@ -467,6 +467,9 @@ body>div.sidebar>div:nth-child(5) {
   align-items: center;
 }
 
+#lrc_p p:active {
+  color: #0095ff;
+}
 
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
@@ -565,9 +568,23 @@ body>div.sidebar>div:nth-child(5) {
     bottom: 10px;
   }
 
-  #lrc_p p p {
+  #lrc_p p {
     margin: 10px 0;
+    cursor: default;
   }
+
+  #lrc_p p:hover {
+    color: #0095ff;
+  }
+
+/*   #lrc_p p:not(.lrcHL):hover::after {
+    content: "\f04b";
+    font-family: "FontAwesome";
+    position: absolute;
+    font-size: 1.1rem;
+    margin-top: 3px;
+    right: 20px;
+  } */
 
   .lrcHL {
     color: var(--lrc-HL) !important;
@@ -575,4 +592,3 @@ body>div.sidebar>div:nth-child(5) {
     font-weight: bold;
   }
 }
-
