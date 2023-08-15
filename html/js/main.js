@@ -987,6 +987,7 @@ document.getElementById('lrc_p').addEventListener('click', function (event) {
       lrcCurrentLine = clickNum;
       audioPlayer.currentTime = Math.floor(parseFloat(lrc[clickNum]["time"]));
       timeUpdateAllow = true;
+      audioPlayer.play();
     }
   }
 });

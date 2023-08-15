@@ -471,7 +471,7 @@ body>div.sidebar>div:nth-child(5) {
   color: #0095ff;
 }
 
-#lrc_p p {
+#lrc_p p:not(.lrcHL)  {
   cursor: pointer;
 }
 
@@ -576,7 +576,7 @@ body>div.sidebar>div:nth-child(5) {
     margin: 10px 0;
   }
 
-  #lrc_p p:hover {
+  #lrc_p p:not(.lrcHL):hover {
     color: #0095ff;
   }
 
