@@ -1,5 +1,3 @@
-var log = console.log;
-if (window.location.href !== 'http://127.0.0.1:5500/html/') console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
@@ -305,7 +303,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.4';
+var Version = '3.1.5';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -417,6 +415,16 @@ function switchSongs(parameter) {
     mediaSessionUpdate();
   }
   root.style.setProperty('--music-cover', `${parameter["pic"]}`);
+  setTimeout(() => {
+    let playPageSongListAllP = document.querySelectorAll('#play_page_song_list p');
+    for (let i = 0; i < playPageSongListAllP.length; i++) {
+      if (playPageSongListAllP[i].classList.contains("play_page_song_list_HL")) {
+        playPageSongListAllP[i].classList.remove("play_page_song_list_HL");
+      }
+    }
+    playPageSongListAllP[playingNum].classList.add("play_page_song_list_HL");
+  }, 200);
+
 }
 
 function search_onclick() {
@@ -561,7 +569,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>1. 新增系统控制中心歌曲交互卡(支持主流浏览器)<br>2. 新增系统歌词显示(实验功能，在[设置>>系统歌词显示]中开启)<br><br>以上均只支持电脑端，且系统歌词只支持Chrome、Edge浏览器和Quicker插件</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>播放页面已初步完善，现可以直接点击歌曲封面进入使用<br>（可能存在少许bug）<br></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -615,6 +623,10 @@ function playReset() {
   lrcCurrentLine = 0;
   lrcUpdate(0);
   root.style.setProperty('--music-cover', `url('https://ali.mu-jie.cc/img/cover01.png')`);
+  setTimeout(() => {
+    playPageSongListUpdate(playList);
+  }, 100);
+
 }
 
 /* window.addEventListener('message', function (event) {
@@ -905,9 +917,6 @@ function formatTime(seconds) {
   });
 })();
 
-function playListBtnOnclick() {
-  popup.alert('即将开发……');
-}
 
 
 // 系统音频交互
@@ -982,7 +991,7 @@ document.getElementById('sidebarLrc').addEventListener('touchmove', (event) => {
 // 点击歌词播放
 document.getElementById('lrc_p').addEventListener('click', function (event) {
   if (event.target.tagName === 'P') {
-    let clickNum = Array.from(document.querySelectorAll('p')).indexOf(event.target);
+    let clickNum = Array.from(document.querySelectorAll('#lrc_p p')).indexOf(event.target);
     if (clickNum != lrcCurrentLine - 1 && playingNum != 999) {
       console.log(clickNum);
       lrcCurrentLine = clickNum;
@@ -993,15 +1002,6 @@ document.getElementById('lrc_p').addEventListener('click', function (event) {
   }
 });
 
-function captureElement() {
-  html2canvas(document.querySelector(".sidebar2")).then(function (canvas) {
-    // 创建一个新的链接元素
-    var link = document.createElement('a');
-    link.href = canvas.toDataURL();
-    link.download = 'screenshot.png';
-    link.click();
-  });
-}
 
 // 播放页面
 let sidebar2 = document.querySelector('.sidebar2');
@@ -1041,8 +1041,83 @@ window.addEventListener('hashchange', function () {
   var hash = location.hash;
   if (hash == '' && sidebar.style.left == '0px') menu_onclick(true);
   if (hash == '' && sidebar2.style.right == '0px') playPageOpenOrClose(true);
+  if (hash == '#sidebar' && sidebar2.style.right == '0px') playPageOpenOrClose(true);
+  if (hash == '#play-page' && playPageSongListElem.style.bottom == '-1px') playListBtnOnclick(true);
 });
 
+
+// 播放页歌曲列表
+let playPageSongListElem = document.querySelector('.play_page_song_list');
+playPageSongListUpdate(playList);
+function playPageSongListUpdate(playList) {
+  if (!playList) {
+    document.querySelector('#play_page_song_list').innerHTML = '<br><span style="position:absolute; bottom:40vh; left:calc(50% - 60px);">当前列表无歌曲</span>';
+    return;
+  }
+  document.querySelector('#play_page_song_list').innerHTML = '';
+  playList.forEach(function (song, num) {
+    console.log(song);
+    console.log(num);
+    document.querySelector('#play_page_song_list').innerHTML += `<p>${song.name}<br><span style="font-size:0.8rem;">${song.artist}</span></p>`;  /* ${(num + 1).toString().padStart(2, '0')}&emsp; */
+    if (num + 1 == playList.length) document.querySelector('#play_page_song_list').innerHTML += '<br><br>';
+  });
+}
+
+// 播放页歌曲列表显示
+function playListBtnOnclick(isHash = false) {
+  if (playPageSongListElem.style.bottom == '-1px' || playPageSongListElem.style.top == '30%') {
+    overlay.remove();
+    if (window.innerWidth < 960) {
+      playPageSongListElem.style.bottom = '-80%';
+      if (!isHash) history.go(-1);
+    }
+    else {
+      playPageSongListElem.style.top = '100%';
+    }
+  }
+  else {
+    overlay = document.createElement('div');
+    overlay.style.position = 'absolute';
+    overlay.style.top = '0';
+    overlay.style.bottom = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 设置为半透明的黑色
+    overlay.style.zIndex = '1';
+    document.querySelector('.sidebar2').appendChild(overlay);
+    overlay.addEventListener('click', () => {
+      playListBtnOnclick();
+      overlay.remove();
+    });
+    if (window.innerWidth < 960) {
+      playPageSongListElem.style.bottom = '-1px';
+      window.location.hash = '#playPageSongList';
+    }
+    else {
+      playPageSongListElem.style.top = '30%';
+    }
+  }
+}
+
+
+// 点击歌曲播放
+document.getElementById('play_page_song_list').addEventListener('click', function (event) {
+  if (event.target.tagName === 'P') {
+    let clickNum = Array.from(document.querySelectorAll('#play_page_song_list p')).indexOf(event.target);
+    console.log(clickNum);
+    if (playListFlag == 'play') {
+      switchSongs(playList[clickNum]);
+      playingNum = clickNum;
+      listBtn_onclick();
+    }
+    else {
+      switchSongs(searchList[clickNum]);
+      playingNum = clickNum;
+      search_onclick();
+    }
+
+  }
+});
 
 //调用子页面函数
 //iframe.函数名()

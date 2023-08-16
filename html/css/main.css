@@ -335,7 +335,8 @@ a {
 }
 
 /* 隐藏歌词盒子滚动条 */
-#sidebarLrc::-webkit-scrollbar {
+#sidebarLrc::-webkit-scrollbar,
+#play_page_song_list::-webkit-scrollbar {
   width: 0;
   background-color: #F5F5F5;
 }
@@ -559,6 +560,45 @@ body>div.sidebar2>div:nth-child(1)>div {
   color: #696969;
 }
 
+.play_page_song_list {
+  text-align: start;
+  position: absolute;
+  padding: 0px;
+  padding-top: 20px;
+  bottom: -100%;
+  width: 100%;
+  height: 70%;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(to top, #d9edff, #f8fdff);
+  z-index: 9999;
+  overflow-y: hidden;
+  transition-duration: 200ms;
+}
+
+#play_page_song_list {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#play_page_song_list p{
+  font-size: 0.9rem;
+  padding: 5px 0 5px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #3b3b3b;
+  margin: 10px 0;
+  white-space: nowrap;
+}
+
+.play_page_song_list_HL {
+  color: #0095ff !important;
+}
+
+/* ************************************************************************ */
+
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   .music_box {
@@ -639,12 +679,18 @@ body>div.sidebar2>div:nth-child(1)>div {
   .sidebar2 {
     position: fixed;
     padding: 10px;
+    padding-left: 0;
     left: unset;
     right: -30%;
     top: 0px;
     border-radius: 10px;
+    overflow: hidden;
   }
-
+  .PlayControlBtn:hover {
+    /* background-color: rgba(53, 194, 255, 0.8); */
+    transform: scale(1.1);
+    transition-duration: 100ms;
+  }
   #progressBar {
     cursor: pointer;
   }
@@ -691,4 +737,29 @@ body>div.sidebar2>div:nth-child(1)>div {
   body {
     overflow-x: hidden;
   }
+
+  .play_page_song_list {
+    top: 100%;
+  }
+
+  #play_page_song_list {
+    height: 100%;
+    bottom: -10px;
+  }
+
+  #play_page_song_list p {
+    position: relative;
+    width: 92%;
+    left: 2%;
+    padding: 5px 0 5px 10px;
+  }
+  
+  #play_page_song_list p:active {
+    background-color: rgb(168, 216, 255);
+  }
+
+  #play_page_song_list p:hover {
+    box-shadow: 1px 1px 5px #999999;
+  }
+  
 }

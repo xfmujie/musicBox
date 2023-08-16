@@ -1,4 +1,3 @@
-if (window.location.href !== 'http://127.0.0.1:5500/html/songList.html') console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -94,6 +93,7 @@ function add_del_onclick() {
           }
           playList.push(addSong);
           localStorage.setItem('playList', JSON.stringify(playList));
+          window.parent.playPageSongListUpdate(playList);
           window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`);
           //console.log(playList);
         }
@@ -192,6 +192,7 @@ function play_btn_onclick() {
           pagePX = window.scrollY;
           SearchPagePX = 0;
           displayChange('play');
+          window.parent.playPageSongListUpdate(playList);
         }
         else {
           playListFlag = 'search';
@@ -201,6 +202,7 @@ function play_btn_onclick() {
           SearchPagePX = window.scrollY;
           pagePX = 0;
           displayChange('search');
+          window.parent.playPageSongListUpdate(searchList);
         }
       }
       else {
@@ -224,6 +226,7 @@ function play_btn_onclick() {
                 localStorage.setItem('playList', JSON.stringify(playList));
                 window.parent.popup.alert('已添加该歌单到播放列表');
                 window.parent.listBtn_onclick();
+                if(playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
               }
             });
         }
@@ -720,12 +723,12 @@ function getNotificationPerm() {
         // 用户不允许显示通知
       }
     });
-    window.parent.popup.alert('正在获取通知权限<br><br><h4>Chrome:</h4> 请在导航栏左边点击允许<br><h4>Edge:</h4>若导航栏左边有询问框请点击允许，若没有则点击右边的红色<font color="#ff0000">×</font>允许<br><h4>页面没有响应?</h4>如你禁止过请手动点击导航栏左边的🔒图标开启权限');
+  window.parent.popup.alert('正在获取通知权限<br><br><h4>Chrome:</h4> 请在导航栏左边点击允许<br><h4>Edge:</h4>若导航栏左边有询问框请点击允许，若没有则点击右边的红色<font color="#ff0000">×</font>允许<br><h4>页面没有响应?</h4>如你禁止过请手动点击导航栏左边的🔒图标开启权限');
 }
 
 // 歌词显示选择框
 function lrcSelectOnchange() {
-  if(document.querySelector('#lrcSelect').value == 'open') {
+  if (document.querySelector('#lrcSelect').value == 'open') {
     window.parent.lrcSelectFlag = true;
     let tempNotification = new Notification(`昔枫音乐盒`, {
       body: `已打开歌词显示\n(本次有效，下次打开音乐盒需要重新打开)`,
