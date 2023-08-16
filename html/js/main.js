@@ -1,3 +1,5 @@
+log = console.log;
+console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'

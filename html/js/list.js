@@ -1,3 +1,5 @@
+log = console.log;
+console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -226,7 +228,7 @@ function play_btn_onclick() {
                 localStorage.setItem('playList', JSON.stringify(playList));
                 window.parent.popup.alert('已添加该歌单到播放列表');
                 window.parent.listBtn_onclick();
-                if(playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
+                if (playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
               }
             });
         }
