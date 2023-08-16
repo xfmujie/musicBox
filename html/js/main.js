@@ -753,11 +753,10 @@ iframe.addEventListener('touchmove', (event) => {
   }
 });
 
+let sidebar = document.querySelector('.sidebar');
 let overlay;  //半透明遮罩
-
 // 侧边栏呼出/收起
-function menu_onclick() {
-  let sidebar = document.querySelector('.sidebar');
+function menu_onclick(isHash = false) {
   // console.log(sidebar.style.left);
   // 检测是否已经呼起
   if (['1%', '0px'].includes(sidebar.style.left)) {
@@ -765,6 +764,7 @@ function menu_onclick() {
     if (window.innerWidth < 960) {
       sidebar.style.left = '-100%';
       overlay.remove();
+      if (!isHash) history.go(-1);
     }
     else {
       sidebar.style.left = '-30%';
@@ -787,6 +787,7 @@ function menu_onclick() {
         menu_onclick();
         overlay.remove();
       });
+      window.location.hash = '#sidebar';
     }
     else {
       sidebar.style.left = '1%';
@@ -1010,12 +1011,15 @@ if (window.innerWidth >= 960) {
     sidebar2.style.position = 'absolute';
   }, 1000);
 }
-function playPageOpenOrClose() {
+function playPageOpenOrClose(isHash = false) {
   // 检测是否已经呼起
   if (['1%', '0px'].includes(sidebar2.style.right)) {
     document.body.style.overflow = '';
     if (window.innerWidth < 960) {
       sidebar2.style.right = '-100%';
+      if (!isHash) {
+        history.go(-1);
+      }
     }
     else {
       sidebar2.style.right = '-30%';
@@ -1024,16 +1028,20 @@ function playPageOpenOrClose() {
   else {
     if (window.innerWidth < 960) {
       document.body.style.overflow = 'hidden';
-      if (document.querySelector('.sidebar').style.left == '0px') {
-        menu_onclick();
-      }
       sidebar2.style.right = '0px';
+      window.location.hash = '#play-page';
     }
     else {
       sidebar2.style.right = '1%';
     }
   }
 }
+
+window.addEventListener('hashchange', function () {
+  var hash = location.hash;
+  if (hash == '' && sidebar.style.left == '0px') menu_onclick(true);
+  if (hash == '' && sidebar2.style.right == '0px') playPageOpenOrClose(true);
+});
 
 
 //调用子页面函数
