@@ -1092,10 +1092,12 @@ function playListBtnOnclick(isHash = false) {
   if (playPageSongListElem.style.bottom == '-1px' || playPageSongListElem.style.top == '30%') {
     overlay2.remove();
     if (window.innerWidth < 960) {
+      playPageSongListElem.style.top = 'unset';
       playPageSongListElem.style.bottom = '-80%';
       if (!isHash) history.go(-1);
     }
     else {
+      playPageSongListElem.style.bottom = 'unset';
       playPageSongListElem.style.top = '100%';
     }
   }
@@ -1114,10 +1116,12 @@ function playListBtnOnclick(isHash = false) {
       overlay2.remove();
     });
     if (window.innerWidth < 960) {
+      playPageSongListElem.style.top = 'unset';
       playPageSongListElem.style.bottom = '-1px';
       window.location.hash = '#playPageSongList';
     }
     else {
+      playPageSongListElem.style.bottom = 'unset';
       playPageSongListElem.style.top = '30%';
     }
   }
