@@ -839,13 +839,17 @@ function lrcUpdate(lrcCurrentLine) {
 
   //侧边栏滚动歌词
   lyricsScrolling(lrcCurrentLine);
-  let lrc_p = document.querySelectorAll('#lrc_p p');
-  for (let i = 0; i < lrc_p.length; i++) {
-    if (lrc_p[i].classList.contains("lrcHL")) {
-      lrc_p[i].classList.remove("lrcHL");
+  try {
+    let lrc_p = document.querySelectorAll('#lrc_p p');
+    for (let i = 0; i < lrc_p.length; i++) {
+      if (lrc_p[i].classList.contains("lrcHL")) {
+        lrc_p[i].classList.remove("lrcHL");
+      }
     }
+    lrc_p[lrcCurrentLine].classList.add("lrcHL");
   }
-  lrc_p[lrcCurrentLine].classList.add("lrcHL");
+  catch { }
+
   //首页歌词
   lrc1.innerHTML = lrc[lrcCurrentLine]["lineLyric"].slice(0, 50);
   if (lrcCurrentLine + 1 < lrc.length) {
@@ -1063,12 +1067,25 @@ function playPageSongListUpdate(playList) {
     document.querySelector('#play_page_song_list').innerHTML += `<p>${song.name}<br><span style="font-size:0.8rem;">${song.artist}</span></p>`;  /* ${(num + 1).toString().padStart(2, '0')}&emsp; */
     if (num + 1 == playList.length) document.querySelector('#play_page_song_list').innerHTML += '<br><br>';
   });
+
+  if (playingNum != 999) {
+    setTimeout(() => {
+      let playPageSongListAllP = document.querySelectorAll('#play_page_song_list p');
+      for (let i = 0; i < playPageSongListAllP.length; i++) {
+        if (playPageSongListAllP[i].classList.contains("play_page_song_list_HL")) {
+          playPageSongListAllP[i].classList.remove("play_page_song_list_HL");
+        }
+      }
+      playPageSongListAllP[playingNum].classList.add("play_page_song_list_HL");
+    }, 200);
+  }
 }
 
 // 播放页歌曲列表显示
+let overlay2;
 function playListBtnOnclick(isHash = false) {
   if (playPageSongListElem.style.bottom == '-1px' || playPageSongListElem.style.top == '30%') {
-    overlay.remove();
+    overlay2.remove();
     if (window.innerWidth < 960) {
       playPageSongListElem.style.bottom = '-80%';
       if (!isHash) history.go(-1);
@@ -1078,18 +1095,18 @@ function playListBtnOnclick(isHash = false) {
     }
   }
   else {
-    overlay = document.createElement('div');
-    overlay.style.position = 'absolute';
-    overlay.style.top = '0';
-    overlay.style.bottom = '0';
-    overlay.style.width = '100%';
-    overlay.style.height = '100%';
-    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 设置为半透明的黑色
-    overlay.style.zIndex = '1';
-    document.querySelector('.sidebar2').appendChild(overlay);
-    overlay.addEventListener('click', () => {
+    overlay2 = document.createElement('div');
+    overlay2.style.position = 'absolute';
+    overlay2.style.top = '0';
+    overlay2.style.bottom = '0';
+    overlay2.style.width = '100%';
+    overlay2.style.height = '100%';
+    overlay2.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 设置为半透明的黑色
+    overlay2.style.zIndex = '1';
+    document.querySelector('.sidebar2').appendChild(overlay2);
+    overlay2.addEventListener('click', () => {
       playListBtnOnclick();
-      overlay.remove();
+      overlay2.remove();
     });
     if (window.innerWidth < 960) {
       playPageSongListElem.style.bottom = '-1px';

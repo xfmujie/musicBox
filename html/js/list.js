@@ -107,6 +107,7 @@ function add_del_onclick() {
           if (playListFlag == 'play') {
             if (i < window.parent.playingNum) window.parent.playingNum--;
             else if (i == window.parent.playingNum) window.parent.playReset();
+            if(playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
           }
           /* console.log(playList); */
           pagePX = pagePX = window.scrollY;
