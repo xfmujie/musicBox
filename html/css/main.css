@@ -597,6 +597,24 @@ body>div.sidebar2>div:nth-child(1)>div {
   color: #0095ff !important;
 }
 
+#play_page_song_list p:active {
+  background-color: rgb(168, 216, 255);
+}
+
+.play_page_song_list_p:hover {
+  box-shadow: 1px 1px 5px #999999;
+}
+
+.sidebar_div:hover {
+  background-color: rgba(53, 194, 255, 0.8);
+  color: #ffffff;
+  transition-duration: 100ms;
+}
+
+.lrc_p_p:not(.lrcHL):hover {
+  color: #0095ff !important;
+}
+
 /* ************************************************************************ */
 
 /*响应式媒体查询*/
@@ -754,10 +772,6 @@ body>div.sidebar2>div:nth-child(1)>div {
     padding: 5px 0 5px 10px;
   }
   
-  #play_page_song_list p:active {
-    background-color: rgb(168, 216, 255);
-  }
-
   #play_page_song_list p:hover {
     box-shadow: 1px 1px 5px #999999;
   }

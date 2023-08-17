@@ -1,5 +1,5 @@
 log = console.log;
-console.log = function () { };
+/* console.log = function () { }; */
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
@@ -371,6 +371,7 @@ function getMusic(rid) {
       lrc = JSON.parse(data);
       for (let i in lrc) {
         document.querySelector('#lrc_p').innerHTML += `<p>${lrc[i]["lineLyric"]}</p>`;
+        if (window.innerWidth < 960 && !isMobile()) document.querySelectorAll('#lrc_p p').forEach(p => p.classList.add('lrc_p_p'));
       }
       if (lrc == null) {
         lrc = [{ "lineLyric": "纯音乐 请欣赏", "time": "999" }]
@@ -808,6 +809,8 @@ function menu_onclick(isHash = false) {
     }
   }
 }
+if (window.innerWidth < 960 && !isMobile()) document.querySelectorAll('.sidebar div').forEach(div => div.classList.add('sidebar_div'));
+
 
 // 歌词滚动
 document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>可能存在Bug</p>';
@@ -837,7 +840,7 @@ function lrcUpdate(lrcCurrentLine) {
   /* console.log(lrcCurrentLine); */
   if (lrcCurrentLine == -1) return;
 
-  //侧边栏滚动歌词
+  //播放页面滚动歌词
   lyricsScrolling(lrcCurrentLine);
   try {
     let lrc_p = document.querySelectorAll('#lrc_p p');
@@ -1079,6 +1082,8 @@ function playPageSongListUpdate(playList) {
       playPageSongListAllP[playingNum].classList.add("play_page_song_list_HL");
     }, 200);
   }
+
+  if (window.innerWidth < 960 && !isMobile()) document.querySelectorAll('#play_page_song_list p').forEach(list_p => list_p.classList.add("play_page_song_list_p"));
 }
 
 // 播放页歌曲列表显示
@@ -1137,6 +1142,8 @@ document.getElementById('play_page_song_list').addEventListener('click', functio
 
   }
 });
+
+
 
 //调用子页面函数
 //iframe.函数名()
