@@ -553,6 +553,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
+  word-wrap: break-word;
 }
 
 .sidebar>div:nth-child(1)>span {
@@ -613,6 +614,11 @@ body>div.sidebar2>div:nth-child(1)>div {
 
 .lrc_p_p:not(.lrcHL):hover {
   color: #0095ff !important;
+}
+
+#huabing {
+  height: 20px;
+  overflow-y: hidden;
 }
 
 /* ************************************************************************ */

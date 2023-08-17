@@ -1147,8 +1147,13 @@ document.getElementById('play_page_song_list').addEventListener('click', functio
   }
 });
 
-
-
+// 画饼
+huabing = document.querySelector('#huabing');
+huabing.innerHTML = '画饼区(不一定实现)<br><br>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)<br><br>2. 网易歌单导入<br><br>3. 歌曲推荐、歌单推荐';
+huabing.addEventListener('click', () => {
+  if(huabing.style.height == 'max-content') huabing.style.height = '20px';
+  else huabing.style.height = 'max-content';
+});
 //调用子页面函数
 //iframe.函数名()
 
