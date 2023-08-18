@@ -1,5 +1,5 @@
 log = console.log;
-/* console.log = function () { }; */
+console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
@@ -305,7 +305,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.5';
+var Version = '3.1.6';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -362,9 +362,11 @@ document.getElementById('search_box').addEventListener('keydown', function (even
 })
 
 
-function getMusic(rid) {
+function getMusic(rid, isWyy = false) {
+  let baseUrl = '';
+  baseUrl = isWyy ? BaseURL + '/wyy' : BaseURL;
   //获取歌词
-  retryRequest(`${BaseURL}/lrc?rid=${rid}`)
+  retryRequest(`${baseUrl}/lrc?rid=${rid}`)
     .then(data => {
       document.querySelector('#lrc_p').innerHTML = '';
       // console.log("Data:", data);
@@ -383,7 +385,7 @@ function getMusic(rid) {
     });
 
   //获取歌曲链接
-  retryRequest(`${BaseURL}/mp3?rid=${rid}`)
+  retryRequest(`${baseUrl}/mp3?rid=${rid}`)
     .then(data => {
       mp3Url = data;
       console.log(mp3Url);
@@ -397,7 +399,7 @@ function getMusic(rid) {
 
 //切换歌曲
 function switchSongs(parameter) {
-  getMusic(parameter["rid"]);
+  getMusic(parameter["rid"], 'iswyy' in parameter);
   lrcLastNum = 0;
   lrcCurrentLine = 0;
   lyricsScrolling(0);
@@ -430,16 +432,18 @@ function switchSongs(parameter) {
 
 }
 
+let searchSourceChangeFlag = false;
 function search_onclick() {
   if (SearchContent.value == "") {
     popup.alert('请输入歌曲/歌手');
   }
-  else if (SearchContent.value != iframe.oldContent) {
+  else if ((SearchContent.value != iframe.oldContent) || searchSourceChangeFlag) {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
     popup.msg('正在搜索……', 10, function () {
       popup.alert('出错了！');
     });
+    searchSourceChangeFlag = false;
   }
 }
 
@@ -572,8 +576,8 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>播放页面已初步完善，现可以直接点击歌曲封面进入使用<br>（可能存在少许bug）<br></font>`);
-  localStorage.setItem('Version', Version)
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云曲库，可在侧边栏自定义搜索曲库<br>（列表等功能可混合曲库，网易云VIP歌曲只有30秒）<br></font>`);
+  // localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
 
@@ -700,15 +704,9 @@ function nextPlay(flag) {
     }
   }
   switchSongDelay = setTimeout(() => {
-    let parameter = {
-      rid: List[nextNum]["rid"],
-      pic: pic,
-      name: List[nextNum]["name"],
-      artist: List[nextNum]["artist"],
-    }
     /* console.log(List);
     console.log(parameter); */
-    switchSongs(parameter);
+    switchSongs(List[nextNum]);
   }, 300);
   if (displayFlag == 'play' && playListFlag == 'play') listBtn_onclick();
   if (displayFlag == 'search' && playListFlag == 'search') resultBtn_onclick();
@@ -1149,11 +1147,33 @@ document.getElementById('play_page_song_list').addEventListener('click', functio
 
 // 画饼
 huabing = document.querySelector('#huabing');
-huabing.innerHTML = '画饼区(不一定实现)<br><br>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)<br><br>2. 网易歌单导入<br><br>3. 歌曲推荐、歌单推荐';
+huabing.innerHTML = '画饼区(不一定实现)<br><br><del>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)</del><br><br>2. 网易歌单导入<br><br>3. 歌曲推荐、歌单推荐';
 huabing.addEventListener('click', () => {
-  if(huabing.style.height == 'max-content') huabing.style.height = '20px';
+  if (huabing.style.height == 'max-content') huabing.style.height = '20px';
   else huabing.style.height = 'max-content';
 });
+
+
+// 网易云
+if (!localStorage.getItem('isWyy')) {
+  console.log('搜索源初始化');
+  localStorage.setItem('isWyy', 'false');
+}
+var isWyy = localStorage.getItem('isWyy');
+console.log(isWyy);
+document.querySelector('#searchSource').innerHTML = localStorage.getItem('isWyy') == 'true' ? '网易云' : '酷我';
+function searchSourceChange() {
+  if (localStorage.getItem('isWyy') == 'true') {
+    localStorage.setItem('isWyy', 'false');
+    document.querySelector('#searchSource').innerHTML = '酷我';
+  }
+  else {
+    localStorage.setItem('isWyy', 'true');
+    document.querySelector('#searchSource').innerHTML = '网易云';
+  }
+  isWyy = localStorage.getItem('isWyy');
+  searchSourceChangeFlag = true;
+}
 //调用子页面函数
 //iframe.函数名()
 

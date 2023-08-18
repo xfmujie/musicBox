@@ -3,8 +3,10 @@ console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
+  let baseUrl = '';
   let name = SearchContent;
-  window.parent.retryRequest(`${window.parent.BaseURL}/search?key=${name}&pn=${pageNum}`)
+  baseUrl = window.parent.isWyy == 'true' ? window.parent.BaseURL + '/wyy' : window.parent.BaseURL;
+  window.parent.retryRequest(`${baseUrl}/search?key=${name}&pn=${pageNum}`)
     .then(data => {
       window.parent.popup.msgClose();
       window.parent.inputBlur();
@@ -87,15 +89,9 @@ function add_del_onclick() {
         else {
           var pic = displayList[i]["pic"];
           pic = pic.replace(/\/\d+\//, "/300/");
-          var addSong = {
-            "rid": displayList[i]["rid"],
-            "pic": pic,
-            "name": displayList[i]["name"],
-            "artist": displayList[i]["artist"]
-          }
-          playList.push(addSong);
+          playList.push(displayList[i]);
           localStorage.setItem('playList', JSON.stringify(playList));
-          window.parent.playPageSongListUpdate(playList);
+          if (playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
           window.parent.popup.alert(`<font size="2px color="#696969">已添加</font><br><font color="#199dfc">${displayList[i]["name"]}(${displayList[i]["artist"]})</font><br><font size="2px color="#696969">到播放列表</font>`);
           //console.log(playList);
         }
@@ -107,7 +103,7 @@ function add_del_onclick() {
           if (playListFlag == 'play') {
             if (i < window.parent.playingNum) window.parent.playingNum--;
             else if (i == window.parent.playingNum) window.parent.playReset();
-            if(playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
+            if (playListFlag == 'play') window.parent.playPageSongListUpdate(playList);
           }
           /* console.log(playList); */
           pagePX = pagePX = window.scrollY;
@@ -175,18 +171,8 @@ function play_btn_onclick() {
     document.getElementById(`play_btn${i}`).onclick = function () {
       if (displayFlag !== 'box') {
         console.log(`play_${i}按下了`)
-        var pic = displayList[i]["pic"];
-        pic = pic.replace(/\/\d+\//, "/300/");
-        var parameter = {
-          rid: displayList[i]["rid"],
-          pic: pic,
-          name: displayList[i]["name"],
-          artist: displayList[i]["artist"],
-        }
         /* console.log(displayList); */
-        console.log(parameter);
-        window.parent.switchSongs(parameter);
-        // window.parent.postMessage(parameter, '/');
+        window.parent.switchSongs(displayList[i]);
         window.parent.playingNum = i;
         if (displayFlag == 'play') {
           playListFlag = 'play';

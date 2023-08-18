@@ -556,7 +556,8 @@ body>div.sidebar2>div:nth-child(1)>div {
   word-wrap: break-word;
 }
 
-.sidebar>div:nth-child(1)>span {
+.sidebar>div:nth-child(1)>span,
+.sidebar>div:nth-child(2)>span:nth-child(2) {
   font-size: 0.8rem;
   color: #696969;
 }
@@ -584,7 +585,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   overflow-x: hidden;
 }
 
-#play_page_song_list p{
+#play_page_song_list p {
   font-size: 0.9rem;
   padding: 5px 0 5px 20px;
   border-radius: 5px;
@@ -710,11 +711,13 @@ body>div.sidebar2>div:nth-child(1)>div {
     border-radius: 10px;
     overflow: hidden;
   }
+
   .PlayControlBtn:hover {
     /* background-color: rgba(53, 194, 255, 0.8); */
     transform: scale(1.1);
     transition-duration: 100ms;
   }
+
   #progressBar {
     cursor: pointer;
   }
@@ -777,9 +780,9 @@ body>div.sidebar2>div:nth-child(1)>div {
     left: 2%;
     padding: 5px 0 5px 10px;
   }
-  
+
   #play_page_song_list p:hover {
     box-shadow: 1px 1px 5px #999999;
   }
-  
+
 }
