@@ -577,7 +577,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
   popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云曲库，可在侧边栏自定义搜索曲库<br>（列表等功能可混合曲库，网易云VIP歌曲只有30秒）<br></font>`);
-  // localStorage.setItem('Version', Version)
+  localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
 
