@@ -335,8 +335,8 @@ a {
 }
 
 /* 隐藏歌词盒子滚动条 */
-#sidebarLrc::-webkit-scrollbar,
-#play_page_song_list::-webkit-scrollbar {
+/* #play_page_song_list::-webkit-scrollbar */ 
+#sidebarLrc::-webkit-scrollbar {
   width: 0;
   background-color: #F5F5F5;
 }
@@ -587,12 +587,15 @@ body>div.sidebar2>div:nth-child(1)>div {
 
 #play_page_song_list p {
   font-size: 0.9rem;
-  padding: 5px 0 5px 20px;
+  padding: 5px 0;
   border-radius: 5px;
   cursor: pointer;
   color: #3b3b3b;
-  margin: 10px 0;
+  margin: 5px 0 5px 5px;
   white-space: nowrap;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .play_page_song_list_HL {
@@ -622,6 +625,20 @@ body>div.sidebar2>div:nth-child(1)>div {
   overflow-y: hidden;
 }
 
+#play_page_song_list p span:nth-child(1) {
+  background-color: rgba(210, 105, 30, 0);
+  /* color: #676767; */
+  position: relative;
+  top: 10px;
+  margin: 0 10px 0 5px;
+}
+
+#play_page_song_list p span:nth-child(3) {
+  position: relative;
+  top: -9999px;
+  margin: 0 10px 0 5px;
+  color: #00000000;
+}
 /* ************************************************************************ */
 
 /*响应式媒体查询*/
@@ -776,9 +793,10 @@ body>div.sidebar2>div:nth-child(1)>div {
 
   #play_page_song_list p {
     position: relative;
-    width: 92%;
+    width: 95%;
     left: 2%;
-    padding: 5px 0 5px 10px;
+    padding: 5px 0;
+    margin: 5px 0;
   }
 
   #play_page_song_list p:hover {

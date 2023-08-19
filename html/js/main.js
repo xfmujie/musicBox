@@ -151,7 +151,7 @@ plyrEm.style.width = '100%';
 
 // 下载按钮
 function downloadOnclick() {
-  if (playingNum == 999) {
+  if (playingNum == 9999) {
     popup.alert('当前无歌曲播放~');
   }
   else {
@@ -305,7 +305,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.6';
+var Version = '3.1.7';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -336,7 +336,7 @@ player.on('timeupdate', event => {
   lrcCurrentLine = lrcLastNum;
 
   //  找当前行歌词(系统歌词)
-  if ('Notification' in window && playingNum != 999 && lrcSelectFlag) {
+  if ('Notification' in window && playingNum != 9999 && lrcSelectFlag) {
     lrcLastNumForNotification = lrc.findIndex((lrc) => {
       return Math.floor(parseFloat(lrc.time)) >= plyr_time + 1;
     });
@@ -519,7 +519,7 @@ function getTimestamp() {
 // 监听音频播放状态
 audioPlayer.addEventListener('play', function () {
   document.querySelector('#PlayStatus').innerHTML = '<i class="fa fa-pause"></i>';
-  if (playingNum == 999) {
+  if (playingNum == 9999) {
     popup.alert('当前无歌曲播放~');
     audioPlayer.pause();
     timeCount = function () { };
@@ -582,7 +582,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云曲库，可在侧边栏自定义搜索曲库<br>（列表等功能可混合曲库，网易云VIP歌曲只有30秒）<br></font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>支持导入网易云歌单</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -625,8 +625,8 @@ function playReset() {
   document.title = '昔枫音乐盒';
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
   cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
-  iframe.lastNum = 999;
-  playingNum = 999;
+  iframe.lastNum = 9999;
+  playingNum = 9999;
   clearInterval(timeCount);
   iframe.pagePX = 0;
   document.querySelector('#sidebarSongName').innerHTML = '昔枫音乐盒';
@@ -652,7 +652,7 @@ function playReset() {
 
 
 //上一首/下一首
-var playingNum = 999;
+var playingNum = 9999;
 var playListFlag = 'play';
 var searchList;
 var playList = JSON.parse(localStorage.getItem('playList'));
@@ -1005,7 +1005,7 @@ document.getElementById('sidebarLrc').addEventListener('touchmove', (event) => {
 document.getElementById('lrc_p').addEventListener('click', function (event) {
   if (event.target.tagName === 'P') {
     let clickNum = Array.from(document.querySelectorAll('#lrc_p p')).indexOf(event.target);
-    if (clickNum != lrcCurrentLine - 1 && playingNum != 999) {
+    if (clickNum != lrcCurrentLine - 1 && playingNum != 9999) {
       console.log(clickNum);
       lrcCurrentLine = clickNum;
       audioPlayer.currentTime = parseFloat(lrc[clickNum]["time"]);
@@ -1069,13 +1069,13 @@ function playPageSongListUpdate(playList) {
   }
   document.querySelector('#play_page_song_list').innerHTML = '';
   playList.forEach(function (song, num) {
-    console.log(song);
-    console.log(num);
-    document.querySelector('#play_page_song_list').innerHTML += `<p>${song.name}<br><span style="font-size:0.8rem;">${song.artist}</span></p>`;  /* ${(num + 1).toString().padStart(2, '0')}&emsp; */
+    /*     console.log(song);
+        console.log(num); */
+    document.querySelector('#play_page_song_list').innerHTML += `<p><span>${(num + 1).toString().padStart(2, '0')}</span>${song.name}<br><span>${(num + 1).toString().padStart(2, '0')}</span><span style="font-size:0.7rem;">${song.artist}</span></p>`;  /*  */
     if (num + 1 == playList.length) document.querySelector('#play_page_song_list').innerHTML += '<br><br>';
   });
 
-  if (playingNum != 999) {
+  if (playingNum != 9999) {
     setTimeout(() => {
       let playPageSongListAllP = document.querySelectorAll('#play_page_song_list p');
       for (let i = 0; i < playPageSongListAllP.length; i++) {
@@ -1128,9 +1128,27 @@ function playListBtnOnclick(isHash = false) {
       playPageSongListElem.style.bottom = 'unset';
       playPageSongListElem.style.top = '30%';
     }
+    if (playingNum != 9999) playListScrolloo(playingNum);
   }
 }
 
+function playListScrolloo(i) {
+  try {
+      var playListDiv = document.getElementById("play_page_song_list");
+      var playListSong = document.querySelectorAll('#play_page_song_list p')[i];
+      // 计算子元素相对于父级元素的偏移量
+      var offsetTop = playListSong.offsetTop; // 
+      var parentHeight = playListDiv .offsetHeight;
+      var childHeight = playListSong.offsetHeight;
+      var centerOffset = (parentHeight - childHeight) / 2;
+      // 将滚动条滚动到垂直居中位置
+      playListDiv .scrollTop = offsetTop - centerOffset + 10;
+  }
+  catch {
+    return;
+  }
+
+}
 
 // 点击歌曲播放
 document.getElementById('play_page_song_list').addEventListener('click', function (event) {
@@ -1153,7 +1171,7 @@ document.getElementById('play_page_song_list').addEventListener('click', functio
 
 // 画饼
 huabing = document.querySelector('#huabing');
-huabing.innerHTML = '画饼区(不一定实现)<br><br><del>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)</del><br><br>2. 网易歌单导入<br><br>3. 歌曲推荐、歌单推荐';
+huabing.innerHTML = '画饼区(不一定实现)<br><br><del>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)</del><br><br><del>2. 网易歌单导入</del><br><br>3. 歌曲推荐、歌单推荐';
 huabing.addEventListener('click', () => {
   if (huabing.style.height == 'max-content') huabing.style.height = '20px';
   else huabing.style.height = 'max-content';

@@ -20,6 +20,9 @@ kw.py来自某位未知大佬，详见 [#5](https://github.com/xfmujie/musicBox/
 
 ## 近期更新
 
+V3.1.7
+1. 支持导入网易云歌单
+
 V3.1.6
 1. 新增网易云曲库
 

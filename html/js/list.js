@@ -30,7 +30,9 @@ function getSearchResult(SearchContent) {
 //显示列表
 function cloned(clonedList) {
   /* console.log(clonedList); */
-  for (let i = 0; i < clonedList.length; i++) {
+  var  lenMax = 0;
+  lenMax = clonedList.length > 200 ? 201 : clonedList.length;
+  for (let i = 0; i < lenMax; i++) {
     var originalDiv = document.getElementById('song_box');    // 获取原始div元素
     originalDiv.style.backgroundColor = localStorage.getItem('themeListColor');
     var clonedDiv = originalDiv.cloneNode(true);    // 复制原始div元素及其所有子元素和属性
@@ -55,11 +57,15 @@ function cloned(clonedList) {
       songNum.style.color = 'rgb(0, 179, 255)';
       songNum.style.fontSize = '20px';
     }
-
     var name = clonedList[i]['name'];
     var singer = clonedList[i]['artist'];
     clonedDiv.querySelector(`#songName${iStr}`).innerHTML = name.slice(0, 20 + (name.length - name.replace(/&[a-z]+;/g, " ").length)) + '<br><p class="singerName">' + singer.slice(0, 25 + (singer.length - singer.replace(/&[a-z]+;/g, " ").length)) + '</p>';
     document.body.appendChild(clonedDiv);// 将克隆的div元素添加到页面上
+  }
+  if (clonedList.length > 200) {
+    clonedDiv.innerHTML = '由于性能原因，最多加载前200首<br>请到播放页查看全部歌曲';
+    clonedDiv.style.color = "#555555";
+    clonedDiv.style.fontSize = '0.8rem';
   }
   window.scrollTo(0, scrollToPx);
 }
@@ -78,7 +84,9 @@ function remove() {
 
 //操作按钮按下（对播放列表操作，设置缓存）
 function add_del_onclick() {
-  for (let i = 0; i < displayList.length; i++) {
+  var  lenMax = 0;
+  lenMax = displayList.length > 200 ? 200 : displayList.length;
+  for (let i = 0; i < lenMax; i++) {
     document.getElementById(`del_btn${i}`).onclick = function () {
       console.log(`add_del_${i}按下了`)
 
@@ -167,7 +175,9 @@ function add_del_onclick() {
 function play_btn_onclick() {
   /* window.parent.popup.alert('音乐盒维护中……');
   return; */
-  for (let i = 0; i < displayList.length; i++) {
+  var  lenMax = 0;
+  lenMax = displayList.length > 200 ? 200 : displayList.length;
+  for (let i = 0; i < lenMax; i++) {
     document.getElementById(`play_btn${i}`).onclick = function () {
       if (displayFlag !== 'box') {
         console.log(`play_${i}按下了`)
@@ -180,7 +190,7 @@ function play_btn_onclick() {
           window.parent.list_now(0);
           pagePX = window.scrollY;
           SearchPagePX = 0;
-          displayChange('play');
+          // displayChange('play');
           window.parent.playPageSongListUpdate(playList);
         }
         else {
@@ -513,23 +523,34 @@ function onkey(event) {
 
 //从云端获取歌单
 function getSongList() {
-  let ID = idSearch.value;
-  let reg1 = /^\d{5}/;
-  let reg2 = /\d{10,}/g;
-  let par = '';
-  if (!reg1.test(ID) && !reg2.test(ID)) {
-    window.parent.popup.alert('请输入正确的歌单ID (如: 10000)<br>或酷我歌单链接');
+  var ID = idSearch.value;
+  var path = '';
+  var timeout = 5;
+  var songListType = '';
+  if (/^\d{5}$/.test(ID)) {
+    path = `/music-box-list/?method=get&id=${ID}`;
+    songListType = '音乐盒';
+    /* console.log('音乐盒ID'); */
+  }
+  else if (/kuwo.cn/.test(ID)) {
+    path = `/kuwolist/?id=${ID.match(/\d{8,}/)[0]}`;
+    songListType = '酷我';
+    /* console.log('酷我歌单 id: ' + ID.match(/\d{8,}/)[0]); */
+  }
+  else if (/163.com/.test(ID)) {
+    path = `/wyylist/?id=${ID.match(/\d{6,}/)[0]}`;
+    songListType = '网易云';
+    /* console.log('网易云歌单 id: ' + ID.match(/\d{6,}/)[0]); */
+    timeout = 15;
+  }
+  else {
+    window.parent.popup.alert('请输入正确的歌单ID (如: 10000)<br>或酷我/网易云歌单链接');
     return;
   }
-  if (reg1.test(ID))
-    par = `music-box-list/?method=get&id=${ID}`;
-  else
-    par = `kuwolist/?id=${ID.match(reg2)[0]}`;
-
   var getMusicBoxList = new XMLHttpRequest();
-  getMusicBoxList.open('get', `${window.parent.BaseURL}/${par}`);
+  getMusicBoxList.open('get', `${window.parent.BaseURL}${path}`);
   getMusicBoxList.send();
-  window.parent.popup.msg('正在加载歌单……', 5, function () {
+  window.parent.popup.msg(`正在加载${songListType}歌单……`, timeout, function () {
     window.parent.popup.alert('加载超时, 请重试');
   });
   getMusicBoxList.onreadystatechange = function () {
@@ -538,7 +559,9 @@ function getSongList() {
       let responseText = JSON.parse(getMusicBoxList.responseText);
       if (responseText["results"][0] !== undefined) {
         console.log(responseText["results"][0]);
-        window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>`);
+        var isLimit = '';
+        if (responseText["results"][0]["List"].length == 100) isLimit = '<br>由于限制，只获取了歌单的前100首'
+        window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>${isLimit}`);
         list = {
           'name': responseText["results"][0]["Name"],
           //此处artist为歌单的ID号
@@ -639,7 +662,7 @@ function likeList(initFlag = 'init', list) {
 }
 
 function likeListAdd() {
-  if (window.parent.playingNum !== 999) {
+  if (window.parent.playingNum !== 9999) {
     list = JSON.parse(localStorage.getItem('musicBoxList'))[0].list;
     if (playListFlag == 'play') {
       if (playList.length > window.parent.playingNum) {
