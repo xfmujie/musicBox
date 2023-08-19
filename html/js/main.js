@@ -3,7 +3,7 @@ console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
-// var BaseURL = 'http://127.0.0.1:9000'
+/* var BaseURL = 'http://127.0.0.1:9000' */
 
 // 实例化弹窗对象
 var popup = new Popup();
