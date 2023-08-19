@@ -1,4 +1,4 @@
-# 本py只提供了酷我的搜索、mp3链接、歌词接口
+# 本py只提供了酷我和网易云的搜索、mp3链接、歌词接口
 
 from flask import Flask
 from flask import request
@@ -12,7 +12,7 @@ import re
 app = Flask(__name__)
 cors = CORS(app)
 
-
+# 酷我
 @app.route('/search')
 def kuwoAPI():
     key = request.args.get('key')
@@ -93,6 +93,73 @@ def lrcKuwoAPI():
     print('已获取到歌词\n\n')
     return json.dumps(lrc)
 
+
+# 网易云
+# 网易云API需要自行部署开源的NeteaseCloudMusicApi项目
+# 为了方便音乐盒前端，以下将网易云的API转成了酷我的格式
+
+NeteaseCloudMusicApiBaseUrl = '你部署的NeteaseCloudMusicApi项目BaseUrl'
+@app.route('/wyy/search')
+def wyySearch():
+    key = request.args.get('key')
+    pn = request.args.get('pn')
+    url = f'{NeteaseCloudMusicApiBaseUrl}/cloudsearch?keywords={key}&offset={(int(pn) - 1) * 30}'
+    responseText = requests.get(url).text
+    search = []
+    try:
+        responseJson = json.loads(responseText)
+        for song in responseJson["result"]["songs"]:
+            search.append({
+                "name": song["name"],
+                "artist": song["ar"][0]["name"],
+                "rid": song["id"],
+                "pic": f'{song["al"]["picUrl"].replace("http://", "https://")}?param=300y300',
+                "iswyy": True
+            })
+        print('网易云获取搜索结果成功！')
+        return json.dumps(obj=search, ensure_ascii=False)
+    except:
+        print(f'网易云获取搜索结果出错！key: {key}\nresponseText: {responseText}')
+        return abort(500)
+    
+@app.route('/wyy/mp3')
+def wyyMp3():
+    rid = request.args.get('rid')
+    if not requests.get(f'{NeteaseCloudMusicApiBaseUrl}/check/music?id={rid}').json()["success"]:
+        print('获取音乐出错，正在以游客登录……')
+        requests.get(f'{NeteaseCloudMusicApiBaseUrl}/register/anonimous')
+    url = f'{NeteaseCloudMusicApiBaseUrl}/song/url?id={rid}&br=320000'
+    responseText = requests.get(url).text
+    try:
+        responseJson = json.loads(responseText)
+        print('网易云获取mp3成功！')
+        return responseJson["data"][0]["url"]
+    except:
+        print(f'网易云获取mp3出错！rid: {rid}\nresponseText: {responseText}')
+        return abort(500)
+
+@app.route('/wyy/lrc')
+def wyyLrc():
+    rid = request.args.get('rid')
+    url = f'{NeteaseCloudMusicApiBaseUrl}/lyric?id={rid}'
+    responseText = requests.get(url).text
+    lrcArr = []
+    try:
+        responseJson = json.loads(responseText)
+        lrc_str = responseJson["lrc"]["lyric"]
+        for match in re.finditer(r'\[(\d+):(\d+\.\d+)\](.*)', lrc_str):
+            min, sec, lyric = match.groups()
+            time = float(min) * 60 + float(sec)
+            # print(time, lyric)
+            lrcArr.append({
+                "lineLyric": lyric,
+                "time": format(time, ".2f")
+            })
+        print('网易云获取歌词成功！')
+        return json.dumps(obj=lrcArr, ensure_ascii=False)
+    except:
+        print(f'网易云获取歌词出错！rid: {rid}\nresponseText: {responseText}')
+        return abort(500)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9000)
