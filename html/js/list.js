@@ -560,7 +560,8 @@ function getSongList() {
       if (responseText["results"][0] !== undefined) {
         console.log(responseText["results"][0]);
         var isLimit = '';
-        if (responseText["results"][0]["List"].length == 100) isLimit = '<br>由于限制，只获取了歌单的前100首'
+        if (responseText["results"][0]["List"].length == 100 && songListType == '酷我') isLimit = '<br>由于限制，只获取了歌单的前100首';
+        if (responseText["results"][0]["List"].length == 200 && songListType == '网易云') isLimit = '<br>由于限制，只获取了歌单的前200首';
         window.parent.popup.alert(`<font size="2px color="#696969">歌单</font><br><font color="#199dfc">《${responseText["results"][0]["Name"]}》</font><br><font size="2px color="#696969">已保存到本地音乐盒</font>${isLimit}`);
         list = {
           'name': responseText["results"][0]["Name"],
