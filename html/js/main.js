@@ -387,10 +387,16 @@ function getMusic(rid, isWyy = false) {
   //获取歌曲链接
   retryRequest(`${baseUrl}/mp3?rid=${rid}`)
     .then(data => {
-      mp3Url = data;
-      console.log(mp3Url);
-      audioPlayer.src = mp3Url;
-      audioPlayer.play();
+      console.log(data);
+      if (data.includes('版权')) {
+        popup.alert('这首歌无播放权限！');
+      }
+      else {
+        mp3Url = data;
+        console.log(mp3Url);
+        audioPlayer.src = mp3Url;
+        audioPlayer.play();
+      }
     })
     .catch(error => {
       console.log("Error:", error);

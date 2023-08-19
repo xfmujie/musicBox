@@ -125,18 +125,19 @@ def wyySearch():
 @app.route('/wyy/mp3')
 def wyyMp3():
     rid = request.args.get('rid')
-    if not requests.get(f'{NeteaseCloudMusicApiBaseUrl}/check/music?id={rid}').json()["success"]:
-        print('获取音乐出错，正在以游客登录……')
-        requests.get(f'{NeteaseCloudMusicApiBaseUrl}/register/anonimous')
     url = f'{NeteaseCloudMusicApiBaseUrl}/song/url?id={rid}&br=320000'
     responseText = requests.get(url).text
     try:
-        responseJson = json.loads(responseText)
-        print('网易云获取mp3成功！')
-        return responseJson["data"][0]["url"]
+        responseJson = json.loads(responseText)["data"][0]["url"]
+        if(responseJson == None):
+            print(f'版权原因，无播放权限！info:\n{responseText}')
+            return '版权原因，无播放权限！'
+        else:
+            print('网易云获取mp3成功！')
+            return responseJson
     except:
         print(f'网易云获取mp3出错！rid: {rid}\nresponseText: {responseText}')
-        return abort(500)
+        return requests.get(f'{NeteaseCloudMusicApiBaseUrl}/check/music?id={rid}').text
 
 @app.route('/wyy/lrc')
 def wyyLrc():
