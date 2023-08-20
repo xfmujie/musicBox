@@ -193,56 +193,33 @@ function likeOnclick() {
 }
 
 //选择显示列表/内容
-//按钮高亮与取消高亮
-class Highlight {
-  yes(obj) {
-    theme_btnColor = localStorage.getItem('themeBtnColor');
-    obj.style.backgroundColor = theme_btnColor;
-    obj.style.fontSize = "14px";
-    obj.style.color = "rgb(0, 0, 0)";
-  }
-  no(obj) {
-    obj.style.backgroundColor = "rgba(250, 250, 250, 0)";
-    obj.style.fontSize = "12px";
-    obj.style.color = "rgb(95, 95, 95)";
-  }
+function opBarChangeOfPosition(i) {
+  theme_btnColor = localStorage.getItem('themeBtnColor');
+  document.querySelector('#opBar').style.transform = `translate(${(i - 1) * 76 + 1}px, 0)`;
+  document.querySelector('#opBar').style.backgroundColor = theme_btnColor;
 }
-const HL = new Highlight();
 function listBtn_onclick() {
   displayFlag = 'play';
   //高亮当前按钮
-  HL.yes(listBtn);
-  //取消高亮其他3个按钮
-  HL.no(resultBtn);
-  HL.no(setBtn);
-  HL.no(boxBtn);
+  opBarChangeOfPosition(1);
   iframe.displayChange('play');
   opBtnNow = 0;
 }
 function resultBtn_onclick() {
   displayFlag = 'search';
-  HL.yes(resultBtn);
-  HL.no(listBtn);
-  HL.no(setBtn);
-  HL.no(boxBtn);
+  opBarChangeOfPosition(2);
   iframe.displayChange('search');
   opBtnNow = 1;
 }
 function boxBtn_onclick() {
   displayFlag = 'box';
-  HL.yes(boxBtn);
-  HL.no(setBtn);
-  HL.no(resultBtn);
-  HL.no(listBtn);
+  opBarChangeOfPosition(3);
   iframe.displayChange('box');
   opBtnNow = 2;
 }
 function setBtn_onclick() {
   displayFlag = 'set';
-  HL.yes(setBtn);
-  HL.no(resultBtn);
-  HL.no(listBtn);
-  HL.no(boxBtn);
+  opBarChangeOfPosition(4);
   iframe.displayChange('set');
   opBtnNow = 3;
 }
@@ -1134,15 +1111,15 @@ function playListBtnOnclick(isHash = false) {
 
 function playListScrolloo(i) {
   try {
-      var playListDiv = document.getElementById("play_page_song_list");
-      var playListSong = document.querySelectorAll('#play_page_song_list p')[i];
-      // 计算子元素相对于父级元素的偏移量
-      var offsetTop = playListSong.offsetTop; // 
-      var parentHeight = playListDiv .offsetHeight;
-      var childHeight = playListSong.offsetHeight;
-      var centerOffset = (parentHeight - childHeight) / 2;
-      // 将滚动条滚动到垂直居中位置
-      playListDiv .scrollTop = offsetTop - centerOffset + 10;
+    var playListDiv = document.getElementById("play_page_song_list");
+    var playListSong = document.querySelectorAll('#play_page_song_list p')[i];
+    // 计算子元素相对于父级元素的偏移量
+    var offsetTop = playListSong.offsetTop; // 
+    var parentHeight = playListDiv.offsetHeight;
+    var childHeight = playListSong.offsetHeight;
+    var centerOffset = (parentHeight - childHeight) / 2;
+    // 将滚动条滚动到垂直居中位置
+    playListDiv.scrollTop = offsetTop - centerOffset + 10;
   }
   catch {
     return;

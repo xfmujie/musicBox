@@ -190,6 +190,16 @@ td:hover {
   height: 30px;
   border-radius: 20px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+#opBar {
+  position: absolute;
+  width: 72px;
+  height: 30px;
+  border-radius: 20px;
+  transition-duration: 100ms;
+  z-index: -1;
 }
 
 /*搜索与列表选择按钮*/
