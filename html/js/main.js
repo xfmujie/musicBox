@@ -763,7 +763,7 @@ function menu_onclick(isHash = false) {
       if (!isHash) history.go(-1);
     }
     else {
-      sidebar.style.left = '-30%';
+      sidebar.style.left = '-32%';
     }
   }
   else {
@@ -786,7 +786,7 @@ function menu_onclick(isHash = false) {
       window.location.hash = '#sidebar';
     }
     else {
-      sidebar.style.left = '1%';
+      sidebar.style.left = '0px';
     }
   }
 }
@@ -1012,7 +1012,7 @@ function playPageOpenOrClose(isHash = false) {
       }
     }
     else {
-      sidebar2.style.right = '-30%';
+      sidebar2.style.right = '-32%';
     }
   }
   else {
@@ -1022,7 +1022,7 @@ function playPageOpenOrClose(isHash = false) {
       window.location.hash = '#play-page';
     }
     else {
-      sidebar2.style.right = '1%';
+      sidebar2.style.right = '0px';
     }
   }
 }

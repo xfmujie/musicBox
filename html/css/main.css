@@ -1,5 +1,5 @@
 :root {
-  --bg-image: linear-gradient(to bottom right, #3a7bd561, #3f5efb56, #af52bf55, #c873e06e);
+  --bg-image: linear-gradient(to bottom, #daeeff, #b0daff);
   --lrc-HL: #199dfc;
   --music-cover: url('https://ali.mu-jie.cc/img/cover01.png')
 }
@@ -654,8 +654,10 @@ body>div.sidebar2>div:nth-child(1)>div {
 /*响应式媒体查询*/
 @media screen and (min-width:960px) {
   .music_box {
-    width: calc(40% - 10px);
-    margin-left: 30%;
+    position: relative;
+    width: calc(35% - 10px);
+    left: calc(50% + 5px);
+    transform: translate(-50%);
   }
 
   #search_box {
@@ -663,9 +665,10 @@ body>div.sidebar2>div:nth-child(1)>div {
   }
 
   .search {
-    width: 40%;
-    height: 40px;
-    padding-left: calc(30% - 5px);
+    position: relative;
+    width: 35%;
+    left: 50%;
+    transform: translate(-50%);
     padding-bottom: 20px;
   }
 
@@ -688,13 +691,17 @@ body>div.sidebar2>div:nth-child(1)>div {
   }
 
   .searchORlist {
-    width: 40%;
-    margin-left: 30%;
+    position: relative;
+    width: 35%;
+    left: calc(50% + 5px);
+    transform: translate(-50%);
   }
 
   .footnote {
-    width: 40%;
-    margin-left: 30%;
+    position: relative;
+    width: 35%;
+    left: calc(50% + 5px);
+    transform: translate(-50%);
   }
 
   .playBtn:hover {
@@ -722,9 +729,9 @@ body>div.sidebar2>div:nth-child(1)>div {
 
   .sidebar,
   .sidebar2 {
-    width: 25%;
+    width: calc(30%);
     top: 0;
-    left: -30%;
+    left: -32%;
     height: 97%;
   }
 
@@ -733,7 +740,7 @@ body>div.sidebar2>div:nth-child(1)>div {
     padding: 10px;
     padding-left: 0;
     left: unset;
-    right: -30%;
+    right: -32%;
     top: 0px;
     border-radius: 10px;
     overflow: hidden;
