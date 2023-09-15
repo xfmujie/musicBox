@@ -315,6 +315,9 @@ a {
   border-radius: 0;
   z-index: 999;
   padding: 10px;
+}
+
+.sidebar {
   overflow-x: hidden;
   overflow-y: scroll;
 }
