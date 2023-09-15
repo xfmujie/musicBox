@@ -1,7 +1,9 @@
 :root {
   --bg-image: linear-gradient(to bottom, #daeeff, #b0daff);
   --lrc-HL: #199dfc;
-  --music-cover: url('https://ali.mu-jie.cc/img/cover01.png')
+  --music-cover: url('https://ali.mu-jie.cc/img/cover01.png');
+  --sidebarEl1-closeLeft: -100%;
+  --sidebarEl2-closeLeft: calc(100% + 20px);
 }
 
 h1,
@@ -291,7 +293,7 @@ a {
   border-width: 0;
   outline: 0;
   padding: 0;
-  z-index: 999;
+  /* z-index: 999; */
 }
 
 .menu button:active {
@@ -302,17 +304,19 @@ a {
 .sidebar,
 .sidebar2 {
   box-shadow: 0 0 10px rgba(59, 59, 59, 0.5);
-  position: absolute;
+  position: fixed;
   text-align: center;
-  top: 55px;
+  top: 0px;
   left: -100%;
   background-color: rgba(252, 252, 252, 1);
-  height: 78%;
+  height: calc(100% - 20px);
   width: 80%;
   transition-duration: 100ms;
-  border-radius: 10px;
+  border-radius: 0;
   z-index: 999;
   padding: 10px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .sidebar2 {
@@ -346,7 +350,8 @@ a {
 
 /* 隐藏歌词盒子滚动条 */
 /* #play_page_song_list::-webkit-scrollbar */ 
-#sidebarLrc::-webkit-scrollbar {
+#sidebarLrc::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
   width: 0;
   background-color: #F5F5F5;
 }
@@ -524,8 +529,10 @@ body>div.sidebar2>div:nth-child(1)>div {
   /* margin-top: -3px; */
 }
 
+/* 侧边栏顶部按钮 */
 #share_btn,
-#play_page_close_btn {
+#play_page_close_btn,
+.return_sidebar_btn  {
   background-color: rgba(255, 255, 255, 0);
   font-size: 1.2rem;
   color: #3880c3;
@@ -546,6 +553,15 @@ body>div.sidebar2>div:nth-child(1)>div {
   font-size: 1.5rem;
 }
 
+/* 返回侧边栏按钮 */
+.return_sidebar_btn {
+  right: unset;
+  left: -5px;
+  top: 5px;
+  width: 30px;
+  font-size: 1.5rem;
+}
+
 #comment {
   position: relative;
   height: 20px;
@@ -553,7 +569,9 @@ body>div.sidebar2>div:nth-child(1)>div {
   color: #878787;
 }
 
-.sidebar div {
+/* 侧边栏各个选项容器 */
+.sidebar #sidebar_op div {
+  position: relative;
   padding: 10px 0;
   border: 1px solid rgb(190, 190, 190);
   color: #2c2c2c;
@@ -566,8 +584,8 @@ body>div.sidebar2>div:nth-child(1)>div {
   word-wrap: break-word;
 }
 
-.sidebar>div:nth-child(1)>span,
-.sidebar>div:nth-child(2)>span:nth-child(2) {
+/* 选项说明 */
+.explainSpan {
   font-size: 0.8rem;
   color: #696969;
 }
@@ -649,6 +667,47 @@ body>div.sidebar2>div:nth-child(1)>div {
   margin: 0 10px 0 5px;
   color: #00000000;
 }
+
+/* 选项总容器 */
+#sidebar_op {
+  position: absolute;
+  width: calc(100% - 20px);
+  left: 10px;
+  transition-duration: 200ms;
+}
+
+ /* 网易云歌单页面 */
+#sidebar_op_wyySongList {
+ position: absolute;
+ width: calc(100% - 20px);
+ top: 0;
+ left: var(--sidebarEl2-closeLeft);
+ transition-duration: 200ms;
+}
+
+ /* 选项页面标题 */
+.sidebar_op_page_title {
+  position: absolute;
+  text-align: center;
+  font-size: 1.2rem;
+  left: -10px;
+  width: 100vw;
+  padding: 8px 0;
+  border-radius: 5px;
+  background-color: #eaeaea;
+  color: #151515;
+}
+
+
+/* #sidebar_op_wyySongList .sidebar_op_page_title {
+  
+}
+
+#sidebar_op_wyySongList .return_sidebar_btn {
+  
+} */
+
+
 /* ************************************************************************ */
 
 /*响应式媒体查询*/
@@ -733,8 +792,11 @@ body>div.sidebar2>div:nth-child(1)>div {
     top: 0;
     left: -32%;
     height: 97%;
+    border-radius: 10px;
   }
-
+  .sidebar {
+    position: absolute;
+  }
   .sidebar2 {
     position: fixed;
     padding: 10px;
@@ -783,13 +845,13 @@ body>div.sidebar2>div:nth-child(1)>div {
     font-weight: bold;
   }
 
-  .sidebar div:hover {
+  .sidebar #sidebar_op div:hover {
     background-color: rgba(53, 194, 255, 0.8);
     color: #ffffff;
     transition-duration: 100ms;
   }
 
-  .sidebar div:active,
+  .sidebar #sidebar_op div:active,
   #cover:active {
     transform: scale(0.95);
     transition-duration: 100ms;
@@ -820,4 +882,7 @@ body>div.sidebar2>div:nth-child(1)>div {
     box-shadow: 1px 1px 5px #999999;
   }
 
+  .sidebar_op_page_title {
+    width: calc(100% + 20px);
+  }
 }

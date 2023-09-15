@@ -22,10 +22,20 @@
 <body>
   <!-- 侧边栏 -->
   <div class="sidebar">
-    <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span>在首页点击歌曲封面也能进入沉浸播放</span></div>
-    <div onclick="searchSourceChange()">搜索曲库: <span id="searchSource"></span><span>(点击更换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-    <div id="huabing"></div>
-    <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/"><div>更新日志</div></a>
+    <div id="sidebar_op">
+      <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
+      <div onclick="searchSourceChange()">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击更换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
+      <div onclick="wyySongListRecommend()">网易云歌单推荐</div>
+      <!-- <div id="huabing"></div> -->
+      <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
+        <div>更新日志</div>
+      </a>
+    </div>
+    <div id="sidebar_op_wyySongList">
+      <button class="return_sidebar_btn" onclick="returnToSidebarOnclick()"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+      <span class="sidebar_op_page_title">网易云歌单</span>
+      <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p>
+    </div>
   </div>
   <div class="sidebar2">
     <div>

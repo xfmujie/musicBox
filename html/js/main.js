@@ -45,11 +45,12 @@ var theme_btnColor = localStorage.getItem('themeBtnColor');
 var theme_lrcColor = localStorage.getItem('themeLrcColor');
 var theme_listColor = localStorage.getItem('themeListColor');
 var theme_bgImg = localStorage.getItem('themeBgImg');
-class Theme {
+var theme = {
   //判空
   isNull(obj) {
     return (obj === null || obj === '' || obj === undefined)
-  }
+  },
+
   //颜色初始化
   init() {
     if (this.isNull(theme_btnColor)) {
@@ -74,14 +75,14 @@ class Theme {
       console.log(`背景图：${localStorage.getItem('themeBgImg')}`);
       document.body.style.backgroundImage = `url('${theme_bgImg}')`;
     }
-  }
+  },
 
   //设置选项卡按钮颜色
   setBtn(val) {
     if (val == '0') { localStorage.setItem('themeBtnColor', '#a8dbff'); }
     else { localStorage.setItem('themeBtnColor', val); }
     setBtn_onclick();
-  }
+  },
   //设置歌词颜色
   setLrc(val) {
     if (val == '0') { localStorage.setItem('themeLrcColor', '#199dfc'); }
@@ -89,13 +90,13 @@ class Theme {
     theme_lrcColor = localStorage.getItem('themeLrcColor');
     lrc1.style.color = theme_lrcColor;
     root.style.setProperty('--lrc-HL', theme_lrcColor);
-  }
+  },
   //设置列表颜色
   setList(val) {
     if (val == '0') { localStorage.setItem('themeListColor', 'rgba(255, 255, 255, 0.5)'); }
     else { localStorage.setItem('themeListColor', val); }
     theme_listColor = localStorage.getItem('themeListColor');
-  }
+  },
   //设置背景图
   setBgImg(url) {
     if (url == '0') {
@@ -108,7 +109,7 @@ class Theme {
     }
   }
 }
-const theme = new Theme();
+
 function theme_set(method, val) {
   switch (method) {
     case 'list': theme.setList(val); break;
@@ -756,6 +757,7 @@ function menu_onclick(isHash = false) {
   // console.log(sidebar.style.left);
   // 检测是否已经呼起
   if (['1%', '0px'].includes(sidebar.style.left)) {
+    returnToSidebarOnclick();
     document.querySelector("body > div.search > div.menu > button").innerHTML = '<i class="fa fa-bars"></i>';
     if (window.innerWidth < 960) {
       sidebar.style.left = '-100%';
@@ -1147,12 +1149,12 @@ document.getElementById('play_page_song_list').addEventListener('click', functio
 });
 
 // 画饼
-huabing = document.querySelector('#huabing');
+/* huabing = document.querySelector('#huabing');
 huabing.innerHTML = '画饼区(不一定实现)<br><br><del>1. 对接网易云实现腾讯网易双曲库<br>(网易VIP只能播30秒)</del><br><br><del>2. 网易歌单导入</del><br><br>3. 歌曲推荐、歌单推荐';
 huabing.addEventListener('click', () => {
   if (huabing.style.height == 'max-content') huabing.style.height = '20px';
   else huabing.style.height = 'max-content';
-});
+}); */
 
 
 // 网易云
@@ -1175,6 +1177,36 @@ function searchSourceChange() {
   isWyy = localStorage.getItem('isWyy');
   searchSourceChangeFlag = true;
 }
+
+//css变量访问与设置
+var cssVar = {
+  get(Var) {
+    return getComputedStyle(root).getPropertyValue(Var);
+  },
+  set(Var, newVal) {
+    root.style.setProperty(Var, newVal);
+  }
+}
+
+//网易云歌单推荐
+function wyySongListRecommend() {
+  document.querySelector('#sidebar_op_wyySongList').style.left = '10px';
+
+  document.querySelector('#sidebar_op').style.left= cssVar.get('--sidebarEl1-closeLeft');
+  if(window.innerWidth < 960) {
+    document.querySelector('.sidebar').style.width = 'calc(100% - 20px)';
+  }
+}
+
+//返回侧边栏
+function returnToSidebarOnclick() {
+  document.querySelector('#sidebar_op').style.left = '10px';
+  document.querySelector('#sidebar_op_wyySongList').style.left = cssVar.get('--sidebarEl2-closeLeft');
+  if(window.innerWidth < 960) {
+    document.querySelector('.sidebar').style.width = '80%';
+  }
+}
+
 //调用子页面函数
 //iframe.函数名()
 
