@@ -792,7 +792,8 @@ function menu_onclick(isHash = false) {
     }
   }
 }
-if (window.innerWidth < 960 && !isMobile()) document.querySelectorAll('.sidebar div').forEach(div => div.classList.add('sidebar_div'));
+// 桌面设备但视窗宽度小于960
+if (window.innerWidth < 960 && !isMobile()) document.querySelectorAll('#sidebar_op div').forEach(div => div.classList.add('sidebar_div'));
 
 
 // 歌词滚动

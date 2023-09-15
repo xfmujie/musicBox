@@ -640,7 +640,7 @@ body>div.sidebar2>div:nth-child(1)>div {
 
 .sidebar_div:hover {
   background-color: rgba(53, 194, 255, 0.8);
-  color: #ffffff;
+  color: #ffffff !important;
   transition-duration: 100ms;
 }
 
