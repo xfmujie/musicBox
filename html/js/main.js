@@ -283,7 +283,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.7';
+var Version = '3.1.8';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -560,7 +560,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>支持导入网易云歌单</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云推荐歌单</font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -1192,23 +1192,76 @@ var cssVar = {
 //网易云歌单推荐
 function wyySongListRecommend() {
   document.querySelector('#sidebar_op_wyySongList').style.left = '10px';
-
-  document.querySelector('#sidebar_op').style.left= cssVar.get('--sidebarEl1-closeLeft');
-  if(window.innerWidth < 960) {
+  document.querySelector('#sidebar_op').style.left = cssVar.get('--sidebarEl1-closeLeft');
+  if (window.innerWidth < 960) {
     document.querySelector('.sidebar').style.width = 'calc(100% - 20px)';
   }
+
+  //进入页面时加载推荐歌单
+  popup.alert('歌单推荐开发中，当前只有网易云且只能复制歌单链接，后续会丰富交互体验');
+  getSongList();
 }
 
 //返回侧边栏
 function returnToSidebarOnclick() {
   document.querySelector('#sidebar_op').style.left = '10px';
   document.querySelector('#sidebar_op_wyySongList').style.left = cssVar.get('--sidebarEl2-closeLeft');
-  if(window.innerWidth < 960) {
+  if (window.innerWidth < 960) {
     document.querySelector('.sidebar').style.width = '80%';
   }
 }
 
+//推荐歌单源选择
+function songListSelectOnchange() {
+  let songListSelect = document.querySelector('#songListSelect');
+}
+
+//获取推荐歌单列表
+let kwOrwyySongList = [];
+function getSongList() {
+   fetch(`${BaseURL}/songlistreco/`)
+    .then(response => response.json())
+    .then(data => {
+      kwOrwyySongList = data.result;
+      generateGrid();
+    });
+}
+
+// 创建歌单板块
+function createPlaylistItem(imageUrl, title) {
+  const item = document.createElement('div');
+  item.classList.add('grid-item');
+
+  const image = document.createElement('img');
+  image.src = imageUrl;
+  item.appendChild(image);
+
+  const caption = document.createElement('p');
+  caption.textContent = title;
+  item.appendChild(caption);
+
+  return item;
+}
+
+// 动态生成瀑布流
+function generateGrid() {
+  const gridContainer = document.getElementById('gridContainer');
+  // 生成歌单板块
+  kwOrwyySongList.forEach(list => {
+    const playlistItem = createPlaylistItem(list.picUrl, list.name);
+    playlistItem.setAttribute("title", list.name);
+    playlistItem.setAttribute("data-clipboard-text", `https://music.163.com/playlist?id=${list.id}`);
+    gridContainer.appendChild(playlistItem);
+  });
+}
+
+let songListURL_clipboard = new ClipboardJS('.grid-item');
+songListURL_clipboard.on('success', function (e) {
+  console.log('已复制文本：' + e.text);
+  popup.alert('复制歌单链接成功，前往音乐盒粘贴吧~');
+  e.clearSelection();
+});
+
+
 //调用子页面函数
 //iframe.函数名()
-
-

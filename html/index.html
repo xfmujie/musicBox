@@ -12,7 +12,7 @@
   <link rel="shortcut icon" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/%E5%9B%BE%E5%BA%8A/logoicon.ico"
     type="image/x-icon">
   <script src="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+  <script src="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/clipboard.min.js"></script>
   <!-- 加载相关 CSS 文件 -->
   <link rel="stylesheet" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.css">
   <link rel="stylesheet" href="./css/main.css">
@@ -25,7 +25,7 @@
     <div id="sidebar_op">
       <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
       <div onclick="searchSourceChange()">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击更换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-      <div onclick="wyySongListRecommend()">网易云歌单推荐</div>
+      <div onclick="wyySongListRecommend()">歌单推荐</div>
       <!-- <div id="huabing"></div> -->
       <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
         <div>更新日志</div>
@@ -33,8 +33,15 @@
     </div>
     <div id="sidebar_op_wyySongList">
       <button class="return_sidebar_btn" onclick="returnToSidebarOnclick()"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-      <span class="sidebar_op_page_title">网易云歌单</span>
-      <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p>
+      <span class="sidebar_op_page_title">歌单推荐</span>
+      <select id="songListSelect" onchange="songListSelectOnchange()">
+        <option value="wyy">网易云</option>
+        <option value="kw" disabled>酷我</option>
+      </select>
+      <!-- <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p> -->
+      <div id="songListGridDiv">
+        <div class="grid-container" id="gridContainer"></div>
+      </div>
     </div>
   </div>
   <div class="sidebar2">

@@ -353,6 +353,7 @@ a {
 
 /* 隐藏歌词盒子滚动条 */
 /* #play_page_song_list::-webkit-scrollbar */ 
+#songListGridDiv::-webkit-scrollbar,
 #sidebarLrc::-webkit-scrollbar,
 .sidebar::-webkit-scrollbar {
   width: 0;
@@ -697,8 +698,8 @@ body>div.sidebar2>div:nth-child(1)>div {
   width: 100vw;
   padding: 8px 0;
   border-radius: 5px;
-  background-color: #eaeaea;
-  color: #151515;
+  background-color: #e3e3e3;
+  color: #404040;
 }
 
 
@@ -710,6 +711,17 @@ body>div.sidebar2>div:nth-child(1)>div {
   
 } */
 
+#songListSelect {
+  position: absolute;
+  background-color: rgba(107, 169, 255, 0);
+  color: #232323;
+  border-radius: 5px; 
+  padding: 1px; 
+  outline: 0;
+  right: 10px;
+  top: 5px;
+  height: 30px;
+}
 
 /* ************************************************************************ */
 
@@ -889,3 +901,71 @@ body>div.sidebar2>div:nth-child(1)>div {
     width: calc(100% + 20px);
   }
 }
+
+
+/* *********************歌单瀑布流(start)******************** */
+:root {
+  --width-smallWindow: 100px;
+  --width-bigWindow: 150px;
+}
+
+#songListGridDiv {
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+  
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--width-smallWindow), 1fr));
+  grid-gap: 10px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid #ccc; */
+  margin-bottom: 10px;
+}
+
+.grid-item img {
+  width: var(--width-smallWindow);
+  height: var(--width-smallWindow);
+  object-fit: cover;
+}
+
+.grid-item p {
+  margin: 5px 0;
+  max-width: var(--width-smallWindow);
+  font-size: 14px;
+  color: rgb(58, 58, 58);
+  word-wrap: break-word;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 600px) and (max-width: 959px){
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(var(--width-bigWindow), 1fr));
+  }
+
+  .grid-item img {
+    width: var(--width-bigWindow);
+    height: var(--width-bigWindow);
+  }
+
+  .grid-item p {
+    max-width: var(--width-bigWindow);
+    font-size: 15px;
+  }
+}
+/* *********************歌单瀑布流(end)******************** */
