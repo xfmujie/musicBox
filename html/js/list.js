@@ -522,8 +522,9 @@ function onkey(event) {
 }
 
 //从云端获取歌单
-function getSongList() {
-  var ID = idSearch.value;
+function getSongList(isAuto = false, autoID = '') {
+  var ID = '';
+  ID = isAuto? autoID : idSearch.value;
   var path = '';
   var timeout = 5;
   var songListType = '';

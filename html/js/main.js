@@ -1198,8 +1198,10 @@ function wyySongListRecommend() {
   }
 
   //进入页面时加载推荐歌单
-  popup.alert('歌单推荐开发中，当前只有网易云且只能复制歌单链接，后续会丰富交互体验');
-  getSongList();
+  if (kwOrwyySongList.length == 0) {
+    popup.alert('歌单推荐开发中，当前只有网易云且只能复制歌单链接，后续会丰富交互体验');
+    getSongList();
+  }
 }
 
 //返回侧边栏
@@ -1219,7 +1221,7 @@ function songListSelectOnchange() {
 //获取推荐歌单列表
 let kwOrwyySongList = [];
 function getSongList() {
-   fetch(`${BaseURL}/songlistreco/`)
+  fetch(`${BaseURL}/songlistreco/`)
     .then(response => response.json())
     .then(data => {
       kwOrwyySongList = data.result;
@@ -1250,18 +1252,21 @@ function generateGrid() {
   kwOrwyySongList.forEach(list => {
     const playlistItem = createPlaylistItem(list.picUrl, list.name);
     playlistItem.setAttribute("title", list.name);
-    playlistItem.setAttribute("data-clipboard-text", `https://music.163.com/playlist?id=${list.id}`);
+    // playlistItem.setAttribute("data-clipboard-text", `https://music.163.com/playlist?id=${list.id}`);
     gridContainer.appendChild(playlistItem);
   });
 }
 
-let songListURL_clipboard = new ClipboardJS('.grid-item');
-songListURL_clipboard.on('success', function (e) {
-  console.log('已复制文本：' + e.text);
-  popup.alert('复制歌单链接成功，前往音乐盒粘贴吧~');
-  e.clearSelection();
-});
-
+document.querySelector('#gridContainer').addEventListener('click', function (event) {
+    let clickNum = Array.from(document.querySelectorAll(`#gridContainer .grid-item ${event.target.tagName}`)).indexOf(event.target);
+    console.log(clickNum);
+    popup.confirm('将歌单一键添加到音乐盒？')
+      .then(isEnter => {
+        if(isEnter) {
+          iframe.getSongList(true, `https://music.163.com/playlist?id=${kwOrwyySongList[clickNum]["id"]}`);
+        }
+      })
+  });
 
 //调用子页面函数
 //iframe.函数名()
