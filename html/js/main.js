@@ -560,7 +560,7 @@ if (localStorage.getItem('musicBoxList') == null) {
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云推荐歌单</font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云推荐歌单<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -1199,7 +1199,7 @@ function wyySongListRecommend() {
 
   //进入页面时加载推荐歌单
   if (kwOrwyySongList.length == 0) {
-    popup.alert('歌单推荐开发中，当前只有网易云且只能复制歌单链接，后续会丰富交互体验');
+    popup.alert('歌单推荐开发中，当前只有网易云且只能一键添加歌单，后续会丰富交互体验');
     getSongList();
   }
 }
@@ -1258,15 +1258,15 @@ function generateGrid() {
 }
 
 document.querySelector('#gridContainer').addEventListener('click', function (event) {
-    let clickNum = Array.from(document.querySelectorAll(`#gridContainer .grid-item ${event.target.tagName}`)).indexOf(event.target);
-    console.log(clickNum);
-    popup.confirm('将歌单一键添加到音乐盒？')
-      .then(isEnter => {
-        if(isEnter) {
-          iframe.getSongList(true, `https://music.163.com/playlist?id=${kwOrwyySongList[clickNum]["id"]}`);
-        }
-      })
-  });
+  let clickNum = Array.from(document.querySelectorAll(`#gridContainer .grid-item ${event.target.tagName}`)).indexOf(event.target);
+  console.log(clickNum);
+  popup.confirm('将歌单一键添加到音乐盒？')
+    .then(isEnter => {
+      if (isEnter) {
+        iframe.getSongList(true, `https://music.163.com/playlist?id=${kwOrwyySongList[clickNum]["id"]}`);
+      }
+    })
+});
 
 //调用子页面函数
 //iframe.函数名()
