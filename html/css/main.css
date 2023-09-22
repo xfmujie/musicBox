@@ -4,6 +4,10 @@
   --music-cover: url('https://ali.mu-jie.cc/img/cover01.png');
   --sidebarEl1-closeLeft: -100%;
   --sidebarEl2-closeLeft: calc(100% + 20px);
+  --blur--5px-: blur(5px);
+  --blur--10px-: blur(10px);
+  --blur--15px-: blur(15px);
+  --blur--20px-: blur(20px);
 }
 
 h1,
@@ -58,7 +62,8 @@ img {
 
 .music_box {
   border-radius: 10px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: var(--blur--5px-);
   padding: 5px;
   box-shadow: 0 0 5px rgba(82, 82, 82, 0.5);
 }
@@ -117,6 +122,7 @@ td:hover {
 .search_box {
   flex: 9;
   margin-left: 1%;
+  backdrop-filter: var(--blur--5px-);
 }
 
 /*搜索框样式*/
@@ -154,6 +160,7 @@ td:hover {
   border-width: 0;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: var(--blur--5px-);
   color: #3880c3;
   font-size: 15px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
@@ -186,13 +193,14 @@ td:hover {
 .btn_box {
   position: relative;
   padding: 2px;
-  background-color: #ffffff97;
+  background-color: #ffffff87;
   left: calc(50% - 306.17px/2);
   width: max-content;
   height: 30px;
   border-radius: 20px;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
   z-index: 1;
+  backdrop-filter: var(--blur--5px-);
 }
 
 #opBar {
@@ -247,13 +255,14 @@ td:hover {
 }
 
 .footnote {
-  background-color: rgba(255, 255, 255, 0.784);
+  background-color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   height: 60px;
   text-align: center;
   color: #636363;
   margin-top: 10px;
   border-radius: 5px;
+  backdrop-filter: var(--blur--5px-);
 }
 
 a {
@@ -309,7 +318,8 @@ a {
   text-align: center;
   top: 0px;
   left: -100%;
-  background-color: rgba(252, 252, 252, 1);
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: var(--blur--20px-);
   height: calc(100% - 20px);
   width: 80%;
   transition-duration: 100ms;
@@ -334,7 +344,9 @@ a {
   border-radius: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, #f8fdff, #d9edff);
+  /* background: linear-gradient(to bottom, #f8fdff, #d9edff); */
+  /* background-color: rgba(252, 252, 252, 0.8);
+  backdrop-filter: blur(10px); */
   z-index: 9999;
 }
 
@@ -592,7 +604,7 @@ body>div.sidebar2>div:nth-child(1)>div {
 /* 选项说明 */
 .explainSpan {
   font-size: 0.8rem;
-  color: #696969;
+  color: #454545;
 }
 
 .play_page_song_list {
@@ -604,7 +616,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   width: 100%;
   height: 70%;
   border-radius: 15px 15px 0 0;
-  background: linear-gradient(to top, #d9edff, #f8fdff);
+  background-color: rgba(255, 255, 255, 1); /* linear-gradient(to top, #d9edff, #f8fdff) */
   z-index: 9999;
   overflow-y: hidden;
   transition-duration: 200ms;
@@ -699,7 +711,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   width: 100vw;
   padding: 8px 0;
   border-radius: 5px;
-  background-color: #e3e3e3;
+  background-color: #ffffff;
   color: #404040;
 }
 

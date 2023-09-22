@@ -1,0 +1,26 @@
+.switch-body {
+  border: 0px solid rgb(220, 220, 220);
+  width: 45px;
+  height: 18px;
+  border-radius: 20px;
+  padding: 3px;
+  margin: 5px 2px;
+  cursor: pointer;
+  transition-duration: 200ms;
+}
+
+.switch-body .switch-circular {
+  background-color: rgb(255, 255, 255);
+  width: 18px;
+  height: 18px;
+  border-radius: 20px;
+  transition-duration: 200ms;
+}
+
+.switch-body-off {
+  background-color: rgb(210, 210, 210);
+}
+
+.switch-body-on {
+  background-color: rgb(0, 153, 250);
+}

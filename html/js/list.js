@@ -1,5 +1,5 @@
 log = console.log;
-console.log = function () { };
+if (window.location.port != '5500') console.log = function () { };
 
 //获取搜索结果
 function getSearchResult(SearchContent) {
@@ -754,6 +754,23 @@ function lrcSelectOnchange() {
   else window.parent.lrcSelectFlag = false;
 }
 
+const glassSwitch = new switchBtn('glassSwitch');
+
+// 璃模糊效果状态初始化
+window.parent.initStorage('enableGlass', 'false');
+if (localStorage.getItem('enableGlass') == 'false') {
+  window.parent.enableGlass(false);
+  glassSwitch.set(false);
+}
+else {
+  window.parent.enableGlass(true);
+  glassSwitch.set(true);
+}
+
+function glassSwitchOnclick() {
+  localStorage.setItem('enableGlass', glassSwitch.state);
+  window.parent.enableGlass(glassSwitch.state);
+}
 
 /* window.addEventListener('message', function (event) {
   var data = event.data; // 获取父页面发送的数据

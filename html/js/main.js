@@ -1,9 +1,9 @@
 log = console.log;
-console.log = function () { };
+if (window.location.port != '5500') console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
-/* var BaseURL = 'http://127.0.0.1:9000' */
+// var BaseURL = 'http://127.0.0.1:9000'
 
 // 实例化弹窗对象
 var popup = new Popup();
@@ -38,6 +38,18 @@ function retryRequest(url, maxRetries = 5) {
     }
     sendRequest();
   });
+}
+
+//判空
+function isNull(obj) {
+  return (obj == null || obj == '' || obj == undefined || obj == 'null' || obj == 'undefined');
+}
+//本地存储初始化
+function initStorage(obj, val) {
+  if (isNull(localStorage.getItem(obj))) {
+    localStorage.setItem(obj, val);
+    console.log(`<${obj}>初始化: ${localStorage.getItem(obj)}`);
+  }
 }
 
 /*主题 颜色*/
@@ -283,7 +295,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.8';
+var Version = '3.1.9';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -467,10 +479,8 @@ function inputBlur() {
 }
 
 /*听歌时长的初始化与获取*/
-if (localStorage.getItem('playTime') === null || localStorage.getItem('playTime') === undefined) {
-  localStorage.setItem('playTime', 0);
-  console.log('听歌时长初始化')
-}
+initStorage('playTime', 0);
+
 //定时关闭
 function setTimedStop() {
   if (!(/^\d+$/.test(iframe.document.getElementById('setTimer').value))) {
@@ -554,13 +564,11 @@ if (`${currentDate.getMonth()}` !== localStorage.getItem('Zeroing')) {
 
 //音乐盒缓存
 //初始化
-if (localStorage.getItem('musicBoxList') == null) {
-  localStorage.setItem('musicBoxList', "[]");
-}
+initStorage('musicBoxList', '[]');
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>新增网易云推荐歌单<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
+  popup.alert(`<font color="#323232">v${Version}更新<br><br>1. 新增酷我推荐歌单<br>2. 新增玻璃模糊，可前往[设置>>自定义主题]中开启(背景为自定义图片时模糊效果才比较明显)<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -774,10 +782,11 @@ function menu_onclick(isHash = false) {
       overlay = document.createElement('div');
       overlay.style.position = 'fixed';
       overlay.style.top = '0';
-      overlay.style.left = '0';
-      overlay.style.width = '100%';
+      overlay.style.right = '0';
+      overlay.style.width = `calc(100%)`; //  - ${document.querySelector('.sidebar').offsetWidth}px
       overlay.style.height = '100%';
-      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 设置为半透明的黑色
+      // overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)'; // 设置为半透明的黑色
+      overlay.style.backdropFilter = 'blur(10px)';
       overlay.style.zIndex = '1';
       document.body.appendChild(overlay);
       sidebar.style.left = '0px';
@@ -1159,10 +1168,7 @@ huabing.addEventListener('click', () => {
 
 
 // 网易云
-if (!localStorage.getItem('isWyy')) {
-  console.log('搜索源初始化');
-  localStorage.setItem('isWyy', 'false');
-}
+initStorage('isWyy', 'false');
 var isWyy = localStorage.getItem('isWyy');
 console.log(isWyy);
 document.querySelector('#searchSource').innerHTML = localStorage.getItem('isWyy') == 'true' ? '网易云' : '酷我';
@@ -1199,8 +1205,8 @@ function wyySongListRecommend() {
 
   //进入页面时加载推荐歌单
   if (kwOrwyySongList.length == 0) {
-    popup.alert('歌单推荐开发中，当前只有网易云且只能一键添加歌单，后续会丰富交互体验');
-    getSongList();
+    popup.alert('歌单推荐开发中，当前只能一键添加歌单，后续会丰富交互体验');
+    getSongList(songListSelect.value);
   }
 }
 
@@ -1214,18 +1220,23 @@ function returnToSidebarOnclick() {
 }
 
 //推荐歌单源选择
+let songListSelect = document.querySelector('#songListSelect');
 function songListSelectOnchange() {
-  let songListSelect = document.querySelector('#songListSelect');
+  if (kwOrwyySongList.length) document.querySelectorAll('.grid-item').forEach(el => el.remove());
+  document.querySelector('#songListGridDiv .loader').style.display = 'unset';
+  getSongList(songListSelect.value);
+  localStorage.setItem('recommend', songListSelect.value);
 }
 
 //获取推荐歌单列表
 let kwOrwyySongList = [];
-function getSongList() {
-  fetch(`${BaseURL}/songlistreco/`)
+function getSongList(src) {
+  fetch(`${BaseURL}/songlist?src=${src}&type=recommend`)
     .then(response => response.json())
     .then(data => {
-      kwOrwyySongList = data.result;
+      kwOrwyySongList = data;
       generateGrid();
+      document.querySelector('#songListGridDiv .loader').style.display = 'none';
     });
 }
 
@@ -1250,7 +1261,8 @@ function generateGrid() {
   const gridContainer = document.getElementById('gridContainer');
   // 生成歌单板块
   kwOrwyySongList.forEach(list => {
-    const playlistItem = createPlaylistItem(list.picUrl, list.name);
+    let pic = songListSelect.value == 'wyy' ? list.picUrl : list.pic;
+    const playlistItem = createPlaylistItem(pic, list.name);
     playlistItem.setAttribute("title", list.name);
     // playlistItem.setAttribute("data-clipboard-text", `https://music.163.com/playlist?id=${list.id}`);
     gridContainer.appendChild(playlistItem);
@@ -1263,10 +1275,47 @@ document.querySelector('#gridContainer').addEventListener('click', function (eve
   popup.confirm('将歌单一键添加到音乐盒？')
     .then(isEnter => {
       if (isEnter) {
-        iframe.getSongList(true, `https://music.163.com/playlist?id=${kwOrwyySongList[clickNum]["id"]}`);
+        let src = songListSelect.value == 'wyy' ? 'https://music.163.com/playlist?id=' : 'http://www.kuwo.cn/playlist_detail/';
+        iframe.getSongList(true, `${src}${kwOrwyySongList[clickNum]["id"]}`);
       }
     })
 });
 
+// 歌单推荐状态(网易OR酷我)本地存储初始化
+initStorage('recommend', 'kw');
+songListSelect.selectedIndex = localStorage.getItem('recommend') == 'kw' ? 0 : 1;
+
+
+function jumpToSetupOnclick() {
+  if (window.innerWidth < 960) menu_onclick();
+  setBtn_onclick();
+}
+
+// 玻璃模糊效果
+function enableGlass(isEnable) {
+  if (isEnable) {
+    cssVar.set('--blur--5px-', 'blur(5px)');
+    cssVar.set('--blur--10px-', 'blur(10px)');
+    cssVar.set('--blur--15px-', 'blur(15px)');
+    cssVar.set('--blur--20px-', 'blur(20px)');
+    document.querySelector('.sidebar').style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+    document.querySelector('.sidebar2').style.background = 'rgba(255, 255, 255, 0.7)';
+    document.querySelector('.music_box').style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+  }
+  else {
+    cssVar.set('--blur--5px-', 'unset');
+    cssVar.set('--blur--10px-', 'unset');
+    cssVar.set('--blur--15px-', 'unset');
+    cssVar.set('--blur--20px-', 'unset');
+    document.querySelector('.sidebar').style.backgroundColor = 'rgb(252, 252, 252)';
+    document.querySelector('.sidebar2').style.background = 'linear-gradient(to bottom, #f8fdff, #d9edff)';
+    document.querySelector('.music_box').style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+  }
+}
+
+
+
+
+// disableGlass();
 //调用子页面函数
 //iframe.函数名()

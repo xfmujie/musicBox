@@ -16,6 +16,7 @@
   <!-- 加载相关 CSS 文件 -->
   <link rel="stylesheet" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.css">
   <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/loadding.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 
@@ -25,7 +26,8 @@
     <div id="sidebar_op">
       <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
       <div onclick="searchSourceChange()">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击更换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-      <div onclick="wyySongListRecommend()">歌单推荐</div>
+      <div onclick="wyySongListRecommend()">歌单推荐<br><span class="explainSpan">网易云/酷我/热门/分类(即将开发)</span></div>
+      <div onclick="jumpToSetupOnclick()">设置</div>
       <!-- <div id="huabing"></div> -->
       <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
         <div>更新日志</div>
@@ -35,13 +37,15 @@
       <button class="return_sidebar_btn" onclick="returnToSidebarOnclick()"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
       <span class="sidebar_op_page_title">歌单推荐</span>
       <select id="songListSelect" onchange="songListSelectOnchange()">
+        <option value="kw">酷我</option>
         <option value="wyy">网易云</option>
-        <option value="kw" disabled>酷我</option>
       </select>
       <!-- <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p> -->
       <div id="songListGridDiv">
         <div class="grid-container" id="gridContainer"></div>
+        <div class="loader"></div>
       </div>
+      
     </div>
   </div>
   <div class="sidebar2">

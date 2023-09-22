@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <link rel="stylesheet" href="./css/list.css">
+  <link rel="stylesheet" href="./css/switch.css">
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
   <script src="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/clipboard.min.js"></script>
 </head>
@@ -88,6 +89,12 @@
         </div>
         <div><a href="javascript:;" onclick="set_a_enter(3)">确定</a></div>
       </div>
+      <div class="set_op">
+        <div style="padding-right: 8px;">
+          <set_title>玻璃模糊</set_title>
+        </div>
+        <div id="glassSwitch" onclick="glassSwitchOnclick()"></div>
+      </div>
 
       <a target="_blank" style="font-size: 14px;" href="https://mu-jie.cc/static-pages/color.html">颜色选择器</a>
       &
@@ -156,6 +163,7 @@
       <a href="javascript:;" onclick="getSongList()">添加</a>
     </div>
   </div>
+  <script src="./js/switch.js"></script>
   <script src="./js/list.js"></script>
 </body>
 
