@@ -1,3 +1,7 @@
+/*
+  此css来源于: https://codepen.io/CrocoDillon/full/DMNWjR
+ */
+
 .loader {
   position: relative;
   width: 2.5em;
@@ -68,5 +72,5 @@
 
 #songListGridDiv .loader {
   position: absolute;
-  top: 40%;
+  top: 50%;
 }
