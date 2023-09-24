@@ -48,7 +48,7 @@ body {
 }
 
 #lrc_p p {
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
 img {
@@ -201,6 +201,9 @@ td:hover {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
   z-index: 1;
   backdrop-filter: var(--blur--5px-);
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #opBar {
@@ -589,22 +592,37 @@ body>div.sidebar2>div:nth-child(1)>div {
 /* 侧边栏各个选项容器 */
 .sidebar #sidebar_op div {
   position: relative;
-  padding: 10px 0;
-  border: 1px solid rgb(190, 190, 190);
+  padding: 8px 0 8px 40px;
+  border: 1px solid rgb(201, 201, 201);
   color: #2c2c2c;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: 5px;
+  margin-bottom: 8px;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
   word-wrap: break-word;
+  text-align: start;
 }
 
 /* 选项说明 */
 .explainSpan {
   font-size: 0.8rem;
-  color: #454545;
+  color: #7e7e7e;
+}
+
+.sidebar-icon,
+.sidebar-icon_single-row {
+  position: absolute;
+  top: calc(100% - 38px);
+  left: 10px;
+  width: 20px;
+  opacity: 0.8;
+}
+
+.sidebar-icon_single-row {
+  left: 8px;
+  top: calc(100% - 28px);
 }
 
 .play_page_song_list {
@@ -724,17 +742,35 @@ body>div.sidebar2>div:nth-child(1)>div {
   
 } */
 
-#songListSelect {
-  position: absolute;
+#songListSelect,
+#categoriesSelect1,
+#categoriesSelect2 {
+  position: relative;
   background-color: rgba(107, 169, 255, 0);
   color: #232323;
   border-radius: 5px; 
-  padding: 1px; 
+  padding: 1px;
   outline: 0;
-  right: 10px;
-  top: 5px;
+  left: 0px;
+  top: 0px;
+  width: 30%;
   height: 30px;
+  border: 1px solid rgb(152, 152, 152);
+  /* border-width: 0 0 1px 0; */
+  font-size: 1rem;
+  text-align: start;
+  margin: 10px 2px;
 }
+
+/* #categoriesSelect1 {
+  left: 50%;
+  transform: translate(-55%);
+}
+
+#categoriesSelect2 {
+  left: unset;
+  right: 5px;
+} */
 
 /* ************************************************************************ */
 
@@ -860,7 +896,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   }
 
   #lrc_p p {
-    margin: 10px 0;
+    margin: 13px 0;
   }
 
   #lrc_p p:not(.lrcHL):hover {
@@ -872,7 +908,10 @@ body>div.sidebar2>div:nth-child(1)>div {
     font-size: 1.2rem !important;
     font-weight: bold;
   }
-
+  .sidebar #sidebar_op div {
+    margin-bottom: 10px;
+    padding-left: 50px;
+  }
   .sidebar #sidebar_op div:hover {
     background-color: rgba(53, 194, 255, 0.8);
     color: #ffffff;
@@ -884,6 +923,11 @@ body>div.sidebar2>div:nth-child(1)>div {
     transform: scale(0.95);
     transition-duration: 100ms;
   }
+
+.sidebar-icon,
+.sidebar-icon_single-row {
+  left: 15px;
+}
 
   body {
     overflow-x: hidden;
@@ -924,9 +968,9 @@ body>div.sidebar2>div:nth-child(1)>div {
 
 #songListGridDiv {
   position: absolute;
-  top: 60px;
+  top: 40px;
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 100px);
   overflow-y: scroll;
   
 }

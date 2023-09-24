@@ -295,7 +295,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.1.9';
+var Version = '3.2.0';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -436,7 +436,7 @@ function search_onclick() {
   else if ((SearchContent.value != iframe.oldContent) || searchSourceChangeFlag) {
     iframe.pageNum = 1;
     iframe.getSearchResult(SearchContent.value);
-    popup.msg('正在搜索……', 10, function () {
+    popup.msg('<br><br><div class="loader"></div><br><br>', 10, function () {
       popup.alert('出错了！');
     });
     searchSourceChangeFlag = false;
@@ -568,7 +568,7 @@ initStorage('musicBoxList', '[]');
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version}更新<br><br>1. 新增酷我推荐歌单<br>2. 新增玻璃模糊，可前往[设置>>自定义主题]中开启(背景为自定义图片时模糊效果才比较明显)<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
+  popup.alert(`<font color="#323232">v${Version} 更新<br><br>1. 新增歌单推荐的分类功能<br>2. 优化侧边栏选项和歌单推荐的样式<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -1205,8 +1205,8 @@ function wyySongListRecommend() {
 
   //进入页面时加载推荐歌单
   if (kwOrwyySongList.length == 0) {
-    popup.alert('歌单推荐开发中，当前只能一键添加歌单，后续会丰富交互体验');
-    getSongList(songListSelect.value);
+    // popup.alert('歌单推荐开发中，当前只能一键添加歌单，后续会丰富交互体验');
+    selectInit();
   }
 }
 
@@ -1219,19 +1219,12 @@ function returnToSidebarOnclick() {
   }
 }
 
-//推荐歌单源选择
 let songListSelect = document.querySelector('#songListSelect');
-function songListSelectOnchange() {
-  if (kwOrwyySongList.length) document.querySelectorAll('.grid-item').forEach(el => el.remove());
-  document.querySelector('#songListGridDiv .loader').style.display = 'unset';
-  getSongList(songListSelect.value);
-  localStorage.setItem('recommend', songListSelect.value);
-}
 
-//获取推荐歌单列表
+//发送请求获取推荐歌单列表
 let kwOrwyySongList = [];
-function getSongList(src) {
-  fetch(`${BaseURL}/songlist?src=${src}&type=recommend`)
+function getSongList(src, type = 'recommend') {
+  fetch(`${BaseURL}/songlist?src=${src}&type=${type.replace('推荐歌单', 'recommend')}`)
     .then(response => response.json())
     .then(data => {
       kwOrwyySongList = data;
@@ -1242,10 +1235,12 @@ function getSongList(src) {
 
 // 创建歌单板块
 function createPlaylistItem(imageUrl, title) {
+  let bgColor = ['#D4E4F5', '#FCE9E7', '#E6E2F3', '#F7EFD0', '#E5F3F1'];
   const item = document.createElement('div');
   item.classList.add('grid-item');
 
   const image = document.createElement('img');
+  image.style.backgroundColor = bgColor[Math.floor(Math.random() * bgColor.length)];
   image.src = imageUrl;
   item.appendChild(image);
 
@@ -1313,6 +1308,192 @@ function enableGlass(isEnable) {
   }
 }
 
+let opContent = {
+  'kw': [
+    {
+      "categories": "推荐",
+      "subCategories": [
+        { "name": "推荐歌单", "typeid": "推荐歌单" }
+      ]
+    },
+    {
+      "categories": "主题",
+      "subCategories": [
+        { "name": "经典", "typeid": "1265" },
+        { "name": "抖音", "typeid": "2189" },
+        { "name": "情歌", "typeid": "2200" },
+        { "name": "BGM", "typeid": "2199" },
+        { "name": "游戏", "typeid": "1877" },
+        { "name": "怀旧", "typeid": "155" },
+        { "name": "合唱", "typeid": "2201" },
+        { "name": "网络", "typeid": "621" },
+        { "name": "儿童", "typeid": "171" },
+        { "name": "ACG", "typeid": "181" },
+        { "name": "影视", "typeid": "180" },
+        { "name": "网红", "typeid": "1879" },
+        { "name": "翻唱", "typeid": "1848" },
+      ]
+    },
+    {
+      "categories": "心情",
+      "subCategories": [
+        { "name": "伤感", "typeid": "146" },
+        { "name": "解压", "typeid": "62" },
+        { "name": "励志", "typeid": "58" },
+        { "name": "开心", "typeid": "143" },
+        { "name": "甜蜜", "typeid": "137" },
+        { "name": "兴奋", "typeid": "139" },
+        { "name": "安静", "typeid": "67" },
+        { "name": "思念", "typeid": "160" },
+      ]
+    },
+    {
+      "categories": "场景",
+      "subCategories": [
+        { "name": "开车", "typeid": "376" },
+        { "name": "运动", "typeid": "366" },
+        { "name": "睡眠", "typeid": "354" },
+        { "name": "跳舞", "typeid": "378" },
+        { "name": "学习", "typeid": "1876" },
+        { "name": "清晨", "typeid": "353" },
+        { "name": "KTV", "typeid": "361" },
+        { "name": "店铺专用", "typeid": "263" },
+        { "name": "校园", "typeid": "382" },
+        { "name": "旅行", "typeid": "375" },
+        { "name": "工作", "typeid": "386" },
+        { "name": "广场舞", "typeid": "334" },
+        { "name": "通勤", "typeid": "2202" },
+        { "name": "宅家", "typeid": "2203" }
+      ]
+    },
+    {
+      "categories": "年代",
+      "subCategories": [
+        { "name": "70后", "typeid": "637" },
+        { "name": "80后", "typeid": "638" },
+        { "name": "90后", "typeid": "639" },
+        { "name": "00后", "typeid": "640" }
+      ]
+    },
+    {
+      "categories": "语言",
+      "subCategories": [
+        { "name": "华语", "typeid": "37" },
+        { "name": "粤语", "typeid": "13" },
+        { "name": "欧美", "typeid": "35" },
+        { "name": "韩语", "typeid": "1093" },
+        { "name": "日语", "typeid": "1091" },
+        { "name": "小语种", "typeid": "12" }
+      ]
+    },
+    {
+      "categories": "曲风流派",
+      "subCategories": [
+        { "name": "流行", "typeid": "393" },
+        { "name": "DJ", "typeid": "168" },
+        { "name": "古风", "typeid": "127" },
+        { "name": "佛乐", "typeid": "220" },
+        { "name": "轻音乐", "typeid": "173" },
+        { "name": "纯音乐", "typeid": "577" },
+        { "name": "电子", "typeid": "391" },
+        { "name": "喊麦", "typeid": "216" },
+        { "name": "3D", "typeid": "1366" },
+        { "name": "器乐", "typeid": "578" },
+        { "name": "摇滚", "typeid": "389" },
+        { "name": "民歌", "typeid": "1921" },
+        { "name": "民谣", "typeid": "392" },
+        { "name": "古典", "typeid": "390" },
+        { "name": "嘻哈", "typeid": "387" },
+        { "name": "乡村", "typeid": "399" },
+        { "name": "爵士", "typeid": "397" },
+        { "name": "R&B", "typeid": "394" }
+      ]
+    },
+  ],
+  'wyy': [
+    {
+      "categories": "推荐",
+      "subCategories": ['推荐歌单']
+    },
+    {
+      "categories": "语种",
+      "subCategories": ['华语', '欧美', '日语', '韩语', '粤语']
+    },
+    {
+      "categories": "风格",
+      "subCategories": ['流行', '摇滚', '民谣', '电子', '舞曲', '说唱', '轻音乐', '爵士', '乡村', 'R&B/Soul', '古典', '民族', '英伦', '金属', '朋克', '蓝调', '雷鬼', '世界音乐', '拉丁', 'New Age', '古风', '后摇', 'Bossa Nova']
+    },
+    {
+      "categories": "场景",
+      "subCategories": ['清晨', '夜晚', '学习', '工作', '午休', '下午茶', '地铁', '驾车', '运动', '旅行', '散步', '酒吧']
+    },
+    {
+      "categories": "情感",
+      "subCategories": ['怀旧', '清新', '浪漫', '伤感', '治愈', '放松', '孤独', '感动', '兴奋', '快乐', '安静', '思念']
+    },
+    {
+      "categories": "主题",
+      "subCategories": ['综艺', '影视原声', 'ACG', '儿童', '校园', '游戏', '70后', '80后', '90后', '网络歌曲', 'KTV', '经典', '翻唱', '吉他', '钢琴', '器乐', '榜单', '00后']
+    },
+  ]
+};
+
+// 分类选择选项初始化
+function selectInit() {
+  let src = songListSelect.value;
+  document.querySelector('#categoriesSelect1').innerHTML = '';
+  document.querySelector('#categoriesSelect2').innerHTML = '';
+  opContent[src].forEach(op => {
+    document.querySelector('#categoriesSelect1').innerHTML += `<option>${op['categories']}</option>`
+  });
+  opContent[src][0]['subCategories'].forEach(op => {
+    let opName = src == 'kw' ? op['name'] : op;
+    document.querySelector('#categoriesSelect2').innerHTML += `<option>${opName}</option>`;
+  });
+  localStorage.setItem('recommend', src);
+  loadSongList(src);
+}
+
+// 一级分类选择，改变二级分类选项，并加载第1个二级分类歌单
+function categoriesSelect() {
+  let srcSelect = songListSelect.value;
+  let selectedIndex1 = document.querySelector('#categoriesSelect1').selectedIndex;
+  document.querySelector('#categoriesSelect2').innerHTML = '';
+  opContent[srcSelect][selectedIndex1]['subCategories'].forEach(op => {
+    let opName = srcSelect == 'kw' ? op['name'] : op;
+    document.querySelector('#categoriesSelect2').innerHTML += `<option>${opName}</option>`
+  });
+  document.querySelectorAll('.grid-item').forEach(el => el.remove());
+  document.querySelector('#songListGridDiv .loader').style.display = 'unset';
+  let type = '';
+  if (srcSelect == 'kw') {
+    type = opContent['kw'][selectedIndex1]['subCategories'][0]['typeid'];
+  }
+  else {
+    type = opContent['wyy'][selectedIndex1]['subCategories'][0]
+  }
+  getSongList(srcSelect, type);
+}
+
+// 二级分类选择，获取该分类歌单
+function subCategoriesSelect() {
+  loadSongList(songListSelect.value);
+}
+
+function loadSongList(src) {
+  document.querySelectorAll('.grid-item').forEach(el => el.remove());
+  document.querySelector('#songListGridDiv .loader').style.display = 'unset';
+  let selectedIndex1 = document.querySelector('#categoriesSelect1').selectedIndex;
+  let selectedIndex2 = document.querySelector('#categoriesSelect2').selectedIndex;
+  let type = '';
+  if (src == 'kw') {
+    type = opContent['kw'][selectedIndex1]['subCategories'][selectedIndex2]['typeid'];
+  }
+  else {
+    type = opContent['wyy'][selectedIndex1]['subCategories'][selectedIndex2];
+  }
+  getSongList(src, type);
+}
 
 
 

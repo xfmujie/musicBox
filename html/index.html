@@ -24,24 +24,26 @@
   <!-- 侧边栏 -->
   <div class="sidebar">
     <div id="sidebar_op">
-      <div onclick="playPageOpenOrClose()">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
-      <div onclick="searchSourceChange()">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击更换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-      <div onclick="wyySongListRecommend()">歌单推荐<br><span class="explainSpan">网易云/酷我/热门/分类(即将开发)</span></div>
-      <div onclick="jumpToSetupOnclick()">设置</div>
+      <div onclick="playPageOpenOrClose()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/椰子树-1.png">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
+      <div onclick="searchSourceChange()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/箭头_左右切换_o.png">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击切换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
+      <div onclick="wyySongListRecommend()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/推荐-产品详情.png">歌单推荐<br><span class="explainSpan">网易云/酷我/热门/分类</span></div>
+      <div onclick="jumpToSetupOnclick()"><img class="sidebar-icon_single-row" src="https://ali.mu-jie.cc/img/ui_icon/setting.png">设置</div>
       <!-- <div id="huabing"></div> -->
       <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
-        <div>更新日志</div>
+        <div><img class="sidebar-icon_single-row" src="https://ali.mu-jie.cc/img/ui_icon/日志.png">更新日志</div>
       </a>
     </div>
     <div id="sidebar_op_wyySongList">
       <button class="return_sidebar_btn" onclick="returnToSidebarOnclick()"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
       <span class="sidebar_op_page_title">歌单推荐</span>
-      <select id="songListSelect" onchange="songListSelectOnchange()">
-        <option value="kw">酷我</option>
-        <option value="wyy">网易云</option>
-      </select>
       <!-- <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p> -->
       <div id="songListGridDiv">
+        <select id="songListSelect" onchange="selectInit()">
+          <option value="kw">酷我</option>
+          <option value="wyy">网易云</option>
+        </select>
+        <select id="categoriesSelect1" onchange="categoriesSelect()"></select>
+        <select id="categoriesSelect2" onchange="subCategoriesSelect()"></select>
         <div class="grid-container" id="gridContainer"></div>
         <div class="loader"></div>
       </div>
