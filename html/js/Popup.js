@@ -28,6 +28,7 @@ class Popup {
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      outline: 0;
     }
     
     @keyframes scaleAnimation {
