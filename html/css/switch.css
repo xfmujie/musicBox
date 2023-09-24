@@ -1,7 +1,7 @@
 .switch-body {
   border: 0px solid rgb(220, 220, 220);
-  width: 45px;
-  height: 18px;
+  width: 43px;
+  height: 16px;
   border-radius: 20px;
   padding: 3px;
   margin: 5px 2px;
@@ -11,10 +11,11 @@
 
 .switch-body .switch-circular {
   background-color: rgb(255, 255, 255);
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 20px;
   transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.42,0,0.58,1);
 }
 
 .switch-body-off {

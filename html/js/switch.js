@@ -18,7 +18,7 @@ class switchBtn {
     if (state) {
       this.switchState.classList.remove('switch-body-off');
       this.switchState.classList.add('switch-body-on');
-      document.querySelector(`#${this.id} .switch-body .switch-circular`).style.left = 'calc(100% - 18px)';
+      document.querySelector(`#${this.id} .switch-body .switch-circular`).style.left = 'calc(100% - 16px)';
       this.state = true;
     }
     else {
