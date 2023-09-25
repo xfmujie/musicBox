@@ -970,7 +970,7 @@ body>div.sidebar2>div:nth-child(1)>div {
   position: absolute;
   top: 40px;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(92vh);
   overflow-y: scroll;
   
 }
