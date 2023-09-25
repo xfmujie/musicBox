@@ -1256,7 +1256,7 @@ function generateGrid() {
   const gridContainer = document.getElementById('gridContainer');
   // 生成歌单板块
   kwOrwyySongList.forEach(list => {
-    let pic = songListSelect.value == 'wyy' ? list.picUrl : list.pic;
+    let pic = songListSelect.value == 'wyy' ? list.picUrl : list.pic.replace('kwcdn.kuwo.cn', 'kuwo.cn');
     const playlistItem = createPlaylistItem(pic, list.name);
     playlistItem.setAttribute("title", list.name);
     // playlistItem.setAttribute("data-clipboard-text", `https://music.163.com/playlist?id=${list.id}`);
