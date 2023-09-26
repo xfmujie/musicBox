@@ -69,13 +69,11 @@
       </div>
       <div style="height: 30%;width: 100%;"></div>
     </div>
-    <div>
       <div id="progressBar">
         <span id="time-label">00:00</span>
-        <div class="progress"> </div>
+        <input type="range" min="0" max="100" value="0" step="0.1" id="progress" onchange="progressOnchange()">
         <span id="duration">00:00</span>
       </div>
-    </div>
     <div id="PlayControl">
       <div><button class="playBtn" title="" onclick="likeOnclick();"><i class="fa fa-heart"></i></button></div>
       <div><button class="PlayControlBtn" title="" onclick="nextPlay('pre');">

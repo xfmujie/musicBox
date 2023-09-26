@@ -888,37 +888,58 @@ function formatTime(seconds) {
 }
 
 // 播放页音频进度条
+let progressAutoEnable = true;
+let progress = document.getElementById('progress');
+let timeLabel = document.getElementById('time-label');
 (function () {
-  var progressBar = document.getElementById('progressBar');
-  var progress = document.querySelector('.progress');
-  var timeLabel = document.getElementById('time-label');
-
   audioPlayer.addEventListener('timeupdate', function () {
-    var progressPercentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progress.style.width = progressPercentage + '%';
-    timeLabel.innerHTML = formatTime(audioPlayer.currentTime);
-    document.querySelector('#duration').innerHTML = formatTime(audioPlayer.duration);
-  });
-
-  progressBar.addEventListener('click', function (event) {
-    timeUpdateAllow = false;
-    var progressBarWidth = progressBar.offsetWidth;
-    var progressPercentage = (event.offsetX / progressBarWidth) * 100;
-    var currentTime = (progressPercentage / 100) * audioPlayer.duration;
-    audioPlayer.currentTime = currentTime;
-    lrcLastNum = lrc.findIndex((lrc) => {
-      return Math.floor(parseFloat(lrc.time)) >= currentTime;
-    });
-    lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
-    /*     console.log(currentTime);
-        console.log(lrcLastNum); */
-    lrcUpdate(lrcLastNum - 1);
-    setTimeout(() => {
-      timeUpdateAllow = true;
-    }, 500);
+    if (audioPlayer.currentTime && progressAutoEnable) {
+      var progressPercentage = audioPlayer.currentTime * 100 / audioPlayer.duration;
+      progress.value = progressPercentage;
+      progressUpdate();
+      // progress.style.width = progressPercentage + '%';
+      timeLabel.innerHTML = formatTime(audioPlayer.currentTime);
+      document.querySelector('#duration').innerHTML = formatTime(audioPlayer.duration);
+    }
   });
 })();
 
+// 进度条拖动中
+progress.addEventListener("input", function () {
+  audioPlayer.pause();
+  progressUpdate();
+  progressAutoEnable = false;
+  timeLabel.innerHTML = formatTime((progress.value / 100) * audioPlayer.duration);
+  setTimeout(() => {
+    progressAutoEnable = true;
+  }, 500);
+});
+
+// 进度条拖动后
+function progressOnchange() {
+  audioPlayer.play();
+  console.log(123);
+  timeUpdateAllow = false;
+  let currentTime = (progress.value / 100) * audioPlayer.duration;
+  audioPlayer.currentTime = currentTime;
+  lrcLastNum = lrc.findIndex((lrc) => {
+    return Math.floor(parseFloat(lrc.time)) >= currentTime;
+  });
+  lrcLastNum = lrcLastNum == -1 ? 1 : lrcLastNum;
+  /*     console.log(currentTime);
+      console.log(lrcLastNum); */
+  lrcUpdate(lrcLastNum - 1);
+  setTimeout(() => {
+    timeUpdateAllow = true;
+  }, 500);
+}
+
+// 更新进度条背景色
+function progressUpdate() {
+  var leftColor = cssVar.get('--progress--leftColor');
+  var rightColor = cssVar.get('--progress--rightColor');
+  progress.style.background = `linear-gradient(to right, ${leftColor} ${progress.value}%, ${rightColor} ${progress.value}%)`;
+}
 
 
 // 系统音频交互

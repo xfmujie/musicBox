@@ -8,6 +8,8 @@
   --blur--10px-: blur(10px);
   --blur--15px-: blur(15px);
   --blur--20px-: blur(20px);
+  --progress--leftColor: #0095ff;
+  --progress--rightColor:rgb(212, 212, 212);
 }
 
 h1,
@@ -453,26 +455,35 @@ a {
 }
 
 /* 滚动条 */
-#progressBar {
-  position: relative;
+#progress {
+  position: absolute;
   /* bottom: 90px; */
-  width: calc(98% - 110px);
+  width: calc(70%);
   height: 10px;
-  background-color: lightgray;
-  border-radius: 20px;
-  /* cursor: pointer; */
-  left: calc(5% + 40px);
+  left: calc(50%);
+  transform: translate(-50%);
+  background: var(--progress--rightColor);
+  border-radius: 5px;
+  appearance: none;
 }
 
-#progressBar .progress {
+#progress::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 3px rgba(5, 5, 5, 0.6);
+  border-radius: 50%;
+  appearance: none;
+}
+
+/* #progressBar .progress {
   position: relative;
-  /* bottom: 21.5px; */
   height: 100%;
   background-color: #0095ff;
   width: 0;
   border-radius: 20px;
   transition-duration: 200ms;
-}
+} */
 
 #time-label {
   color: #4f4f4f;
@@ -480,8 +491,9 @@ a {
   -ms-user-select: none;
   user-select: none;
   position: absolute;
-  top: -5px;
-  left: -50px;
+  top: -3px;
+  left: calc(15% + 4px);
+  transform: translate(-120%);
 }
 
 #duration {
@@ -490,8 +502,9 @@ a {
   -ms-user-select: none;
   user-select: none;
   position: absolute;
-  top: -5px;
-  right: -50px;
+  top: -3px;
+  right: 15%;
+  transform: translate(120%);
 }
 
 /* 侧边栏子容器 */
@@ -878,7 +891,7 @@ body>div.sidebar2>div:nth-child(1)>div {
     transition-duration: 100ms;
   }
 
-  #progressBar {
+  #progress {
     cursor: pointer;
   }
 
