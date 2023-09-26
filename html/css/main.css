@@ -454,7 +454,7 @@ a {
   right: 10px;
 }
 
-/* 滚动条 */
+/* 滚动条 进度条 */
 #progress {
   position: absolute;
   /* bottom: 90px; */
