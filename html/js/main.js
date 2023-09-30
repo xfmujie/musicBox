@@ -295,7 +295,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.2.0';
+var Version = '3.2.1';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -568,7 +568,7 @@ initStorage('musicBoxList', '[]');
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version} 更新<br><br>1. 新增歌单推荐的分类功能<br>2. 优化侧边栏选项和歌单推荐的样式<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
+  popup.alert(`<font color="#323232">v${Version} 更新<br><br>1. 新增网易云歌单搜索<br>2. 优化播放页歌曲进度条样式<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
@@ -1244,8 +1244,13 @@ let songListSelect = document.querySelector('#songListSelect');
 
 //发送请求获取推荐歌单列表
 let kwOrwyySongList = [];
-function getSongList(src, type = 'recommend') {
-  fetch(`${BaseURL}/songlist?src=${src}&type=${type.replace('推荐歌单', 'recommend')}`)
+function getSongList(src, type = 'recommend', key = '') {
+  let url = '';
+  if (!key)
+    url = `${BaseURL}/songlist?src=${src}&type=${type.replace('推荐歌单', 'recommend')}`;
+  else
+    url = `${BaseURL}/songlist/search?key=${key}`;
+  fetch(url)
     .then(response => response.json())
     .then(data => {
       kwOrwyySongList = data;
@@ -1456,6 +1461,10 @@ let opContent = {
       "categories": "主题",
       "subCategories": ['综艺', '影视原声', 'ACG', '儿童', '校园', '游戏', '70后', '80后', '90后', '网络歌曲', 'KTV', '经典', '翻唱', '吉他', '钢琴', '器乐', '榜单', '00后']
     },
+    {
+      "categories": "搜索",
+      "subCategories": ['搜索歌单']
+    },
   ]
 };
 
@@ -1484,16 +1493,32 @@ function categoriesSelect() {
     let opName = srcSelect == 'kw' ? op['name'] : op;
     document.querySelector('#categoriesSelect2').innerHTML += `<option>${opName}</option>`
   });
-  document.querySelectorAll('.grid-item').forEach(el => el.remove());
-  document.querySelector('#songListGridDiv .loader').style.display = 'unset';
-  let type = '';
-  if (srcSelect == 'kw') {
-    type = opContent['kw'][selectedIndex1]['subCategories'][0]['typeid'];
+  if (selectedIndex1 != 6) {
+    document.querySelectorAll('.grid-item').forEach(el => el.remove());
+    document.querySelector('#songListGridDiv .loader').style.display = 'unset';
+    let type = '';
+    if (srcSelect == 'kw')
+      type = opContent['kw'][selectedIndex1]['subCategories'][0]['typeid'];
+    else
+      type = opContent['wyy'][selectedIndex1]['subCategories'][0];
+    getSongList(srcSelect, type);
   }
   else {
-    type = opContent['wyy'][selectedIndex1]['subCategories'][0]
+    popup.prompt('输入歌单名称/关键词')
+      .then(key => {
+        if (key) {
+          document.querySelectorAll('.grid-item').forEach(el => el.remove());
+          document.querySelector('#categoriesSelect2').innerHTML = '';
+          document.querySelector('#categoriesSelect2').innerHTML += `<option>${key}</option>`;
+          document.querySelector('#songListGridDiv .loader').style.display = 'unset';
+          getSongList('wyy', 'search', key);
+        }
+        else {
+          document.querySelector('#categoriesSelect2').innerHTML = '';
+          // document.querySelector('#categoriesSelect2').innerHTML += `<option>已取消搜索</option>`;
+        }
+      });
   }
-  getSongList(srcSelect, type);
 }
 
 // 二级分类选择，获取该分类歌单
@@ -1516,7 +1541,15 @@ function loadSongList(src) {
   getSongList(src, type);
 }
 
-
+function songListSearch() {
+  if (songListSelect.selectedIndex == 1) {
+    document.querySelector('#categoriesSelect1').selectedIndex = 6;
+    categoriesSelect();
+  }
+  else {
+    popup.alert('酷我不支持歌单搜索~');
+  }
+}
 
 // disableGlass();
 //调用子页面函数

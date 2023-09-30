@@ -402,7 +402,7 @@ a {
 .PlayControlBtn {
   text-align: center;
   color: #4f4f4f;
-  border-radius: 100%;
+  border-radius: 50px;
   font-size: 1.2rem;
   padding: 0px;
   width: 50px;
@@ -410,12 +410,13 @@ a {
   border-width: 0;
   outline: 0;
   background-color: #fefeff;
-  box-shadow: 3px 5px 5px rgba(77, 77, 77, 0.3), -3px -5px 10px rgba(137, 208, 255, 0.078);
+  box-shadow: 3px 3px 5px rgba(92, 92, 92, 0.2), -3px -5px 10px rgba(137, 208, 255, 0.078);
   margin: 5px;
 }
 
 .PlayControlBtn:active {
   box-shadow: unset;
+  background-color: #e5e5e5;
 }
 
 #PlayControl {
@@ -459,7 +460,7 @@ a {
   position: absolute;
   /* bottom: 90px; */
   width: calc(70%);
-  height: 10px;
+  height: 5px;
   left: calc(50%);
   transform: translate(-50%);
   background: var(--progress--rightColor);
@@ -468,8 +469,8 @@ a {
 }
 
 #progress::-webkit-slider-thumb {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 3px rgba(5, 5, 5, 0.6);
   border-radius: 50%;
@@ -491,7 +492,7 @@ a {
   -ms-user-select: none;
   user-select: none;
   position: absolute;
-  top: -3px;
+  top: -5px;
   left: calc(15% + 4px);
   transform: translate(-120%);
 }
@@ -502,7 +503,7 @@ a {
   -ms-user-select: none;
   user-select: none;
   position: absolute;
-  top: -3px;
+  top: -5px;
   right: 15%;
   transform: translate(120%);
 }
@@ -590,7 +591,7 @@ body>div.sidebar2>div:nth-child(1)>div {
 .return_sidebar_btn {
   right: unset;
   left: -5px;
-  top: 5px;
+  top: 3px;
   width: 30px;
   font-size: 1.5rem;
 }
@@ -775,15 +776,15 @@ body>div.sidebar2>div:nth-child(1)>div {
   margin: 10px 2px;
 }
 
-/* #categoriesSelect1 {
-  left: 50%;
-  transform: translate(-55%);
+#songListSearchBtn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: #3880c3;
+  height: max-content;
+  padding: 10px;
+  cursor: pointer;
 }
-
-#categoriesSelect2 {
-  left: unset;
-  right: 5px;
-} */
 
 /* ************************************************************************ */
 
@@ -886,9 +887,14 @@ body>div.sidebar2>div:nth-child(1)>div {
   }
 
   .PlayControlBtn:hover {
-    /* background-color: rgba(53, 194, 255, 0.8); */
-    transform: scale(1.1);
-    transition-duration: 100ms;
+    box-shadow: unset;
+    transition-duration: 300ms;
+    background-color: #f7f7f7;
+  }
+
+  .PlayControlBtn:active {
+    box-shadow: unset;
+    background-color: #e5e5e5;
   }
 
   #progress {
@@ -981,9 +987,9 @@ body>div.sidebar2>div:nth-child(1)>div {
 
 #songListGridDiv {
   position: absolute;
-  top: 40px;
+  top: 45px;
   width: 100%;
-  height: calc(92vh);
+  height: calc(92vh - 5px);
   overflow-y: scroll;
   
 }
