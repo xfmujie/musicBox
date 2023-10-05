@@ -1493,7 +1493,7 @@ function categoriesSelect() {
     let opName = srcSelect == 'kw' ? op['name'] : op;
     document.querySelector('#categoriesSelect2').innerHTML += `<option>${opName}</option>`
   });
-  if (selectedIndex1 != 6) {
+  if (selectedIndex1 != 6 || srcSelect == 'kw') {
     document.querySelectorAll('.grid-item').forEach(el => el.remove());
     document.querySelector('#songListGridDiv .loader').style.display = 'unset';
     let type = '';
