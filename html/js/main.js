@@ -446,16 +446,12 @@ function search_onclick() {
 //等待iframe加载完成
 function onIFrameLoaded(iframe, callback) {
   function iframeLoaded() {
-    // 取消事件监听器，避免重复执行
     iframe.removeEventListener('load', iframeLoaded);
-    // 执行回调函数
-    callback();
+    setTimeout(callback, 500);
   }
   if (iframe.attachEvent) {
-    // IE浏览器
     iframe.attachEvent('onload', iframeLoaded);
   } else {
-    // 其他浏览器
     iframe.addEventListener('load', iframeLoaded);
   }
 }
