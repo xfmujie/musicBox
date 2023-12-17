@@ -3,3 +3,5 @@ flask/kw.py
 flask/__pycache__/
 html/html.zip
 .vscode/
+html/js/index.js
+html/js/sign_main.js
