@@ -1,5 +1,5 @@
 log = console.log;
-if (window.location.port != '5500') console.log = function () { };
+if (window.location.port < '5500') console.log = function () { };
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
