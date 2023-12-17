@@ -2,3 +2,4 @@ test/
 flask/kw.py
 flask/__pycache__/
 html/html.zip
+.vscode/
