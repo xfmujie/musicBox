@@ -1,6 +1,8 @@
 log = console.log;
 if (window.location.port < '5500') console.log = function () { };
 
+const kw_key = '***'; // 获取酷我mp3链接需要key，有需要请联系qq1960813545购买，添加好友备注mp3key
+
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
 // var BaseURL = 'http://127.0.0.1:9000'
@@ -375,7 +377,7 @@ function getMusic(rid, isWyy = false) {
     });
 
   //获取歌曲链接
-  retryRequest(`${baseUrl}/mp3?rid=${rid}`)
+  retryRequest(`${baseUrl}/mp3?rid=${rid}&key=${kw_key}`)
     .then(data => {
       console.log(data);
       if (data.includes('版权')) {
