@@ -26,7 +26,7 @@
     <div id="sidebar_op">
       <div onclick="playPageOpenOrClose()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/椰子树-1.png">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
       <div onclick="searchSourceChange()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/箭头_左右切换_o.png">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击切换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-      <div onclick="wyySongListRecommend()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/推荐-产品详情.png">歌单推荐<br><span class="explainSpan">网易云/酷我/热门/分类</span></div>
+      <div onclick="wyySongListRecommend()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/推荐-产品详情.png">歌单推荐<br><span class="explainSpan">网易云/热门/分类</span></div>
       <div onclick="jumpToSetupOnclick()"><img class="sidebar-icon_single-row" src="https://ali.mu-jie.cc/img/ui_icon/setting.png">设置</div>
       <!-- <div id="huabing"></div> -->
       <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
@@ -40,7 +40,7 @@
       <!-- <p style="position: absolute; top: 50px; left: 50%; transform: translate(-50%);" >即将开发</p> -->
       <div id="songListGridDiv">
         <select id="songListSelect" onchange="selectInit()">
-          <option value="kw">酷我</option>
+          <option value="kw" disabled>酷我</option>
           <option value="wyy">网易云</option>
         </select>
         <select id="categoriesSelect1" onchange="categoriesSelect()"></select>
