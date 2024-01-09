@@ -297,7 +297,7 @@ var root = document.documentElement;
 var setTimer = 0;
 var setTimedFlag = false;
 var version_span = document.getElementById('version_span');
-var Version = '3.2.1';
+var Version = '3.2.2';
 var timeCount;
 var opBtnNow = 0;
 var lrcLastNum = 0;
@@ -380,8 +380,8 @@ function getMusic(rid, isWyy = false) {
   retryRequest(`${baseUrl}/mp3?rid=${rid}&key=${kw_key}`)
     .then(data => {
       console.log(data);
-      if (data.includes('版权')) {
-        popup.alert('这首歌无播放权限！');
+      if (data.includes('无酷我版权')) {
+        popup.alert('由于版权原因，音乐盒不再提供酷我音源！');
       }
       else {
         mp3Url = data;
@@ -566,7 +566,7 @@ initStorage('musicBoxList', '[]');
 
 //版本升级消息
 if (localStorage.getItem('Version') !== Version) {
-  popup.alert(`<font color="#323232">v${Version} 更新<br><br>1. 新增网易云歌单搜索<br>2. 优化播放页歌曲进度条样式<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
+  popup.alert(`<font color="#323232">v${Version} 更新<br><br>由于版权原因，音乐盒不再提供酷我音源<br><a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">查看历史更新</a></font>`);
   localStorage.setItem('Version', Version)
 }
 version_span.innerHTML = Version;
