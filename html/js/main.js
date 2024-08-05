@@ -624,7 +624,7 @@ function playReset() {
   singerName.innerHTML = '歌手';
   document.title = '昔枫音乐盒';
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
-  cover.src = './static/null.mp3';
+  cover.src = './static/cover01.png';
   iframe.lastNum = 9999;
   playingNum = 9999;
   clearInterval(timeCount);
