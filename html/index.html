@@ -17,20 +17,20 @@
   <link rel="stylesheet" href="https://mujie-data.oss-cn-shenzhen.aliyuncs.com/rely/plyr.css">
   <link rel="stylesheet" href="./css/main.css">
   <link rel="stylesheet" href="./css/loadding.css">
-  <link rel="stylesheet" href="https://ali.mu-jie.cc/static/css/font-awesome-4.7.0/css/font-awesome.css">
+  <link rel="stylesheet" href="./static/font-awesome-4.7.0/css/font-awesome.css">
 </head>
 
 <body>
   <!-- 侧边栏 -->
   <div class="sidebar">
     <div id="sidebar_op">
-      <div onclick="playPageOpenOrClose()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/椰子树-1.png">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
-      <div onclick="searchSourceChange()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/箭头_左右切换_o.png">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击切换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
-      <div onclick="wyySongListRecommend()"><img class="sidebar-icon" src="https://ali.mu-jie.cc/img/ui_icon/推荐-产品详情.png">歌单推荐<br><span class="explainSpan">网易云/热门/分类</span></div>
-      <div onclick="jumpToSetupOnclick()"><img class="sidebar-icon_single-row" src="https://ali.mu-jie.cc/img/ui_icon/setting.png">设置</div>
+      <div onclick="playPageOpenOrClose()"><img class="sidebar-icon" src="./static/ui_icon/椰子树-1.png">沉浸播放模式<br><span class="explainSpan">在首页点击歌曲封面也能进入沉浸播放</span></div>
+      <div onclick="searchSourceChange()"><img class="sidebar-icon" src="./static/ui_icon/箭头_左右切换_o.png">搜索曲库: <span id="searchSource"></span><span class="explainSpan">(点击切换)<br>仅搜索区分曲库，列表曲库可混合</span></div>
+      <div onclick="wyySongListRecommend()"><img class="sidebar-icon" src="./static/ui_icon/推荐-产品详情.png">歌单推荐<br><span class="explainSpan">网易云/热门/分类</span></div>
+      <div onclick="jumpToSetupOnclick()"><img class="sidebar-icon_single-row" src="./static/ui_icon/setting.png">设置</div>
       <!-- <div id="huabing"></div> -->
       <a target="_blank" href="https://mu-jie.cc/musicBoxUpdate/">
-        <div><img class="sidebar-icon_single-row" src="https://ali.mu-jie.cc/img/ui_icon/日志.png">更新日志</div>
+        <div><img class="sidebar-icon_single-row" src="./static/ui_icon/日志.png">更新日志</div>
       </a>
     </div>
     <div id="sidebar_op_wyySongList">
@@ -62,7 +62,7 @@
       <h5 id="sidebarSingerName">VIP音乐解析</h5>
     </div>
     <div>
-      <img id="cover2" width="40%" src="https://ali.mu-jie.cc/img/cover01.png" />
+      <img id="cover2" width="40%" src="./static/cover01.png" />
     </div>
     <div id="sidebarLrc">
       <div style="height: 30%;width: 100%;"></div>
@@ -91,6 +91,14 @@
       <div id="play_page_song_list"></div>
     </div>
   </div>
+  <div id="ad">
+<!--     <img style="float: left; border-radius: 5px;" src="https://oss.mu-jie.cc/img/%E5%B9%BF%E5%91%8A%E8%90%A5%E9%94%80.png" height="18px" /> -->
+    <a target="_blank" href="">
+      <font></font>
+    </a>
+    <div onclick="adClost()"><i
+      class="fa fa-times-circle"></i></div>
+  </div>
   <div class="search">
     <div class="menu"><button title="" onclick="menu_onclick()"><i class="fa fa-bars"></i></button></div>
     <div class="search_box"><input id="search_box" type="text" placeholder="请输入歌曲/歌手" value=""></div>
@@ -100,7 +108,7 @@
   </div>
   <div class="music_box" id="music_box" aria-hidden="true">
     <div class="img" onclick="playPageOpenOrClose()"><img id="cover" width="88px"
-        src="https://ali.mu-jie.cc/img/cover01.png" />
+        src="./static/cover01.png" />
     </div>
     <div class="song">
       <span id="songName">歌曲</span>
@@ -114,7 +122,7 @@
     <!-- 添加一个 <audio> 标签 -->
     <div style="display: flex; width: 100%;">
       <audio controls id="music">
-        <source src="https://ali.mu-jie.cc/static/null.mp3">
+        <source src="./static/null.mp3">
       </audio>
       <button class="playBtn" onclick="downloadOnclick();"><i class="fa fa-arrow-down"></i></button>
       <button class="playBtn" onclick="likeOnclick();"><i class="fa fa-heart"></i></button>

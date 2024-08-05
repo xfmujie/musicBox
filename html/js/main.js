@@ -1,7 +1,12 @@
+/* function uM5yD9qT6fK6aD9r(rid, key, timestamp) {
+  const a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  let str = a[timestamp % 26] + rid + key + timestamp.toString();
+  // console.log(CryptoJS.SHA256(str).toString());
+  return CryptoJS.SHA256(str).toString();
+} */
+
 log = console.log;
 if (window.location.port < '5500') console.log = function () { };
-
-const kw_key = '***'; // 获取酷我mp3链接需要key，有需要请联系qq1960813545购买，添加好友备注mp3key
 
 //API BaseURL
 var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
@@ -11,7 +16,7 @@ var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
 var popup = new Popup();
 
 //自动重试的请求函数
-function retryRequest(url, maxRetries = 5) {
+function retryRequest(url, maxRetries = 1) {
   let retryCount = 0;
   return new Promise((resolve, reject) => {
     function sendRequest() {
@@ -377,7 +382,18 @@ function getMusic(rid, isWyy = false) {
     });
 
   //获取歌曲链接
-  retryRequest(`${baseUrl}/mp3?rid=${rid}&key=${kw_key}`)
+  let reqUrl = '';
+  if(isWyy) {
+    reqUrl = `${baseUrl}/mp3?rid=${rid}`;
+  } else {
+    const t = new Date().getTime();
+    const s = '123'; //uM5yD9qT6fK6aD9r(`${rid}` ,'xKb5zT3Rn9D4vQwA', t);
+    const uri = `/musicboxmp3?rid=${rid}&key=xKb5zT3Rn9D4vQwA&s=${s}&t=${t}`;
+    // console.log(uri);
+    reqUrl = `${baseUrl}${uri}`;
+  }
+  
+  retryRequest(reqUrl)
     .then(data => {
       console.log(data);
       if (data.includes('无酷我版权')) {
@@ -599,7 +615,7 @@ window.addEventListener('error', function (event) {
 
 
 function playReset() {
-  audioPlayer.src = 'https://ali.mu-jie.cc/static/null.mp3';
+  audioPlayer.src = './static/null.mp3';
   audioPlayer.pause();
   audioPlayer.currentTime = 0;
   audioPlayer.autoplay = false;
@@ -608,7 +624,7 @@ function playReset() {
   singerName.innerHTML = '歌手';
   document.title = '昔枫音乐盒';
   lrc = [{ "lineLyric": "昔枫音乐盒", "time": "2" }, { "lineLyric": "VIP音乐解析", "time": "4" }];
-  cover.src = 'https://ali.mu-jie.cc/img/cover01.png';
+  cover.src = './static/null.mp3';
   iframe.lastNum = 9999;
   playingNum = 9999;
   clearInterval(timeCount);
@@ -616,10 +632,10 @@ function playReset() {
   document.querySelector('#sidebarSongName').innerHTML = '昔枫音乐盒';
   document.querySelector('#sidebarSingerName').innerHTML = 'VIP音乐解析';
   document.querySelector('#lrc_p').innerHTML = '<p>该页面正在开发中</p><p>可能存在Bug</p>';
-  document.querySelector('#cover2').src = 'https://ali.mu-jie.cc/img/cover01.png';
+  document.querySelector('#cover2').src = './static/cover01.png';
   lrcCurrentLine = 0;
   lrcUpdate(0);
-  root.style.setProperty('--music-cover', `url('https://ali.mu-jie.cc/img/cover01.png')`);
+  root.style.setProperty('--music-cover', `url('./static/cover01.png')`);
   setTimeout(() => {
     playPageSongListUpdate(playList);
   }, 100);
@@ -1187,18 +1203,19 @@ huabing.addEventListener('click', () => {
 
 
 // 网易云
-initStorage('isWyy', 'false');
-var isWyy = localStorage.getItem('isWyy');
+initStorage('isWyy', 'true');
+var isWyy = 'true'; // localStorage.getItem('isWyy');
 console.log(isWyy);
-document.querySelector('#searchSource').innerHTML = localStorage.getItem('isWyy') == 'true' ? '网易云' : '酷我';
+document.querySelector('#searchSource').innerHTML = isWyy == 'true' ? '网易云' : '酷我';
 function searchSourceChange() {
-  if (localStorage.getItem('isWyy') == 'true') {
+  if (localStorage.getItem('isWyy') == 'true' && false) {
     localStorage.setItem('isWyy', 'false');
     document.querySelector('#searchSource').innerHTML = '酷我';
   }
   else {
     localStorage.setItem('isWyy', 'true');
     document.querySelector('#searchSource').innerHTML = '网易云';
+    popup.alert('目前仅支持网易云搜索');
   }
   isWyy = localStorage.getItem('isWyy');
   searchSourceChangeFlag = true;
@@ -1301,8 +1318,8 @@ document.querySelector('#gridContainer').addEventListener('click', function (eve
 });
 
 // 歌单推荐状态(网易OR酷我)本地存储初始化
-initStorage('recommend', 'kw');
-songListSelect.selectedIndex = localStorage.getItem('recommend') == 'kw' ? 0 : 1;
+initStorage('recommend', 'wyy');
+songListSelect.selectedIndex = 1;// localStorage.getItem('recommend') == 'kw' ? 0 : 1;
 
 
 function jumpToSetupOnclick() {
@@ -1548,6 +1565,17 @@ function songListSearch() {
     popup.alert('酷我不支持歌单搜索~');
   }
 }
+
+/* AD */
+// document.querySelector("#ad > a > font").innerText = '';
+// document.querySelector("#ad > a").href = '';
+function adClost() {
+  document.querySelector('#ad').remove();
+  /* 修改style */
+  document.querySelector('.searchORlist').style.height = 'calc(100vh - 310px)';
+}
+
+adClost();
 
 // disableGlass();
 //调用子页面函数
