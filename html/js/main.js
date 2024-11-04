@@ -9,7 +9,7 @@ log = console.log;
 if (window.location.port < '5500') console.log = function () { };
 
 //API BaseURL
-var BaseURL = 'https://kwapi-api-iobiovqpvk.cn-beijing.fcapp.run'
+var BaseURL = 'https://musicbox-web-api.mu-jie.cc/'
 // var BaseURL = 'http://127.0.0.1:9000'
 
 // 实例化弹窗对象
