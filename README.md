@@ -88,3 +88,6 @@ V3.0.3
 2. 更换依赖包源，访问更快
 
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=xfmujie/musicBox&type=Date)
