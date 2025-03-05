@@ -6,6 +6,11 @@
 ![pagePC](http://ali.mu-jie.cc/img/uipc.jpg)
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
 
+> Vue重构新版音乐盒前瞻截图（待完善后将会开源）
+> ![](https://bu.dusays.com/2025/03/04/67c5d7cebb459.png)
+> ![](https://bu.dusays.com/2025/03/04/67c5d7ec34c19.png)
+> ![](https://bu.dusays.com/2025/03/04/67c5d801e4518.png)
+
 
 ### 说明
 - **flask文件夹：转发前端请求的后端接口，使用了python的flask框架，提供了酷我和网易云的搜索、歌词、mp3的接口，网易云API用的是开源项目[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)，请到app.py查看详细说明**
