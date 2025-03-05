@@ -6,10 +6,11 @@
 ![pagePC](http://ali.mu-jie.cc/img/uipc.jpg)
 ![pageMbile](http://ali.mu-jie.cc/img/musicBoxUI.jpg)
 
-> Vue重构新版音乐盒前瞻截图（待完善后将会开源）
-> ![](https://bu.dusays.com/2025/03/04/67c5d7cebb459.png)
-> ![](https://bu.dusays.com/2025/03/04/67c5d7ec34c19.png)
-> ![](https://bu.dusays.com/2025/03/04/67c5d801e4518.png)
+### Vue重构新版音乐盒前瞻截图（待完善后将会开源）
+![](https://bu.dusays.com/2025/03/04/67c5d7cebb459.png)
+![](https://bu.dusays.com/2025/03/05/67c861e628c48.png)
+![](https://bu.dusays.com/2025/03/04/67c5d7ec34c19.png)
+![](https://bu.dusays.com/2025/03/04/67c5d801e4518.png)
 
 
 ### 说明
